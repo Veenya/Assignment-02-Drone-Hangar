@@ -1,5 +1,5 @@
 [x] Pir (drone presence detector)
-[] sonar (drone distance detector)
+[x] sonar (drone distance detector)
 [] servomotr (hangar door)
 [x] lcd
     non servono classi
@@ -11,6 +11,11 @@
     buttonimpl.cpp
     (NO: button.cpp)
 [] temperature sensor
+    nel suo file CASINO... ora spiego:
+        - TempSensor.h -> common interface used by the rest of the code
+        - TempSensorLM35.* -> implementation for LM35 sensor
+        - TempSensorTMP36.* -> implementation for TMP36 sensor
+        - TempSensorImpl.h -> duplicate/old header for LM35, can be removed
 
 we are gonna need a lot of files...
 
@@ -34,3 +39,10 @@ we are gonna need a lot of files...
 - `ProximitySensor.h`
 - `Sonar.h`
 - `Sonar.cpp`
+
+## Temperature Sensor
+- TempSensor.h
+- TempSensorLM35.h
+- TempSensorLM35.cpp 
+- TempSensorTMP36.h
+- TempSensorTMP36.cpp 
