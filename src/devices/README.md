@@ -12,3 +12,19 @@
 [] temperature sensor
 
 we are gonna need a lot of files...
+
+---
+## Led
+- `Light.h`
+- `Led.h`
+- `Led.cpp`
+
+## Button
+- `Button.h`
+- `ButtonImpl.h`
+- `ButtonImpl.cpp`
+
+## PIR
+- `PresenceSensor.h`
+- `Pir.h`
+- `Pir.cpp`
