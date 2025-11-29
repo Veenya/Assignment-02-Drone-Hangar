@@ -1,6 +1,11 @@
 [x] Pir (drone presence detector)
 [x] sonar (drone distance detector)
-[] servomotr (hangar door)
+[x] servomotr (hangar door)
+       IL bro usa timer1 e timer2, perché su Arduino UNO l libreria Servo 
+       di Arduino usa Timer1
+       ma Timer1 potrebbe essere usato da altre librerie o sensori del progetto 
+       (ad es. segnali PWM, librerie di distanza, ecc.)
+       Quindi, quando Timer1 è occupato si usa una libreria alternativa che controlla servo tramite Timer2, lasciando libero Timer1.
 [x] lcd
     non servono classi
 [x] 3 leds
@@ -10,7 +15,7 @@
     buttonimpl.h
     buttonimpl.cpp
     (NO: button.cpp)
-[] temperature sensor
+[x] temperature sensor
     nel suo file CASINO... ora spiego:
         - TempSensor.h -> common interface used by the rest of the code
         - TempSensorLM35.* -> implementation for LM35 sensor
@@ -41,8 +46,15 @@ we are gonna need a lot of files...
 - `Sonar.cpp`
 
 ## Temperature Sensor
-- TempSensor.h
-- TempSensorLM35.h
-- TempSensorLM35.cpp 
-- TempSensorTMP36.h
-- TempSensorTMP36.cpp 
+- `TempSensor.h`
+- `TempSensorLM35.h`
+- `TempSensorLM35.cpp` 
+- `TempSensorTMP36.h`
+- `TempSensorTMP36.cpp` 
+
+## Servo motor
+- `servo_motor.h`
+- `servo_motor_impl.h`
+- `servo_motor_impl.cpp`
+- `ServoTimer2.h`
+- `ServoTimer2.cpp`
