@@ -1,6 +1,6 @@
 #include "TempSensorLM35.h"
 #include "Arduino.h"
-#include "kernel/Logger.h"
+//#include "kernel/Logger.h"
 
 #define VCC ((float)5)
 

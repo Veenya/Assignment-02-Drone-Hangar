@@ -6,7 +6,7 @@
 
 #define L1_PIN             13 // green 
 #define L2_PIN             12 // green
-#define L3_pin             11 // red
+#define L3_PIN             11 // red
 
 #define BUTTON_PIN         10
 
