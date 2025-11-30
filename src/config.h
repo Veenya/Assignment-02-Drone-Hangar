@@ -10,7 +10,7 @@
 
 #define BUTTON_PIN         10
 
-#define TEMP_SENSOR_PIN    A0
+#define TEMP_PIN           A0
 #define PIR_PIN            9
 
 #define SONAR_TRIG_PIN     8

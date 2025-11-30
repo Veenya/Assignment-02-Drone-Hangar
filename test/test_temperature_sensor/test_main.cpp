@@ -37,10 +37,10 @@ void loop(){
 #include <Arduino.h>
 #include "DHT.h"
 
-#define TEMP A0
+#define TEMP_PIN A0
 #define DHTTYPE DHT11
 
-DHT dht(TEMP, DHTTYPE);
+DHT dht(TEMP_PIN, DHTTYPE);
 
 void setup() {
   Serial.begin(9600);

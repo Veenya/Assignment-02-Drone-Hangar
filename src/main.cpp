@@ -244,15 +244,15 @@ void loop(){
 */
 /*
 #include <Arduino.h>
-#define TEMP A0
+#define TEMP_PIN A0
 
 void setup(){
   Serial.begin(9600);
-  pinMode(TEMP, INPUT);
+  pinMode(TEMP_PIN, INPUT);
 }
 
 void loop(){
-  int tread = analogRead(TEMP);                // valore 0-1023
+  int tread = analogRead(TEMP_PIN);                // valore 0-1023
   float voltage = tread * (5.0 / 1023.0);      // in volt
   float tempC = (voltage - 0.5) * 100.0;       // formula TMP36
 
@@ -275,10 +275,10 @@ void loop(){
 #include <Arduino.h>
 #include "DHT.h"
 
-#define TEMP A0
+#define TEMP_PIN A0
 #define DHTTYPE DHT11
 
-DHT dht(TEMP, DHTTYPE);
+DHT dht(TEMP_PIN, DHTTYPE);
 
 void setup() {
   Serial.begin(9600);
