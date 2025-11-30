@@ -6,7 +6,7 @@
 */
 
 #include <Arduino.h>
-#include "devices/TemperatureSensorDHT11.h"
+#include "devices/temperature_sensor/TemperatureSensorDHT11.h"
 #include "config.h"
 
 

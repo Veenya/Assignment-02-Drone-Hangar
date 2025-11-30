@@ -1,28 +1,31 @@
 #include <Arduino.h>
-#include "devices/TemperatureSensorDHT11.h"
-#include "config.h"
+#include "devices/proximity_sensor/Sonar.h"
 
+// same pins as before
+const int TRIG_PIN = 8;
+const int ECHO_PIN = 7;
 
-DHT dht(TEMP_PIN, DHTTYPE);
+// max waiting time for echo (in microseconds)
+const long MAX_TIME_US = 30000L;   // ~5 m range
+
+// our sonar object
+Sonar sonar(ECHO_PIN, TRIG_PIN, MAX_TIME_US);
 
 void setup() {
   Serial.begin(9600);
-  dht.begin();
+
+  // opzionale: se vuoi cambiare la temperatura rispetto ai 20° di default
+  // sonar.setTemperature(20);
 }
 
 void loop() {
-  float h = dht.readHumidity();
-  float t = dht.readTemperature();
+  float d = sonar.getDistance();   // distanza in metri
 
-  if (isnan(h) || isnan(t)) {
-    Serial.println("Error: no data");
+  if (d == NO_OBJ_DETECTED) {
+    Serial.println("No object detected");
   } else {
-    Serial.print("T: ");
-    Serial.print(t);
-    Serial.print(" °C   H: ");
-    Serial.print(h);
-    Serial.println(" %");
+    Serial.println(d);             // stampa la distanza in metri
   }
 
-  delay(2000);
+  delay(200);
 }

@@ -7,39 +7,33 @@
 
 
 #include <Arduino.h>
-const int trigPin = 8; // digital pin 8
-const int echoPin = 7; // digital pin 7
+#include "devices/proximity_sensor/Sonar.h"
 
-// Suposing a temperature of 20° 
-const int temperature = 20;
-const float vs = 331.5 + 0.6*temperature; // speed of sound in m/s
+// same pins as before
+const int TRIG_PIN = 8;
+const int ECHO_PIN = 7;
 
-void setup(){
-  Serial.begin(9600); // start serial communcation at 9600 baud
-  
-  // we send a trigger pulse to trigPin
-  pinMode(trigPin, OUTPUT); // connected to TRIG on sensor
-  // we read the echo pulse on echoPin
-  pinMode(echoPin, INPUT);  // connected ot ECHO on sensor
-}
+// max waiting time for echo (in microseconds)
+const long MAX_TIME_US = 30000L;   // ~5 m range
 
-float getDistance(){
-  // Sending impulse
-  // This pulse tells the sensor to emit an ultrasonic "ping" 
-  digitalWrite(trigPin, LOW);  // set low briefly to make
-  delayMicroseconds(3);        // sure it starts at 0
-  digitalWrite(trigPin, HIGH); // set high for 5 s
-  delayMicroseconds(5);       
-  digitalWrite(trigPin, LOW);  // set low again 
-  float tUS = pulseIn(echoPin, HIGH);
-  
-  float t = tUS / 1000.0 / 1000.0 / 2; // round-trip time of the sound
-  float d = t*vs; // distance in meters
-  return d;
+// our sonar object
+Sonar sonar(ECHO_PIN, TRIG_PIN, MAX_TIME_US);
+
+void setup() {
+  Serial.begin(9600);
+
+  // opzionale: se vuoi cambiare la temperatura rispetto ai 20° di default
+  // sonar.setTemperature(20);
 }
 
 void loop() {
-  float d = getDistance();
-  Serial.println(d);
+  float d = sonar.getDistance();   // distanza in metri
+
+  if (d == NO_OBJ_DETECTED) {
+    Serial.println("No object detected");
+  } else {
+    Serial.println(d);             // stampa la distanza in metri
+  }
+
   delay(200);
 }

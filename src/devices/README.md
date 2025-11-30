@@ -51,6 +51,8 @@ we are gonna need a lot of files...
 - `TempSensorLM35.cpp` 
 - `TempSensorTMP36.h`
 - `TempSensorTMP36.cpp` 
+- `TempSensorDHT11.h`
+- `TempSensorDHT11.cpp` 
 
 ## Servo motor
 - `servo_motor.h`

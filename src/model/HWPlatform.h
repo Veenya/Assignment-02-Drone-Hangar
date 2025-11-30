@@ -1,0 +1,1 @@
+/* Contiene tutti gli oggetti device e usa i pin di config.h. */

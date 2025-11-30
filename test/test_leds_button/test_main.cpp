@@ -8,8 +8,8 @@
 #include <Arduino.h>
 
 #include "config.h"
-#include "devices/Led.h"
-#include "devices/ButtonImpl.h"
+#include "devices/led/Led.h"
+#include "devices/button/ButtonImpl.h"
 
 // NOTE: config.h defines L3_pin (lowercase "pin")
  // so we use that exact name here.

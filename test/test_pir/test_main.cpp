@@ -6,7 +6,7 @@
 */
 
 #include <Arduino.h>
-#include "devices/Pir.h"
+#include "devices/pir/Pir.h"
 #include "config.h"    // has PIR_PIN defined as 9
 
 // Create PIR sensor object
