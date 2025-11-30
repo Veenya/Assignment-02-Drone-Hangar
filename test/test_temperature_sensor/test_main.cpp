@@ -4,41 +4,11 @@
    ################ DHT 11 #####################
    #############################################
 */
-/*
+
 #include <Arduino.h>
-#define TEMP A0
+#include "devices/TemperatureSensorDHT11.h"
+#include "config.h"
 
-void setup(){
-  Serial.begin(9600);
-  pinMode(TEMP, INPUT);
-}
-
-void loop(){
-  int tread = analogRead(TEMP);                // valore 0-1023
-  float voltage = tread * (5.0 / 1023.0);      // in volt
-  float tempC = (voltage - 0.5) * 100.0;       // formula TMP36
-
-  Serial.print("raw: ");
-  Serial.print(tread);
-  Serial.print(" | V: ");
-  Serial.print(voltage, 3);   // 3 decimali
-  Serial.print(" V | Temp: ");
-  Serial.print(tempC, 2);     // 2 decimali
-
-  // opzione per stampare il simbolo grado (se vuoi provarlo)
-  // Serial.print(" "); Serial.write(176); Serial.println("C");
-
-  // oppure più sicuro (compatibilità): niente simbolo grado
-  Serial.println(" C");
-  delay(500);
-}
-
-*/
-#include <Arduino.h>
-#include "DHT.h"
-
-#define TEMP_PIN A0
-#define DHTTYPE DHT11
 
 DHT dht(TEMP_PIN, DHTTYPE);
 
