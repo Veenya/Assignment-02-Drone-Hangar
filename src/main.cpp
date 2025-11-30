@@ -169,7 +169,7 @@ void loop(){
    #############################################
 */
 
-/*
+
 #include <Arduino.h>
 const int trigPin = 8; // digital pin 8
 const int echoPin = 7; // digital pin 7
@@ -207,7 +207,7 @@ void loop() {
   Serial.println(d);
   delay(200);
 }
-*/
+
 
 /* #############################################
    #############################################
