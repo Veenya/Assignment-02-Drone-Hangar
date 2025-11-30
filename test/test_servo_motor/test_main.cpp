@@ -5,43 +5,47 @@
    #############################################
 */
 
-
 #include <Arduino.h>
-int servoPin = 2; // digital pin 2
+#include "config.h"
+#include "devices/servo_motor/servo_motor_impl.h"
 
-void pulseServo(int servoPin, int pulseLen){
-  digitalWrite(servoPin, HIGH); // set pin high
-  delayMicroseconds(pulseLen);  // for pulseLen ms
-  digitalWrite(servoPin, LOW);  // set pin low
-  delay(15);                    // wait 15 micos
-}
+
+ServoMotorImpl servo(SERVO_PIN);
 
 int c; // counter
 enum { MINUS_90, PLUS_90 } state;
 
-void setup(){
-  pinMode(servoPin, OUTPUT);
+void setup() {
   Serial.begin(9600);
+  servo.on();              // attach the servo
   c = 0;
+  state = MINUS_90;        // start from -90 (0°)
 }
 
-void loop(){
+void loop() {
   c++;
-  switch(state){    // switch(state) chooses what to do 
-    case MINUS_90:  // depending on the current position
-    pulseServo(servoPin, 250); // set -90
-    if(c > 100){      // after each pulse check this
-      Serial.println("--> +90"); // else change direction
-      state = PLUS_90;          // and change state
-      c = 0;
-    }
-    break;
-   case PLUS_90:
-    pulseServo(servoPin, 2250);
-    if (c > 100){
-      Serial.println("--> -90");
-      state = MINUS_90;
-      c = 0;
-    }
+
+  switch (state) {
+    case MINUS_90:
+      // equivalent to pulse 250µs in old code: extreme position
+      servo.setPosition(0);      // 0°  (≈ -90 in your naming)
+      if (c > 100) {
+        Serial.println("--> +90");
+        state = PLUS_90;
+        c = 0;
+      }
+      break;
+
+    case PLUS_90:
+      // equivalent to pulse 2250µs: opposite extreme
+      servo.setPosition(180);    // 180° (≈ +90)
+      if (c > 100) {
+        Serial.println("--> -90");
+        state = MINUS_90;
+        c = 0;
+      }
+      break;
   }
+
+  delay(15);   // similar timing to the original pulse loop
 }

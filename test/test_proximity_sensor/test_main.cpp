@@ -7,17 +7,16 @@
 
 
 #include <Arduino.h>
+#include "config.h"
 #include "devices/proximity_sensor/Sonar.h"
 
 // same pins as before
-const int TRIG_PIN = 8;
-const int ECHO_PIN = 7;
 
 // max waiting time for echo (in microseconds)
 const long MAX_TIME_US = 30000L;   // ~5 m range
 
 // our sonar object
-Sonar sonar(ECHO_PIN, TRIG_PIN, MAX_TIME_US);
+Sonar sonar(SONAR_ECHO_PIN, SONAR_TRIG_PIN, MAX_TIME_US);
 
 void setup() {
   Serial.begin(9600);

@@ -1,31 +1,51 @@
+/* #############################################
+   #############################################
+   ############### SERVO TEST ##################
+   #############################################
+   #############################################
+*/
+
 #include <Arduino.h>
-#include "devices/proximity_sensor/Sonar.h"
+#include "config.h"
+#include "devices/servo_motor/servo_motor_impl.h"
 
-// same pins as before
-const int TRIG_PIN = 8;
-const int ECHO_PIN = 7;
 
-// max waiting time for echo (in microseconds)
-const long MAX_TIME_US = 30000L;   // ~5 m range
+ServoMotorImpl servo(SERVO_PIN);
 
-// our sonar object
-Sonar sonar(ECHO_PIN, TRIG_PIN, MAX_TIME_US);
+int c; // counter
+enum { MINUS_90, PLUS_90 } state;
 
 void setup() {
   Serial.begin(9600);
-
-  // opzionale: se vuoi cambiare la temperatura rispetto ai 20° di default
-  // sonar.setTemperature(20);
+  servo.on();              // attach the servo
+  c = 0;
+  state = MINUS_90;        // start from -90 (0°)
 }
 
 void loop() {
-  float d = sonar.getDistance();   // distanza in metri
+  c++;
 
-  if (d == NO_OBJ_DETECTED) {
-    Serial.println("No object detected");
-  } else {
-    Serial.println(d);             // stampa la distanza in metri
+  switch (state) {
+    case MINUS_90:
+      // equivalent to pulse 250µs in old code: extreme position
+      servo.setPosition(0);      // 0°  (≈ -90 in your naming)
+      if (c > 100) {
+        Serial.println("--> +90");
+        state = PLUS_90;
+        c = 0;
+      }
+      break;
+
+    case PLUS_90:
+      // equivalent to pulse 2250µs: opposite extreme
+      servo.setPosition(180);    // 180° (≈ +90)
+      if (c > 100) {
+        Serial.println("--> -90");
+        state = MINUS_90;
+        c = 0;
+      }
+      break;
   }
 
-  delay(200);
+  delay(15);   // similar timing to the original pulse loop
 }

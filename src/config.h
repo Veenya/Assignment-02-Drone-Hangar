@@ -16,6 +16,6 @@
 #define SONAR_TRIG_PIN     8
 #define SONAR_ECHO_PIN     7
 
-#define MOTOR_PIN          2
+#define SERVO_PIN          2
 
 #endif
