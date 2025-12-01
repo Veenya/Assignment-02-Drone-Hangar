@@ -12,7 +12,8 @@
 
 #define TEMP_PIN           A0
 #define PIR_PIN            9
-
+#define MAX_TIME_US        30000L      
+#define LCD_ADDR           0x27
 #define SONAR_TRIG_PIN     8
 #define SONAR_ECHO_PIN     7
 

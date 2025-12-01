@@ -20,7 +20,7 @@ public:
   HWPlatform();
 
   void init();   // inizializza tutto l'hardware (lcd, pins, ecc.)
-  //void test();
+  void test();
 
   // --- accesso ai device ---
 
