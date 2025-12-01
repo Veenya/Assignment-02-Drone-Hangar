@@ -200,6 +200,4 @@ Nei tuoi `*Task.cpp` avrai qualcosa tipo:
   * in base a `getHangarState()` chiama `Dashboard.showPreAlarm/Alarm()`
   * blocca sblocco operazioni via `Hangar::isOperationAllowed()`
 
----
 
-Se vuoi, nel prossimo messaggio puoi incollare il contenuto vuoto di uno dei file (tipo `Hangar.h`) e ti scrivo l’header completo con gli stati takeoff/landing/pre-alarm/alarm già pensati.
