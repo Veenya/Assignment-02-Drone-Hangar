@@ -1,71 +1,42 @@
-#ifndef __TASK__
-#define __TASK__
+#include "UserPanel.h"
+#include <Arduino.h>
+#include "config.h"
 
-class Task {
+UserPanel::UserPanel(HWPlatform* pHW)
+  : pHW(pHW),
+    pResetButton(nullptr),
+    resetPressed(false),
+    prevResetPressed(false) {
 
-public:
-  Task(){
-    active = false;
+  // Prendiamo il bottone di reset dalla piattaforma hardware
+  if (pHW) {
+    pResetButton = pHW->getResetButton();
+  }
+}
+
+void UserPanel::init() {
+  resetPressed = false;
+  prevResetPressed = false;
+}
+
+void UserPanel::sync() {
+  if (!pResetButton) {
+    return;
   }
 
-  /* periodic */
-  virtual void init(int period){
-    myPeriod = period;
-    periodic = true;  
-    active = true;
-    timeElapsed = 0;
-  }
+  // Se la tua classe Button ha un metodo sync() (come nel cestino), lo chiamiamo
+  //pResetButton->sync();
 
-  /* aperiodic */
-  virtual void init(){
-    timeElapsed = 0;
-    periodic = false;
-    active = true;
-    completed = false;
-  }
+  // Salviamo lo stato precedente e leggiamo quello nuovo
+  prevResetPressed = resetPressed;
+  resetPressed = pResetButton->isPressed();
+}
 
-  virtual void tick() = 0;
+bool UserPanel::isResetPressed() const {
+  return resetPressed;
+}
 
-  bool updateAndCheckTime(int basePeriod){
-    timeElapsed += basePeriod;
-    if (timeElapsed >= myPeriod){
-      timeElapsed = 0;
-      return true;
-    } else {
-      return false; 
-    }
-  }
-
-  void setCompleted(){
-    completed = true;
-    active = false;
-  }
-
-  bool isCompleted(){
-    return completed;
-  }
-
-  bool isPeriodic(){
-    return periodic;
-  }
-
-  bool isActive(){
-    return active;
-  }
-
-  virtual void setActive(bool active){
-    timeElapsed = 0;
-    this->active = active;
-  }
-  
-private:
-
-  int myPeriod;
-  int timeElapsed;
-  bool active;
-  bool periodic;
-  bool completed;
-
-};
-
-#endif
+bool UserPanel::isResetPressedEdge() {
+  // fronte di salita: ora premuto, prima no
+  return (resetPressed && !prevResetPressed);
+}

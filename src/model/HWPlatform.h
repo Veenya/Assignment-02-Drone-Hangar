@@ -2,17 +2,17 @@
 #ifndef __HW_PLATFORM__
 #define __HW_PLATFORM__
 
-#include "config.h"
+#include "config.h"                                 // pins
 
-#include "devices/button/Button.h"
-#include "devices/led/Led.h"
-#include "devices/pir/Pir.h"
-#include "devices/proximity_sensor/Sonar.h"
-#include "devices/temperature_sensor/TempSensor.h"
-#include "devices/servo_motor/servo_motor.h"
+#include "devices/button/Button.h"                  // button
+#include "devices/led/Led.h"                        // led
+#include "devices/pir/Pir.h"                        // pir
+#include "devices/proximity_sensor/Sonar.h"         // proximity sensor
+#include "devices/temperature_sensor/TempSensor.h"  // temperature sensor
+#include "devices/servo_motor/servo_motor.h"        // servo motor
 
-#include <Wire.h>
-#include <LiquidCrystal_I2C.h>
+#include <Wire.h>                 // both needed for the
+#include <LiquidCrystal_I2C.h>    // LCD screen
 
 class HWPlatform {
 
@@ -20,7 +20,7 @@ public:
   HWPlatform();
 
   void init();   // inizializza tutto l'hardware (lcd, pins, ecc.)
-  void test();
+  void test();   // inizializza i test
 
   // --- accesso ai device ---
 
