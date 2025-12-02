@@ -1,15 +1,3 @@
-```
-src/
-  model/
-    HWPlatform.h / HWPlatform.cpp
-    Hangar.h / Hangar.cpp
-    Dashboard.h / Dashboard.cpp
-    UserPanel.h / UserPanel.cpp
-    States.h
-```
-
----
-
 La cartella **`model/`** deve rappresentare il *mondo logico* dell’hangar, NON l’hardware grezzo.
 
 ```text
