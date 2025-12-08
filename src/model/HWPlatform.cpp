@@ -58,6 +58,26 @@ void HWPlatform::init() {
   pResetButton = new ButtonImpl(BUTTON_PIN);
 }
 
+/*
+
+In HWPlatform::test() scrivo tutte le prove:
+
+muovi il servo,
+
+leggi sonar e stampi sul seriale,
+
+accendi/spegni led,
+
+scrivi qualcosa sull’LCD,
+
+ecc.
+
+Registri questo task nello Scheduler con un certo periodo (es. 100 ms).
+
+Finché il task è attivo, chiamerà continuamente pHW->test() e tu vedi se tutto funziona.
+
+*/
+
 void HWPlatform::test() {
   // mini test hardware (puoi cambiare/estendere come vuoi)
   if (pLcd) {
