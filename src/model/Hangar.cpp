@@ -25,14 +25,8 @@ void Hangar::init() {
   // - porta chiusa
   // - drone dentro
   // - hangar normale
-  auto motor = hw->getHangarDoorMotor();
 
-  if (motor) {
-    motor->setPosition(DOOR_CLOSED_ANGLE);  // forza chiusura
-  }
-
-  doorOpen = false;
-
+  closeDoor();                   // chiude fisicamente la porta
   droneInside = true;
   droneState = DroneState::REST;
   hangarState = HangarState::NORMAL;
@@ -81,8 +75,11 @@ bool Hangar::isDoorOpen() const {
 /* --------- Letture sensori --------- */
 
 float Hangar::getDistance() {
-  // restituisci semplicemente l'ultima distanza letta in sync()
-  return lastDistance;
+  auto sonar = hw->getDDD();
+  if (!sonar) {
+    return NO_OBJ_DETECTED;
+  }
+  return sonar->getDistance();
 }
 
 bool Hangar::isDroneAbove() {
@@ -95,8 +92,11 @@ bool Hangar::isDroneAbove() {
 }
 
 float Hangar::getTemperature() {
-  // restituisci semplicemente l'ultima temperatura letta in sync()
-  return currentTemp;
+  auto ts = hw->getTempSensor();
+  if (!ts) {
+    return NAN;
+  }
+  return ts->getTemperature();
 }
 
 /* --------- Stato hangar / allarmi --------- */
@@ -110,29 +110,16 @@ HangarState Hangar::getHangarState() const {
 }
 
 
-void Hangar::sync() {
-  // temperatura
-  auto ts = hw->getTempSensor();
-  if (ts) {
-    currentTemp = ts->getTemperature();
-  } else {
-    currentTemp = NAN;
-  }
-
-  // distanza
-  auto sonar = hw->getDDD();
-  if (sonar) {
-    float d = sonar->getDistance();
-    if (d == NO_OBJ_DETECTED) {
-      d = 1000.0f;   // valore "molto lontano", da adattare
+void Hangar::sync(){
+  float dist = lastDistance; 
+  currentTemp = lastTemperature;
+  
+    currentTemp = hw->getTempSensor()->getTemperature();
+    dist = hw->getDDD()->getDistance();
+    if (dist == NO_OBJ_DETECTED){
+      dist = 1000; // TODO: cambia
     }
-    lastDistance = d;
-  } else {
-    lastDistance = NO_OBJ_DETECTED;
-  }
-
-  // se vuoi che lastTemperature contenga sempre l'ultima lettura:
-  lastTemperature = currentTemp;
+    lastDistance = dist; 
+    lastTemperature = currentTemp; 
 }
-
 

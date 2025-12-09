@@ -1,40 +1,59 @@
 #include <Arduino.h>
 #include "kernel/Scheduler.h"
-#include "kernel/MsgService.h"
-
 #include "model/HWPlatform.h"
 #include "model/Hangar.h"
-#include "model/UserPanel.h"
 
-#include "tasks/DroneOperationTask.h"
+// --- Task di debug che apre/chiude la porta ogni 3 secondi ---
+class DoorDebugTask : public Task {
+public:
+  DoorDebugTask(Hangar* pHangar) : pHangar(pHangar) {}
+
+  void init(int period) override {
+    Task::init(period);    // period in ms (usato dallo Scheduler)
+    nextToggleTime = millis() + 3000;
+    doorOpen = false;
+  }
+
+  void tick() override {
+    unsigned long now = millis();
+
+    if (now >= nextToggleTime) {
+      doorOpen = !doorOpen;
+      if (doorOpen) {
+        Serial.println("[DBG] openDoor()");
+        pHangar->openDoor();
+      } else {
+        Serial.println("[DBG] closeDoor()");
+        pHangar->closeDoor();
+      }
+      nextToggleTime = now + 3000;   // prossimo toggle tra 3 secondi
+    }
+  }
+
+private:
+  Hangar* pHangar;
+  bool doorOpen;
+  unsigned long nextToggleTime;
+};
 
 // --- oggetti globali ---
 Scheduler sched;
 HWPlatform hw;
 Hangar hangar(&hw);
-UserPanel userPanel(&hw);
-
-// Task: solo operazione porta
-DroneOperationTask droneOpTask(&hangar, &userPanel);
+DoorDebugTask doorTask(&hangar);
 
 void setup() {
-  // Inizializza il servizio di messaggi (e quindi la Serial)
-  MsgService.init();          // dentro fa Serial.begin(115200)
+  Serial.begin(9600);
+  delay(2000);
 
-  hw.init();                  // crea sensori/attuatori, LCD "DRONE INSIDE", L1 ON
-  hangar.init();              // stato logico iniziale: porta chiusa, drone dentro
-  userPanel.init();           // azzera stato bottone
+  Serial.println("=== DOOR DEBUG TASK ===");
 
-  // Inizializza scheduler
-  sched.init(100);            // base period = 100 ms
+  hw.init();        // inizializza servo, LCD, LED, ecc.
+  hangar.init();    // chiude porta logica/fisica
 
-  // Inizializza il task (periodico ogni 100 ms)
-  droneOpTask.init(100);
-  sched.addTask(&droneOpTask);
-
-  // messaggino di avvio
-  Serial.println("=== TEST DroneOperationTask (porta + bottone) ===");
-  Serial.println("Premi il bottone per far aprire/chiudere la porta.");
+  sched.init(100);          // base period 100 ms
+  doorTask.init(100);       // tick ogni 100 ms
+  sched.addTask(&doorTask);
 }
 
 void loop() {
