@@ -10,6 +10,7 @@ public:
   Hangar(HWPlatform* hw);
 
   void init();
+  void sync();
 
   /* --------- Stato drone --------- */
 
@@ -49,6 +50,10 @@ private:
 
   bool droneInside;
   bool doorOpen;
+
+  float lastDistance;
+  float currentTemp;
+  float lastTemperature;
 };
 
 #endif

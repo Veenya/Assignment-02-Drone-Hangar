@@ -1,103 +1,42 @@
 #include <Arduino.h>
+#include "kernel/Scheduler.h"
+#include "kernel/MsgService.h"
+
 #include "model/HWPlatform.h"
+#include "model/Hangar.h"
+#include "model/UserPanel.h"
 
+#include "tasks/DroneOperationTask.h"
+
+// --- oggetti globali ---
+Scheduler sched;
 HWPlatform hw;
+Hangar hangar(&hw);
+UserPanel userPanel(&hw);
 
-// per test porta
-bool doorOpen = false;
-
-// per blink di L2
-unsigned long lastBlink = 0;
-bool l2State = false;
-
-// per stampare sui serial ogni tanto
-unsigned long lastPrint = 0;
+// Task: solo operazione porta
+DroneOperationTask droneOpTask(&hangar, &userPanel);
 
 void setup() {
-  Serial.begin(9600);
-  delay(2000); // tempo per aprire Serial Monitor
+  // Inizializza il servizio di messaggi (e quindi la Serial)
+  MsgService.init();          // dentro fa Serial.begin(115200)
 
-  hw.init();   // inizializza TUTTO l'hardware
+  hw.init();                  // crea sensori/attuatori, LCD "DRONE INSIDE", L1 ON
+  hangar.init();              // stato logico iniziale: porta chiusa, drone dentro
+  userPanel.init();           // azzera stato bottone
 
-  Serial.println("=== DRONE HANGAR HW TEST ===");
-  Serial.println("Sonar, PIR, DHT11, LCD, LED, Servo, Button");
-  Serial.println("Premi il bottone RESET per aprire/chiudere la porta.");
+  // Inizializza scheduler
+  sched.init(100);            // base period = 100 ms
+
+  // Inizializza il task (periodico ogni 100 ms)
+  droneOpTask.init(100);
+  sched.addTask(&droneOpTask);
+
+  // messaggino di avvio
+  Serial.println("=== TEST DroneOperationTask (porta + bottone) ===");
+  Serial.println("Premi il bottone per far aprire/chiudere la porta.");
 }
 
 void loop() {
-  unsigned long now = millis();
-
-  /* --------- 1) Blink L2 ogni 500 ms --------- */
-  if (now - lastBlink >= 500) {
-    lastBlink = now;
-    l2State = !l2State;
-    if (l2State) {
-      hw.getL2()->switchOn();
-    } else {
-      hw.getL2()->switchOff();
-    }
-  }
-
-  /* --------- 2) Letture sensori ogni 1 s --------- */
-  if (now - lastPrint >= 1000) {
-    lastPrint = now;
-
-    // Sonar (DDD)
-    float d = hw.getDDD()->getDistance();   // in metri
-    // PIR (DPD)
-    bool above = false;
-    if (hw.getDPD()) {
-      // ADATTA QUESTO AL TUO METODO REALE
-      above = hw.getDPD()->isDetected(); 
-    }
-    // Temperatura (DHT11)
-    float t = hw.getTempSensor()->getTemperature();
-
-    Serial.print("Distance: ");
-    Serial.print(d);
-    Serial.print(" m  |  Drone above (PIR): ");
-    Serial.print(above ? "YES" : "NO");
-    Serial.print("  |  Temp: ");
-    Serial.print(t);
-    Serial.println(" C");
-
-    // Mostriamo qualcosa anche sull'LCD (riga 2)
-    auto lcd = hw.getOperatorLcd();
-    if (lcd) {
-      lcd->setCursor(0, 1);  // seconda riga
-      lcd->print("D:");
-      lcd->print(d, 2);
-      lcd->print("m T:");
-      lcd->print(t, 1);
-      lcd->print("C ");
-    }
-  }
-
-  /* --------- 3) Bottone RESET → toggla la porta --------- */
-  static bool prevPressed = false;
-
-  bool pressed = false;
-  if (hw.getResetButton()) {
-    // ADATTA QUESTO AL TUO METODO REALE
-    pressed = hw.getResetButton()->isPressed(); 
-  }
-
-  // rileva fronte di discesa / salita (qui: cambio stato da non premuto → premuto)
-  if (pressed && !prevPressed) {
-    doorOpen = !doorOpen;
-
-    if (doorOpen) {
-      Serial.println(">> Opening door");
-      hw.getHangarDoorMotor()->setPosition(90);   // apri (adatta angolo)
-      hw.getL3()->switchOn();                    // rosso ON quando porta aperta (solo per vedere che funziona)
-    } else {
-      Serial.println(">> Closing door");
-      hw.getHangarDoorMotor()->setPosition(0);    // chiudi
-      hw.getL3()->switchOff();
-    }
-  }
-  prevPressed = pressed;
-
-  // piccolo delay per non saturare la CPU
-  delay(5);
+  sched.schedule();
 }

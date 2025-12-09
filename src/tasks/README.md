@@ -12,7 +12,7 @@ src/
 ```text
 src/
   tasks/
-    TemperatureTask.h / .cpp
+    TemperatureTask.h / .cpp     ex ContainerHealthCheckTask
     DroneRemoteTask.h / .cpp   (+ UserPanelTask)
     TestHWTask.h / .cpp                 // Riusare 
     DroneOperationTask.h / .cpp     

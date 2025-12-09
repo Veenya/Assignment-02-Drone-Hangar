@@ -25,8 +25,14 @@ void Hangar::init() {
   // - porta chiusa
   // - drone dentro
   // - hangar normale
+  auto motor = hw->getHangarDoorMotor();
 
-  closeDoor();                   // chiude fisicamente la porta
+  if (motor) {
+    motor->setPosition(DOOR_CLOSED_ANGLE);  // forza chiusura
+  }
+
+  doorOpen = false;
+
   droneInside = true;
   droneState = DroneState::REST;
   hangarState = HangarState::NORMAL;
@@ -75,11 +81,8 @@ bool Hangar::isDoorOpen() const {
 /* --------- Letture sensori --------- */
 
 float Hangar::getDistance() {
-  auto sonar = hw->getDDD();
-  if (!sonar) {
-    return NO_OBJ_DETECTED;
-  }
-  return sonar->getDistance();
+  // restituisci semplicemente l'ultima distanza letta in sync()
+  return lastDistance;
 }
 
 bool Hangar::isDroneAbove() {
@@ -92,11 +95,8 @@ bool Hangar::isDroneAbove() {
 }
 
 float Hangar::getTemperature() {
-  auto ts = hw->getTempSensor();
-  if (!ts) {
-    return NAN;
-  }
-  return ts->getTemperature();
+  // restituisci semplicemente l'ultima temperatura letta in sync()
+  return currentTemp;
 }
 
 /* --------- Stato hangar / allarmi --------- */
@@ -108,3 +108,31 @@ void Hangar::setHangarState(HangarState s) {
 HangarState Hangar::getHangarState() const {
   return hangarState;
 }
+
+
+void Hangar::sync() {
+  // temperatura
+  auto ts = hw->getTempSensor();
+  if (ts) {
+    currentTemp = ts->getTemperature();
+  } else {
+    currentTemp = NAN;
+  }
+
+  // distanza
+  auto sonar = hw->getDDD();
+  if (sonar) {
+    float d = sonar->getDistance();
+    if (d == NO_OBJ_DETECTED) {
+      d = 1000.0f;   // valore "molto lontano", da adattare
+    }
+    lastDistance = d;
+  } else {
+    lastDistance = NO_OBJ_DETECTED;
+  }
+
+  // se vuoi che lastTemperature contenga sempre l'ultima lettura:
+  lastTemperature = currentTemp;
+}
+
+
