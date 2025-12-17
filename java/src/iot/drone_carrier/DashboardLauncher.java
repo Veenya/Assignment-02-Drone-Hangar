@@ -17,7 +17,7 @@ class DashboardLauncher   {
 		view = new DashboardView();
 		log = new LogView();
 		
-		String portName = "COM5";
+		String portName = "COM5"; //TODO: puoi metterlo come costante o in config
 		DashboardController contr = new DashboardController(portName,view,log);
 		view.registerController(contr);
 		

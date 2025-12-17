@@ -10,7 +10,8 @@ public class MonitoringAgent extends Thread {
 	static final String LOG_PREFIX 	=  "lo:";
 	static final String MSG_STATE 		= "st:";
 	
-	static final String[] stateNames = {"Available", "Full", "Maintenance"}; 
+	// TODO: cambiare (da mettere i nostri stati)
+	static final String[] stateNames = {"Available", "Full", "Maintenance"};  
 	static final int AVAILABLE = 0;
 	static final int FULL = 1;
 	static final int IN_MAINTENANCE = 2;
@@ -23,7 +24,7 @@ public class MonitoringAgent extends Thread {
 	}
 	
 	public void run(){
-		boolean inMaintenance = false;
+		boolean inMaintenance = false; //todo: cambia
 		boolean isFull = false;
 		while (true){
 			try {
@@ -37,7 +38,8 @@ public class MonitoringAgent extends Thread {
 						try {
 							String args = cmd.substring(MSG_STATE.length()); 
 							
-							String[] elems = args.split(":");
+							// TODO: cambiare tutta la logica
+							String[] elems = args.split(":"); // Nota: usare lo stesso formalismo del prof
 							if (elems.length >= 3) {
 								int stateCode = Integer.parseInt(elems[0]);
 								int wasteLevel = Integer.parseInt(elems[1]);

@@ -26,7 +26,7 @@ class DashboardView extends JFrame implements ActionListener  {
 	private DashboardController controller;	
 	
 	public DashboardView(){
-		super(".:: Smart Waste Disposal System ::.");
+		super(".:: Drone Carrier ::.");
 		setSize(600,150);
 		this.setResizable(false);
 		JPanel mainPanel = new JPanel();
@@ -38,7 +38,7 @@ class DashboardView extends JFrame implements ActionListener  {
 		containerState = new JTextField("--");
 		containerState.setEditable(false);
 		containerState.setPreferredSize(new Dimension(200,15));
-		infoLine.add(new JLabel("Container State:"));
+		infoLine.add(new JLabel("Container State:")); 
 		infoLine.add(containerState);
 		wasteLevelPercentage = new JTextField("--");
 		wasteLevelPercentage.setEditable(false);
