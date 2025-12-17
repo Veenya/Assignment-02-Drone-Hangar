@@ -1,3 +1,13 @@
+/*
+The DRU subsystem is meant to have a GUI with controls to:
+
+send command to the hangar, simulating behaviour of the drone (taking off and landing).
+visualise:
+the current state of the drone (rest, taking off, operating, landing);
+the current state of the drone hangar (normal, alarm);
+(when landing) the current distance to ground.
+*/
+
 package iot.drone_carrier;
 
 import java.awt.BorderLayout;
@@ -93,13 +103,13 @@ class DashboardView extends JFrame implements ActionListener  {
 		});
 	}
 
-	public void setWasteLevel(int perc){
+	public void setGroundDistance(float perc){
 		SwingUtilities.invokeLater(() -> {
 			wasteLevelPercentage.setText("" + perc);
 		});
 	}
 
-	public void setCurrentTemperature(double temp){
+	public void setCurrentTemperature(float temp){
 		SwingUtilities.invokeLater(() -> {
 			currentTemperature.setText("" + temp);
 		});

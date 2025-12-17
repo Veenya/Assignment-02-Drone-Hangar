@@ -1,9 +1,21 @@
 package iot.drone_carrier;
+/*
+The DRU subsystem is meant to have a GUI with controls to:
+
+send command to the hangar, simulating behaviour of the drone (taking off and landing).
+visualise:
+the current state of the drone (rest, taking off, operating, landing);
+the current state of the drone hangar (normal, alarm);
+(when landing) the current distance to ground.
+*/
+
 
 public class DashboardController  {
 
-	static final String MSG_MAINTENANCE_DONE 	= "ok";
-	static final String MSG_DISCHARGE 			= "di";
+	static final String MSG_REST 	    = "re";
+	static final String MSG_TAKING_OFF  = "to";
+	static final String MSG_OPERATING 	= "op";
+	static final String MSG_LANDING 	= "la";
 	
 	SerialCommChannel channel;
 	DashboardView view;
@@ -23,13 +35,28 @@ public class DashboardController  {
 		System.out.println("Ready.");		
 	
 	}
+
+	/*
+	static final String MSG_REST 	    = "re";
+	static final String MSG_TAKING_OFF  = "to";
+	static final String MSG_OPERATING 	= "op";
+	static final String MSG_LANDING 	= "la";
+	 */
+
+	public void notifyRest() {
+		channel.sendMsg(MSG_REST);
+	}
 	
-	public void notifyMaintenanceDone() {
-		  channel.sendMsg(MSG_MAINTENANCE_DONE);
+	public void notifyTakingOff() {
+		channel.sendMsg(MSG_TAKING_OFF);
 	}
 
-	public void notifyDischarge() {
-		  channel.sendMsg(MSG_DISCHARGE);
+	public void notifyOperating() {
+		channel.sendMsg(MSG_OPERATING);
+	}
+	
+	public void notifyLanding() {
+		channel.sendMsg(MSG_LANDING);
 	}
 
 }

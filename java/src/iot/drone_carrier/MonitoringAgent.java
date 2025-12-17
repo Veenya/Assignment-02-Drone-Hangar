@@ -6,15 +6,21 @@ public class MonitoringAgent extends Thread {
 	DashboardView view;
 	LogView logger;
 	
-	static final String CONTAINER_PREFIX 	=  "cw:";
+	static final String CARRIER_PREFIX 	=  "cw:";
 	static final String LOG_PREFIX 	=  "lo:";
 	static final String MSG_STATE 		= "st:";
 	
-	// TODO: cambiare (da mettere i nostri stati)
-	static final String[] stateNames = {"Available", "Full", "Maintenance"};  
-	static final int AVAILABLE = 0;
-	static final int FULL = 1;
-	static final int IN_MAINTENANCE = 2;
+	/*
+	the current state of the drone (rest, taking off, operating, landing);
+	the current state of the drone hangar (normal, alarm); (si sa dalla temperatura)
+	stato della porta (aperta, inApertura, inChiusura, chiusa)
+	*/
+
+	static final String[] stateNames = {"Normal", "Allarm", "Preallarm"};  
+	static final int NORMAL = 0;
+	static final int ALLARM = 1;
+	static final int PREALLARM = 2;
+	static final String[] doorStateNames = {"Open", "Close", "Opening", "Closing"};  
 	
 	
 	public MonitoringAgent(SerialCommChannel channel, DashboardView view, LogView log) throws Exception {
@@ -24,14 +30,18 @@ public class MonitoringAgent extends Thread {
 	}
 	
 	public void run(){
-		boolean inMaintenance = false; //todo: cambia
-		boolean isFull = false;
+		boolean inAllarm = false; 
+		boolean inPreallarm = false;
+		boolean doorOpen = false;
+		boolean canLand = false;
+		boolean canTakeoff = false;
+
 		while (true){
 			try {
 				String msg = channel.receiveMsg();
 				// logger.log("new msg: "+msg);				
-				if (msg.startsWith(CONTAINER_PREFIX)){
-					String cmd = msg.substring(CONTAINER_PREFIX.length()); 
+				if (msg.startsWith(CARRIER_PREFIX)){
+					String cmd = msg.substring(CARRIER_PREFIX.length()); 
 					// logger.log("new command: "+cmd);				
 					
 					if (cmd.startsWith(MSG_STATE)){
@@ -39,29 +49,48 @@ public class MonitoringAgent extends Thread {
 							String args = cmd.substring(MSG_STATE.length()); 
 							
 							// TODO: cambiare tutta la logica
-							String[] elems = args.split(":"); // Nota: usare lo stesso formalismo del prof
+							/*
+							the current state of the drone (rest, taking off, operating, landing);
+							the current state of the drone hangar (normal, alarm);
+							(when landing) the current distance to ground.
+							*/
+							String[] elems = args.split(":"); // Nota: usare lo stesso formalismo del prof: statecode:wastelevel:temp  -> statecode:temp
 							if (elems.length >= 3) {
-								int stateCode = Integer.parseInt(elems[0]);
-								int wasteLevel = Integer.parseInt(elems[1]);
-								double temp = Double.parseDouble(elems[2]);
+								int stateCode = Integer.parseInt(elems[0]);        // stato drone
+								float groundDistance = Float.parseFloat(elems[1]); // distanza dall'hangar (da terra) del drone 
+								float temp = Float.parseFloat(elems[2]);           // temperatura hangar
 		
-								view.setWasteLevel(wasteLevel);
+								view.setGroundDistance(groundDistance);
 								view.setCurrentTemperature(temp);
 								view.setContainerState(stateNames[stateCode]);
 								
-								if (stateCode == IN_MAINTENANCE && !inMaintenance) { // maintenance
-									inMaintenance = true;
-									view.enableMaintenance();
-								} else if (stateCode == FULL && !isFull) { // maintenance
-									isFull = true;
-									view.enableDischarge();
-								} else if (stateCode == AVAILABLE && inMaintenance) {
-									inMaintenance = false;
-									view.enableAvailable();
-								} else if (stateCode == AVAILABLE && isFull) {
-									isFull = false;
-									view.enableAvailable();
+									/*
+									static final String MSG_REST 	    = "re";
+									static final String MSG_TAKING_OFF  = "to";
+									static final String MSG_OPERATING 	= "op";
+									static final String MSG_LANDING 	= "la";
+
+									view.enableLanding();
+									view.enableTakeoff();
+
+									canTakeoff = false;
+									canLand = false;
+									*/
+								
+								if (stateCode == NORMAL && doorStateCode == OPEN && !canTakeoff) { // maintenance
+									canTakeoff = true;
+									view.enableTakeoff();
+								} else if (stateCode == NORMAL && doorStateCode == OPEN && !canLand) { // maintenance
+									canLand = true;
+									view.enableLanding();
+								} else if ((stateCode != NORMAL || doorStateCode != OPEN) && canTakeoff) {
+									canTakeoff = false;
+									view.disableTakeoff();
+								} else if ((stateCode != NORMAL || doorStateCode != OPEN) && canLand) {
+									canLand = false;
+									view.disableLanding();
 								}
+								
 								
 							}
 						} catch (Exception ex) {
