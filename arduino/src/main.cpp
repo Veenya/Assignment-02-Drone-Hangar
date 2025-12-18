@@ -6,10 +6,12 @@ void setup() {
     MsgService.init();
     delay(2000);
     MsgService.sendMsg("lo:arduino ready");
+    Logger.log(F("Test"));
 }
 
 
 void loop() {
-  Logger.log(F("PING\n"));             // manda "lo:PING" ogni secondo
+  MsgService.sendMsg("PING");
+  //Logger.log(F("PING\n"));             // manda "lo:PING" ogni secondo
   delay(1000);
 }
