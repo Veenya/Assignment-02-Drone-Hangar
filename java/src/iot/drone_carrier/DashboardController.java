@@ -26,7 +26,7 @@ public class DashboardController  {
 		this.view = view;
 		this.logger = logger;
 		
-		channel = new SerialCommChannel(port,115200);		
+		channel = new SerialCommChannel(port,9600);		
 		new MonitoringAgent(channel,view,logger).start();
 			
 		/* attesa necessaria per fare in modo che Arduino completi il reboot */
