@@ -51,7 +51,7 @@ public class MonitoringAgent extends Thread {
 		while (true){
 			try {
 				String msg = channel.receiveMsg();  // bloccante, aspetta una riga dal seriale finche' arduino non manda \n
-				// logger.log("new msg: "+msg);				
+				logger.log("new msg: "+msg);				
 				if (msg.startsWith(CARRIER_PREFIX)){   // poi decide che messaggio e' (se inizia con log ava nella finestra di log, senno' aggiorna la gui)
 					String cmd = msg.substring(CARRIER_PREFIX.length()); 
 					// logger.log("new command: "+cmd);				
