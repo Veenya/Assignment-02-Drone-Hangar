@@ -40,8 +40,6 @@ class DashboardView extends JFrame implements ActionListener  {
 	private JTextField containerState;      // stato hangar (normale, allarme e preallarme)
 	private DashboardController controller;	
 	
-	//TODO: cambiare tutte le cose e mettere i tasti nostri
-	
 	public DashboardView(){
 		super(".:: Drone Carrier ::.");
 		setSize(600,150);
@@ -75,7 +73,7 @@ class DashboardView extends JFrame implements ActionListener  {
 		mainPanel.setPreferredSize(new Dimension(200,20));
 
 		JPanel buttonPanel = new JPanel();
-		land = new JButton("Land Hangar");
+		land = new JButton("Land");
 		land.setEnabled(false);
 		land.addActionListener(this);
 
@@ -151,27 +149,53 @@ class DashboardView extends JFrame implements ActionListener  {
 			dischargeContainer.setEnabled(true);
 		});
 	}*/
+
 	// todo togli
 	public void enableAvailable() {}
 	public void enableMaintenance() {}
 	public void enableDischarge() {}
 
 	// todo: fare
-	public void enableTakeoff() {}
-	public void enableLanding() {}
-	public void disableTakeoff() {}
-	public void disableLanding() {}
+	public void enableTakeoff() {
+		SwingUtilities.invokeLater(()-> {
+			land.setEnabled(true);
+			//porta si apre
+			takeOff.setEnabled(false);
+		});
+	}
+
+	public void enableLanding() {
+		SwingUtilities.invokeLater(() -> {
+			land.setEnabled(false);
+			// porta si apre
+			takeOff.setEnabled(true);
+		});
+	}
+
+	public void disableTakeoff() {
+		SwingUtilities.invokeLater(() -> {
+			takeOff.setEnabled(false);
+		});
+	}
+	public void disableLanding() {
+		SwingUtilities.invokeLater(() -> {
+			land.setEnabled(false);
+		});
+	}
 
 	
 	public void actionPerformed(ActionEvent ev){
 		  try {
-			  if (ev.getSource() == maintenanceDone){
-				  controller.notifyMaintenanceDone();
-				  maintenanceDone.setEnabled(false);
-			  } else if (ev.getSource() == dischargeContainer){
-				  controller.notifyDischarge();
-				  dischargeContainer.setEnabled(false);
-			  } 
+			  if (ev.getSource() == land){
+				  controller.notifyLanding();
+				  land.setEnabled(false);
+			  } else if (ev.getSource() == takeOff){
+				  controller.notifyTakingOff();
+				  takeOff.setEnabled(false);
+			  } else if (ev.getSource() == reset) {
+				  controller.notifyReset();
+				  reset.setEnabled(false);
+			  }
 		  } catch (Exception ex){
 			  ex.printStackTrace();
 

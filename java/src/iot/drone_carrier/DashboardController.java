@@ -12,7 +12,8 @@ the current state of the drone hangar (normal, alarm);
 
 public class DashboardController  {
 
-	static final String MSG_REST 	    = "re";
+	//static final String MSG_REST 	    = "re";
+	static final String MSG_RESET = "re";
 	static final String MSG_TAKING_OFF  = "to";
 	static final String MSG_OPERATING 	= "op";
 	static final String MSG_LANDING 	= "la";
@@ -44,8 +45,8 @@ public class DashboardController  {
 	TODO: agiungere notifyReset() magari? per il bottone di reset
 	 */
 
-	public void notifyRest() {
-		channel.sendMsg(MSG_REST);
+	public void notifyReset() {
+		channel.sendMsg(MSG_RESET);
 	}
 	
 	public void notifyTakingOff() {
