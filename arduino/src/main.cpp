@@ -10,6 +10,6 @@ void setup() {
 
 
 void loop() {
-  Logger.log(F("PING"));             // manda "lo:PING" ogni secondo
+  Logger.log(F("PING\n"));             // manda "lo:PING" ogni secondo
   delay(1000);
 }
