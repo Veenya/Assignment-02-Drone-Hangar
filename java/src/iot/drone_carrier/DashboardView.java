@@ -128,6 +128,10 @@ class DashboardView extends JFrame implements ActionListener  {
 			currentTemperature.setText("" + temp);
 		});
 	}
+	
+	public void setDroneState(String msg) {}
+	public void setHangarState(String msg) {}
+	public void setDoorState(String msg) {}
 /* 
 	public void enableAvailable() {
 		SwingUtilities.invokeLater(() -> {

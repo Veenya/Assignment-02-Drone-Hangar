@@ -1,3 +1,12 @@
+// TODO: aggiungo il tasto di debug (o due: on, off) o simula allarme...
+// TODO: simulare stringhe arduino per fare cose per finire interfaccia
+
+/* Ogni riga e' uno di questi tipi:
+    log -> lo:<testo libero>
+	stato-> STATE,<drone>,<hangar>,<door>,<distance>,<temp>
+	allarme -> ALARM (opzionale: ALARM,<reason>)
+	(opzionale, prealarm)
+ */
 package iot.drone_carrier;
 
 public class MonitoringAgent extends Thread {
@@ -7,32 +16,22 @@ public class MonitoringAgent extends Thread {
 	LogView logger;
 	
 
-	// --------------------------------------------------------------
 
-	/* La parte che ho separato coi --- potrebbe essere sostituita da:
-	   private static final String STATE_PREFIX = "STATE:";
-	   private static final String ALARM_MSG = "ALARM:";
-	   private static final String LOG_PREFIX = "lo:"
-
-	*/
-	static final String CARRIER_PREFIX 	=  "cw:";
-	static final String LOG_PREFIX 	=  "lo:";
-	static final String MSG_STATE 		= "st:";
+	private static final String STATE_PREFIX = "STATE,";
+	private static final String ALARM_MSG = "ALARM";
+	private static final String LOG_PREFIX = "lo:";
 	
-	/*
-	the current state of the drone (rest, taking off, operating, landing);
-	the current state of the drone hangar (normal, alarm); (si sa dalla temperatura)
-	stato della porta (aperta, inApertura, inChiusura, chiusa)
-	*/
-
 	static final String[] stateNames = {"Normal", "Allarm", "Preallarm"};  
 	static final int NORMAL = 0;
 	static final int ALLARM = 1;
 	static final int PREALLARM = 2;
-	static final String[] doorStateNames = {"Open", "Close", "Opening", "Closing"};  
+	static final String[] doorStateNames = {"Open", "Closed", "Moving", "Opening", "Closing"};  
 	static final int OPEN = 0;
+	static final int CLOSED = 1;
+	static final int MOVING = 2;
+	static final int OPENING = 3;
+	static final int CLOSING = 4;
 
-	// --------------------------------------------------------------
 	
 	
 	public MonitoringAgent(SerialCommChannel channel, DashboardView view, LogView log) throws Exception {
@@ -42,72 +41,59 @@ public class MonitoringAgent extends Thread {
 	}
 	
 	public void run(){
+
 		boolean inAllarm = false; 
 		boolean inPreallarm = false;
 		boolean doorOpen = false;
 		boolean canLand = false;
 		boolean canTakeoff = false;
 
+		/* Logica:
+			se msg.startsWith("lo:") -> log
+			se msg.startsWith("STATE,") -> split con ,
+			se msg.startsWith("ALARM") -> gestisci allarme
+		*/
+
+
+		// -----------------------------------------------------------------------------
+		
 		while (true){
 			try {
 				String msg = channel.receiveMsg();  // bloccante, aspetta una riga dal seriale finche' arduino non manda \n
-				//if (msg == null) continue; //todo cambia
 				logger.log("new msg: "+msg);				
-				if (msg.startsWith(CARRIER_PREFIX)){   // poi decide che messaggio e' (se inizia con log ava nella finestra di log, senno' aggiorna la gui)
-					String cmd = msg.substring(CARRIER_PREFIX.length()); 
+				if (msg.startsWith(LOG_PREFIX)){   // poi decide che messaggio e' (se inizia con log ava nella finestra di log, senno' aggiorna la gui)
+					
+					String cmd = msg.substring(LOG_PREFIX.length()); //?
+
 					// logger.log("new command: "+cmd);				
 					// da DroneRemoteUnit::notifyNewState arduino dovrebbe mandare: "STATE:<dronestate>:<hangarState>:<distance>"
 					// quindi il monitoringAgent ddeve riconoscere lo state, e fare parsing per gli altri campi
-					if (cmd.startsWith(MSG_STATE)){
+					if (cmd.startsWith(STATE_PREFIX)){
 						try {
-							String args = cmd.substring(MSG_STATE.length()); 
+							String args = cmd.substring(STATE_PREFIX.length()); 
+
+
 							
-							// TODO: cambiare tutta la logica
-							/*
-							the current state of the drone (rest, taking off, operating, landing);
-							the current state of the drone hangar (normal, alarm);
-							(when landing) the current distance to ground.
-							*/
-							String[] elems = args.split(":"); // Nota: usare lo stesso formalismo del prof: statecode:wastelevel:temp  -> statecode:temp
-							if (elems.length >= 3) {
-								int stateCode = Integer.parseInt(elems[0]);        // stato drone
-								int doorStateCode = Integer.parseInt(elems[0]); //todo: non so se e' giusto
-								float groundDistance = Float.parseFloat(elems[1]); // distanza dall'hangar (da terra) del drone 
-								float temp = Float.parseFloat(elems[2]);           // temperatura hangar
-		
-								view.setGroundDistance(groundDistance);
-								view.setCurrentTemperature(temp);
-								view.setContainerState(stateNames[stateCode]);
-								
-									/*
-									static final String MSG_REST 	    = "re";
-									static final String MSG_TAKING_OFF  = "to";
-									static final String MSG_OPERATING 	= "op";
-									static final String MSG_LANDING 	= "la";
 
-									view.enableLanding();
-									view.enableTakeoff();
+							String[] elems = args.split(","); 
+							if (elems.length >= 6) {
 
-									canTakeoff = false;
-									canLand = false;
-									*/
-								// TODO: rivedere e aggiungere quello che manca
+							String drone = elems[1];
+							String hangar = elems[2];
+							String door = elems[3];
+							float dist = Float.parseFloat(elems[4]);
+							float temp = Float.parseFloat(elems[5]);
+
+							view.setDroneState(drone);
+							view.setHangarState(hangar);
+							view.setDoorState(door);
+							view.setGroundDistance(dist);
+							view.setCurrentTemperature(temp);
+
+
 	
-								
-								if (stateCode == NORMAL && doorStateCode == OPEN && !canTakeoff) { // maintenance
-									canTakeoff = true;
-									view.enableTakeoff();
-								} else if (stateCode == NORMAL && doorStateCode == OPEN && !canLand) { // maintenance
-									canLand = true;
-									view.enableLanding();
-								} else if ((stateCode != NORMAL || doorStateCode != OPEN) && canTakeoff) {
-									canTakeoff = false;
-									view.disableTakeoff();
-								} else if ((stateCode != NORMAL || doorStateCode != OPEN) && canLand) {
-									canLand = false;
-									view.disableLanding();
-								}
-								
+							//view.setContainerState(stateNames[stateCode]);
+	
 								
 							}
 						} catch (Exception ex) {
@@ -115,13 +101,17 @@ public class MonitoringAgent extends Thread {
 							System.err.println("Error in msg: " + cmd);
 						}
 					}
-				} else if (msg.startsWith(LOG_PREFIX)){
-					this.logger.log(msg.substring(LOG_PREFIX.length()));
+				} else if (msg.startsWith(ALARM_MSG)){
+					//this.logger.log(msg.substring(LOG_PREFIX.length()));
+					logger.log("!!! ALARM !!! " + msg);
+					view.setHangarState("ALARM");
+					return;
 				}
 			} catch (Exception ex){
 				ex.printStackTrace();
 			}
 		}
+
 	}
 
 }
