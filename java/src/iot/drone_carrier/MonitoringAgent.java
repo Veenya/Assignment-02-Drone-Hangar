@@ -6,6 +6,15 @@ public class MonitoringAgent extends Thread {
 	DashboardView view;
 	LogView logger;
 	
+
+	// --------------------------------------------------------------
+
+	/* La parte che ho separato coi --- potrebbe essere sostituita da:
+	   private static final String STATE_PREFIX = "STATE:";
+	   private static final String ALARM_MSG = "ALARM:";
+	   private static final String LOG_PREFIX = "lo:"
+
+	*/
 	static final String CARRIER_PREFIX 	=  "cw:";
 	static final String LOG_PREFIX 	=  "lo:";
 	static final String MSG_STATE 		= "st:";
@@ -21,6 +30,9 @@ public class MonitoringAgent extends Thread {
 	static final int ALLARM = 1;
 	static final int PREALLARM = 2;
 	static final String[] doorStateNames = {"Open", "Close", "Opening", "Closing"};  
+	static final int OPEN = 0;
+
+	// --------------------------------------------------------------
 	
 	
 	public MonitoringAgent(SerialCommChannel channel, DashboardView view, LogView log) throws Exception {
@@ -38,12 +50,13 @@ public class MonitoringAgent extends Thread {
 
 		while (true){
 			try {
-				String msg = channel.receiveMsg();
+				String msg = channel.receiveMsg();  // bloccante, aspetta una riga dal seriale finche' arduino non manda \n
 				// logger.log("new msg: "+msg);				
-				if (msg.startsWith(CARRIER_PREFIX)){
+				if (msg.startsWith(CARRIER_PREFIX)){   // poi decide che messaggio e' (se inizia con log ava nella finestra di log, senno' aggiorna la gui)
 					String cmd = msg.substring(CARRIER_PREFIX.length()); 
 					// logger.log("new command: "+cmd);				
-					
+					// da DroneRemoteUnit::notifyNewState arduino dovrebbe mandare: "STATE:<dronestate>:<hangarState>:<distance>"
+					// quindi il monitoringAgent ddeve riconoscere lo state, e fare parsing per gli altri campi
 					if (cmd.startsWith(MSG_STATE)){
 						try {
 							String args = cmd.substring(MSG_STATE.length()); 
@@ -57,6 +70,7 @@ public class MonitoringAgent extends Thread {
 							String[] elems = args.split(":"); // Nota: usare lo stesso formalismo del prof: statecode:wastelevel:temp  -> statecode:temp
 							if (elems.length >= 3) {
 								int stateCode = Integer.parseInt(elems[0]);        // stato drone
+								int doorStateCode = Integer.parseInt(elems[0]); //todo: non so se e' giusto
 								float groundDistance = Float.parseFloat(elems[1]); // distanza dall'hangar (da terra) del drone 
 								float temp = Float.parseFloat(elems[2]);           // temperatura hangar
 		
@@ -76,6 +90,8 @@ public class MonitoringAgent extends Thread {
 									canTakeoff = false;
 									canLand = false;
 									*/
+								// TODO: rivedere e aggiungere quello che manca
+	
 								
 								if (stateCode == NORMAL && doorStateCode == OPEN && !canTakeoff) { // maintenance
 									canTakeoff = true;

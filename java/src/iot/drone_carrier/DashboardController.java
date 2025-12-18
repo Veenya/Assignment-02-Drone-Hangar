@@ -41,6 +41,7 @@ public class DashboardController  {
 	static final String MSG_TAKING_OFF  = "to";
 	static final String MSG_OPERATING 	= "op";
 	static final String MSG_LANDING 	= "la";
+	TODO: agiungere notifyReset() magari? per il bottone di reset
 	 */
 
 	public void notifyRest() {
@@ -58,5 +59,9 @@ public class DashboardController  {
 	public void notifyLanding() {
 		channel.sendMsg(MSG_LANDING);
 	}
+
+	// todo: vecchi...
+	public void notifyMaintenanceDone() {}
+	public void notifyDischarge() {}
 
 }

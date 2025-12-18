@@ -28,12 +28,19 @@ class DashboardView extends JFrame implements ActionListener  {
 
 	private JButton maintenanceDone;
 	private JButton dischargeContainer;
+
+	private JButton land;
+	//private JButton openDoor; //todo: rivedere il meccanismo di come funziona
+	private JButton takeOff;
+	private JButton reset;
 	
-	private JTextField wasteLevelPercentage;
-	private JTextField currentTemperature;
+	private JTextField doorState;           // stato della porta (aperta, chiusa, movimento)
+	private JTextField currentTemperature; // temp hangar
 	
-	private JTextField containerState;
+	private JTextField containerState;      // stato hangar (normale, allarme e preallarme)
 	private DashboardController controller;	
+	
+	//TODO: cambiare tutte le cose e mettere i tasti nostri
 	
 	public DashboardView(){
 		super(".:: Drone Carrier ::.");
@@ -48,13 +55,15 @@ class DashboardView extends JFrame implements ActionListener  {
 		containerState = new JTextField("--");
 		containerState.setEditable(false);
 		containerState.setPreferredSize(new Dimension(200,15));
-		infoLine.add(new JLabel("Container State:")); 
+		infoLine.add(new JLabel("Hangar State:")); 
 		infoLine.add(containerState);
-		wasteLevelPercentage = new JTextField("--");
-		wasteLevelPercentage.setEditable(false);
-		wasteLevelPercentage.setPreferredSize(new Dimension(100,15));
-		infoLine.add(new JLabel("Waste Level %:"));
-		infoLine.add(wasteLevelPercentage);
+
+		doorState = new JTextField("--");
+		doorState.setEditable(false);
+		doorState.setPreferredSize(new Dimension(100,15));
+		infoLine.add(new JLabel("Door State:"));
+		infoLine.add(doorState);
+
 		currentTemperature = new JTextField("--");
 		currentTemperature.setEditable(false);
 		currentTemperature.setPreferredSize(new Dimension(200,15));
@@ -66,15 +75,22 @@ class DashboardView extends JFrame implements ActionListener  {
 		mainPanel.setPreferredSize(new Dimension(200,20));
 
 		JPanel buttonPanel = new JPanel();
-		maintenanceDone = new JButton("Restore");
-		maintenanceDone.setEnabled(false);
-		maintenanceDone.addActionListener(this);
-		dischargeContainer = new JButton("Discharge");
-		dischargeContainer.setEnabled(false);
-		dischargeContainer.addActionListener(this);
+		land = new JButton("Land Hangar");
+		land.setEnabled(false);
+		land.addActionListener(this);
+
+		takeOff = new JButton("Take Off");
+		takeOff.setEnabled(false);
+		takeOff.addActionListener(this);
+
+		reset = new JButton("Reset");
+		reset.setEnabled(false);
+		reset.addActionListener(this);
+
 		buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));	    
-		buttonPanel.add(dischargeContainer);
-		buttonPanel.add(maintenanceDone);
+		buttonPanel.add(land);
+		buttonPanel.add(takeOff);
+		buttonPanel.add(reset);
 		
 		mainPanel.add(buttonPanel);
 		mainPanel.add(Box.createRigidArea(new Dimension(0,20)));
@@ -105,7 +121,7 @@ class DashboardView extends JFrame implements ActionListener  {
 
 	public void setGroundDistance(float perc){
 		SwingUtilities.invokeLater(() -> {
-			wasteLevelPercentage.setText("" + perc);
+			doorState.setText("" + perc);
 		});
 	}
 
@@ -114,7 +130,7 @@ class DashboardView extends JFrame implements ActionListener  {
 			currentTemperature.setText("" + temp);
 		});
 	}
-
+/* 
 	public void enableAvailable() {
 		SwingUtilities.invokeLater(() -> {
 			maintenanceDone.setEnabled(false);
@@ -134,7 +150,18 @@ class DashboardView extends JFrame implements ActionListener  {
 			maintenanceDone.setEnabled(false);
 			dischargeContainer.setEnabled(true);
 		});
-	}
+	}*/
+	// todo togli
+	public void enableAvailable() {}
+	public void enableMaintenance() {}
+	public void enableDischarge() {}
+
+	// todo: fare
+	public void enableTakeoff() {}
+	public void enableLanding() {}
+	public void disableTakeoff() {}
+	public void disableLanding() {}
+
 	
 	public void actionPerformed(ActionEvent ev){
 		  try {
