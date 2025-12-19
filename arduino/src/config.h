@@ -17,4 +17,8 @@
 
 #define SERVO_PIN          2
 
+
+#define DOOR_CLOSED_ANGLE 0
+#define DOOR_OPEN_ANGLE   90
+
 #endif

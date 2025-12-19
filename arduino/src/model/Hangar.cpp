@@ -3,14 +3,6 @@
 #include "Hangar.h"
 #include "config.h"   // per eventuali angoli porta ecc.
 
-// opzionale: definisci qui gli angoli della porta se vuoi
-#ifndef DOOR_OPEN_ANGLE
-#define DOOR_OPEN_ANGLE   90
-#endif
-
-#ifndef DOOR_CLOSED_ANGLE
-#define DOOR_CLOSED_ANGLE 0
-#endif
 
 Hangar::Hangar(HWPlatform* hw)
   : hw(hw),

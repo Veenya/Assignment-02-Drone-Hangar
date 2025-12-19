@@ -1,14 +1,5 @@
 #include "HangarDoor.h"
 
-// Se vuoi, puoi definire questi anche in config.h e qui usare solo #ifdef
-#ifndef DOOR_OPEN_ANGLE
-#define DOOR_OPEN_ANGLE   90
-#endif
-
-#ifndef DOOR_CLOSED_ANGLE
-#define DOOR_CLOSED_ANGLE 0
-#endif
-
 HangarDoor::HangarDoor(ServoMotor* doorMotor)
   : motor(doorMotor),
     openAngle(DOOR_OPEN_ANGLE),
