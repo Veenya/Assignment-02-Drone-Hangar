@@ -14,17 +14,19 @@ public class MonitoringAgent extends Thread {
 	SerialCommChannel channel;
 	DashboardView view;
 	LogView logger;
-	
-
 
 	private static final String STATE_PREFIX = "STATE,";
 	private static final String ALARM_MSG = "ALARM";
 	private static final String LOG_PREFIX = "lo:";
 	
+	/* "ENUMS" */
+	// State Names
 	static final String[] stateNames = {"Normal", "Allarm", "Preallarm"};  
 	static final int NORMAL = 0;
 	static final int ALLARM = 1;
 	static final int PREALLARM = 2;
+
+	// Door state names
 	static final String[] doorStateNames = {"Open", "Closed", "Moving", "Opening", "Closing"};  
 	static final int OPEN = 0;
 	static final int CLOSED = 1;
@@ -41,12 +43,13 @@ public class MonitoringAgent extends Thread {
 	}
 	
 	public void run(){
-
-		boolean inAllarm = false; 
-		boolean inPreallarm = false;
-		boolean doorOpen = false;
 		boolean canLand = false;
 		boolean canTakeoff = false;
+
+		//boolean inAllarm = false; 
+		//boolean inPreallarm = false;
+		//boolean doorOpen = false;
+
 
 		/* Logica:
 			se msg.startsWith("lo:") -> log
@@ -80,15 +83,15 @@ public class MonitoringAgent extends Thread {
 
 							String drone = elems[1];
 							String hangar = elems[2];
-							String door = elems[3];
-							float dist = Float.parseFloat(elems[4]);
-							float temp = Float.parseFloat(elems[5]);
+							String dist = elems[3];
+							//String door = elems[4];
+							//float temp = Float.parseFloat(elems[5]);
 
 							view.setDroneState(drone);
 							view.setHangarState(hangar);
-							view.setDoorState(door);
+							//view.setDoorState(door);
 							view.setGroundDistance(dist);
-							view.setCurrentTemperature(temp);
+							//view.setCurrentTemperature(temp);
 
 
 	

@@ -1,13 +1,3 @@
-/*
-The DRU subsystem is meant to have a GUI with controls to:
-
-send command to the hangar, simulating behaviour of the drone (taking off and landing).
-visualise:
-the current state of the drone (rest, taking off, operating, landing);
-the current state of the drone hangar (normal, alarm);
-(when landing) the current distance to ground.
-*/
-
 package iot.drone_carrier;
 
 import java.awt.BorderLayout;
@@ -25,19 +15,35 @@ import java.util.LinkedList;
 import javax.swing.*;
 
 class DashboardView extends JFrame implements ActionListener  {
+	/*
+The DRU subsystem is meant to have a GUI with controls to:
 
-	private JButton maintenanceDone;
-	private JButton dischargeContainer;
+send command to the hangar, simulating behaviour of the drone (taking off and landing).
+visualise:
+the current state of the drone (rest, taking off, operating, landing);
+the current state of the drone hangar (normal, alarm);
+(when landing) the current distance to ground.
+*/
 
-	private JButton land;
+	// Send commands from GUI to Hangar simulating:
+	private JButton landButton;      // - Landing
+	private JButton takeOffButton;   // - Taking off
+	//private JButton reset;
 	//private JButton openDoor; //todo: rivedere il meccanismo di come funziona
-	private JButton takeOff;
-	private JButton reset;
+
+	// Show state of the drone (rest, taking off, operating, landing)
+    private JTextField droneState;
+	// Show state of the hangar (normal, alarm, prealarm)
+	private JTextField hangarState;      
+
+	// When landing, the distance from the ground
+	private JTextField groundDistance;
 	
-	private JTextField doorState;           // stato della porta (aperta, chiusa, movimento)
-	private JTextField currentTemperature; // temp hangar
+	//private JTextField doorState;           // stato della porta (aperta, chiusa, movimento)
+	// temperature of hangar
+	//private JTextField currentTemperature; 
 	
-	private JTextField containerState;      // stato hangar (normale, allarme e preallarme)
+	
 	private DashboardController controller;	
 	
 	public DashboardView(){
@@ -50,45 +56,69 @@ class DashboardView extends JFrame implements ActionListener  {
 		
 		JPanel infoLine = new JPanel();
 		infoLine.setLayout(new BoxLayout(infoLine, BoxLayout.LINE_AXIS));
-		containerState = new JTextField("--");
-		containerState.setEditable(false);
-		containerState.setPreferredSize(new Dimension(200,15));
-		infoLine.add(new JLabel("Hangar State:")); 
-		infoLine.add(containerState);
 
+		// Hangar State
+		hangarState = new JTextField("--");
+		hangarState.setEditable(false);
+		hangarState.setPreferredSize(new Dimension(200,15));
+		infoLine.add(new JLabel("Hangar State:")); 
+		infoLine.add(hangarState);
+
+		// Drone State
+		droneState = new JTextField("--");
+		droneState.setEditable(false);
+		droneState.setPreferredSize(new Dimension(200,15));
+		infoLine.add(new JLabel("Drone State:")); 
+		infoLine.add(droneState);
+
+		// Ground Distance
+		groundDistance = new JTextField("--");
+		groundDistance.setEditable(false);
+		groundDistance.setPreferredSize(new Dimension(200,15));
+		infoLine.add(new JLabel("Ground Distance:")); 
+		infoLine.add(groundDistance);
+		
+		/*
+		// Door state
 		doorState = new JTextField("--");
 		doorState.setEditable(false);
 		doorState.setPreferredSize(new Dimension(100,15));
 		infoLine.add(new JLabel("Door State:"));
 		infoLine.add(doorState);
 
+		// Temperature of hangar
 		currentTemperature = new JTextField("--");
 		currentTemperature.setEditable(false);
 		currentTemperature.setPreferredSize(new Dimension(200,15));
 		infoLine.add(new JLabel("Current Temperature:"));
 		infoLine.add(currentTemperature);
+		*/
 		
 		mainPanel.add(infoLine);
 		mainPanel.add(Box.createRigidArea(new Dimension(0,20)));
 		mainPanel.setPreferredSize(new Dimension(200,20));
 
+		// Button to simulate landing
 		JPanel buttonPanel = new JPanel();
-		land = new JButton("Land");
-		land.setEnabled(false);
-		land.addActionListener(this);
+		landButton = new JButton("Land");
+		landButton.setEnabled(false);
+		landButton.addActionListener(this);
 
-		takeOff = new JButton("Take Off");
-		takeOff.setEnabled(false);
-		takeOff.addActionListener(this);
+		// Button to simulate takeoff
+		takeOffButton = new JButton("Take Off");
+		takeOffButton.setEnabled(false);
+		takeOffButton.addActionListener(this);
 
+		/*
 		reset = new JButton("Reset");
 		reset.setEnabled(false);
 		reset.addActionListener(this);
+		*/
 
 		buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));	    
-		buttonPanel.add(land);
-		buttonPanel.add(takeOff);
-		buttonPanel.add(reset);
+		buttonPanel.add(landButton);
+		buttonPanel.add(takeOffButton);
+		//buttonPanel.add(reset);
 		
 		mainPanel.add(buttonPanel);
 		mainPanel.add(Box.createRigidArea(new Dimension(0,20)));
@@ -111,95 +141,87 @@ class DashboardView extends JFrame implements ActionListener  {
 		this.controller = contr;
 	}
 
-	public void setContainerState(String msg){
+
+	/* SETTERS */
+
+	public void setHangarState(String msg){
 		SwingUtilities.invokeLater(() -> {
-			containerState.setText(msg); 
+			hangarState.setText(msg); 
 		});
 	}
 
+	public void setDroneState(String msg) {
+		SwingUtilities.invokeLater(() -> {
+			droneState.setText(msg);
+		});
+	}
+
+	public void setGroundDistance(String msg) {
+		SwingUtilities.invokeLater(() -> {
+			groundDistance.setText(msg);
+		});
+	}
+
+
+	// public void setDoorState(String msg) {}
+
+
+	/* 
 	public void setGroundDistance(float perc){
 		SwingUtilities.invokeLater(() -> {
 			doorState.setText("" + perc);
 		});
 	}
+	
 
 	public void setCurrentTemperature(float temp){
 		SwingUtilities.invokeLater(() -> {
 			currentTemperature.setText("" + temp);
 		});
 	}
-	
-	public void setDroneState(String msg) {}
-	public void setHangarState(String msg) {}
-	public void setDoorState(String msg) {}
-/* 
-	public void enableAvailable() {
-		SwingUtilities.invokeLater(() -> {
-			maintenanceDone.setEnabled(false);
-			dischargeContainer.setEnabled(false);
-		});
-	}
-	
-	public void enableMaintenance() {
-		SwingUtilities.invokeLater(() -> {
-			maintenanceDone.setEnabled(true);
-			dischargeContainer.setEnabled(false);
-		});
-	}
+	*/
 
-	public void enableDischarge() {
-		SwingUtilities.invokeLater(() -> {
-			maintenanceDone.setEnabled(false);
-			dischargeContainer.setEnabled(true);
-		});
-	}*/
 
-	// todo togli
-	public void enableAvailable() {}
-	public void enableMaintenance() {}
-	public void enableDischarge() {}
+	/* ENABLERS */
 
 	// todo: fare
 	public void enableTakeoff() {
 		SwingUtilities.invokeLater(()-> {
-			land.setEnabled(true);
+			landButton.setEnabled(true);
 			//porta si apre
-			takeOff.setEnabled(false);
+			takeOffButton.setEnabled(false);
 		});
 	}
 
 	public void enableLanding() {
 		SwingUtilities.invokeLater(() -> {
-			land.setEnabled(false);
+			landButton.setEnabled(false);
 			// porta si apre
-			takeOff.setEnabled(true);
+			takeOffButton.setEnabled(true);
 		});
 	}
 
 	public void disableTakeoff() {
 		SwingUtilities.invokeLater(() -> {
-			takeOff.setEnabled(false);
+			takeOffButton.setEnabled(false);
 		});
 	}
 	public void disableLanding() {
 		SwingUtilities.invokeLater(() -> {
-			land.setEnabled(false);
+			landButton.setEnabled(false);
 		});
 	}
 
-	
+	// TODO: fare logica bene
 	public void actionPerformed(ActionEvent ev){
 		  try {
-			  if (ev.getSource() == land){
+			  if (ev.getSource() == landButton){
 				  controller.notifyLanding();
-				  land.setEnabled(false);
-			  } else if (ev.getSource() == takeOff){
+				  landButton.setEnabled(false);
+			  } else if (ev.getSource() == takeOffButton){
 				  controller.notifyTakingOff();
-				  takeOff.setEnabled(false);
-			  } else if (ev.getSource() == reset) {
-				  controller.notifyReset();
-				  reset.setEnabled(false);
-			  }
+				  takeOffButton.setEnabled(false);
+			  } 
 		  } catch (Exception ex){
 			  ex.printStackTrace();
 
