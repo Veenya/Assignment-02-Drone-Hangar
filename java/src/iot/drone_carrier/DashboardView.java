@@ -207,7 +207,7 @@ the current state of the drone hangar (normal, alarm);
 		});
 	}
 
-	// TODO: fare logica bene
+	// Cosa fare quando un tasto e' cliccato
 	public void actionPerformed(ActionEvent ev){
 		/* 
 		  try {
@@ -222,5 +222,23 @@ the current state of the drone hangar (normal, alarm);
 			  ex.printStackTrace();
 
 		  }*/
+		try {
+			if (ev.getSource() == landButton) {
+				// Se premuto il tasto Land
+				takeOffButton.setEnabled(true);
+				landButton.setEnabled(false);
+				controller.notifyLanding();
+				droneState.setText("Inside"); // change drone state
+			}
+			else if (ev.getSource() == takeOffButton) {
+				// se premuto il asto takeoff
+				takeOffButton.setEnabled(false);
+				landButton.setEnabled(true);
+				controller.notifyTakingOff();
+				droneState.setText("Operating"); // change drone state
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
 	}
 }

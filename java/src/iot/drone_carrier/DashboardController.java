@@ -36,7 +36,6 @@ public class DashboardController  {
 	
 	}
 
-	//TODO: notify altro
 
 	public void notifyReset() {
 		channel.sendMsg(MSG_RESET);
@@ -44,14 +43,17 @@ public class DashboardController  {
 	
 	public void notifyTakingOff() {
 		channel.sendMsg(MSG_TAKING_OFF);
+		logger.log("TAKING OFF");
 	}
 
 	public void notifyOperating() {
 		channel.sendMsg(MSG_OPERATING);
+		logger.log("OPERATING");
 	}
 	
 	public void notifyLanding() {
 		channel.sendMsg(MSG_LANDING);
+		logger.log("LANDING");
 	}
 
 }

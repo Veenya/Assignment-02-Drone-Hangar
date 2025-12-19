@@ -46,7 +46,7 @@ public class MonitoringAgent extends Thread {
 	/* How to make a message */
 	/* State,<the drone state(Inside, Operating)>,<the hangar state (allarm, normal)>,<distance from ground, it's a number> */
 	static final boolean DEBUGGING = true; 
-	static final String debuggingMsg = "STATE,0,0,100";
+	static final String debuggingMsg = "STATE,1,0,100"; // STATE,<drone>,<hangar>,<dist>
 
 	
 	
@@ -83,6 +83,7 @@ public class MonitoringAgent extends Thread {
 				String msg;
 				if(DEBUGGING){
 					msg = debuggingMsg;
+					//msg = "";
 				} else {
 					msg = channel.receiveMsg();
 				}
@@ -122,20 +123,23 @@ public class MonitoringAgent extends Thread {
 							
 							
 
-							if (droneCode == INSIDE) {
-								// disable landing
+							if (droneCode == INSIDE && !canTakeoff) { // inside
+								canTakeoff = true;
+								groundDistance = 0;
+								view.enableTakeoff();
+								
+							} else if (droneCode == OPERATING && !canLand) {
+								canLand = true;
+								view.enableLanding();
+							} else if (droneCode != OPERATING && canLand) {
+								canLand = false;
 								view.disableLanding();
-								// enable takeoff
-								view.enableTakeoff();
-							} else if (droneCode == OPERATING) {
-								// disable takeoff
-								view.disableTakeoff();
-								// enable landing
-								view.enableLanding();
-							} else {
-								view.enableLanding();
-								view.enableTakeoff();
 							}
+							else if (droneCode != INSIDE && canTakeoff) { // inside
+								canTakeoff = false;
+								view.disableTakeoff();
+							}
+
 						}
 					} catch (Exception ex) {
 						ex.printStackTrace();
