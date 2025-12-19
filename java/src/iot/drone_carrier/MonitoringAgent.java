@@ -16,8 +16,8 @@ public class MonitoringAgent extends Thread {
 	LogView logger;
 
 	private static final String STATE_PREFIX = "STATE,";
-	private static final String ALARM_MSG = "ALARM";
-	private static final String LOG_PREFIX = "lo:";
+	private static final String ALARM_MSG = "ALARM,";
+	private static final String LOG_PREFIX = "lo,";
 	
 	/* "ENUMS" */
 	// State Names
@@ -64,48 +64,45 @@ public class MonitoringAgent extends Thread {
 			try {
 				String msg = channel.receiveMsg();  // bloccante, aspetta una riga dal seriale finche' arduino non manda \n
 				logger.log("new msg: "+msg);				
-				if (msg.startsWith(LOG_PREFIX)){   // poi decide che messaggio e' (se inizia con log ava nella finestra di log, senno' aggiorna la gui)
+				if (msg.startsWith(LOG_PREFIX)) {   // poi decide che messaggio e' (se inizia con log ava nella finestra di log, senno' aggiorna la gui)
 					
-					String cmd = msg.substring(LOG_PREFIX.length()); //?
+					String cmd = msg.substring(LOG_PREFIX.length());
+					System.out.println(cmd);
 
 					// logger.log("new command: "+cmd);				
 					// da DroneRemoteUnit::notifyNewState arduino dovrebbe mandare: "STATE:<dronestate>:<hangarState>:<distance>"
 					// quindi il monitoringAgent ddeve riconoscere lo state, e fare parsing per gli altri campi
-					if (cmd.startsWith(STATE_PREFIX)){
-						try {
-							String args = cmd.substring(STATE_PREFIX.length()); 
-
-
-							
-
-							String[] elems = args.split(","); 
-							if (elems.length >= 6) {
-
-							String drone = elems[1];
-							String hangar = elems[2];
-							String dist = elems[3];
+				} else if (msg.startsWith(STATE_PREFIX)){
+					try {
+						String args = msg.substring(STATE_PREFIX.length()); 
+						String[] elems = args.split(",");
+						
+						if (elems.length >= 3) {
+							// <drone>,<hangar>,<distance>
+							String drone = elems[0];
+							String hangar = elems[1];
+							String dist = elems[2];
 							//String door = elems[4];
 							//float temp = Float.parseFloat(elems[5]);
-
+							
+							
 							view.setDroneState(drone);
 							view.setHangarState(hangar);
 							//view.setDoorState(door);
 							view.setGroundDistance(dist);
 							//view.setCurrentTemperature(temp);
+						//view.setContainerState(stateNames[stateCode]);
 
-
-	
-							//view.setContainerState(stateNames[stateCode]);
-	
-								
-							}
-						} catch (Exception ex) {
-							ex.printStackTrace();
-							System.err.println("Error in msg: " + cmd);
+							
 						}
+					} catch (Exception ex) {
+						ex.printStackTrace();
+						System.err.println("Error in msg: " + msg);
 					}
 				} else if (msg.startsWith(ALARM_MSG)){
 					//this.logger.log(msg.substring(LOG_PREFIX.length()));
+					String cmd = msg.substring(ALARM_MSG.length());
+					System.out.println(cmd);
 					logger.log("!!! ALARM !!! " + msg);
 					view.setHangarState("ALARM");
 					return;

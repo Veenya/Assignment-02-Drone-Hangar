@@ -11,7 +11,9 @@ void setup() {
 
 
 void loop() {
-  MsgService.sendMsg("PING");
+  MsgService.sendMsg("STATE,Normal,Normal,100");
+  MsgService.sendMsg("lo,Sto Loggando");
+  MsgService.sendMsg("ALARM,AIUTO FA CALDOO!!!");
   //Logger.log(F("PING\n"));             // manda "lo:PING" ogni secondo
   delay(1000);
 }
