@@ -12,10 +12,11 @@ the current state of the drone hangar (normal, alarm);
 
 public class DashboardController  {
 
-	static final String MSG_RESET       = "re";
 	static final String MSG_TAKING_OFF  = "to";
-	static final String MSG_OPERATING 	= "op";
 	static final String MSG_LANDING 	= "la";
+	
+	static final String MSG_RESET       = "re";
+	static final String MSG_OPERATING 	= "op";
 	
 	SerialCommChannel channel;
 	DashboardView view;

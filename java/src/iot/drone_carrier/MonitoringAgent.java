@@ -12,7 +12,7 @@ public class MonitoringAgent extends Thread {
 	LogView logger;
 
 	private static final String STATE_PREFIX = "STATE,";
-	private static final String ALARM_MSG = "ALARM,";
+	private static final String ERROR_MSG = "ERROR,";
 	private static final String LOG_PREFIX = "lo,";
 	
 	/* "ENUMS" */
@@ -46,7 +46,7 @@ public class MonitoringAgent extends Thread {
 	/* How to make a message */
 	/* State,<the drone state(Inside, Operating)>,<the hangar state (allarm, normal)>,<distance from ground, it's a number> */
 	static final boolean DEBUGGING = true; 
-	static final String debuggingMsg = "STATE,1,0,100"; // STATE,<drone>,<hangar>,<dist>
+	static final String debuggingMsg = "STATE,1,0,100"; // STATE,<hangar>,<distance>,<temp>
 
 	
 	
@@ -105,37 +105,31 @@ public class MonitoringAgent extends Thread {
 						String[] elems = args.split(",");
 						
 						if (elems.length >= 3) {
-							// <drone>,<hangar>,<distance>
-							int droneCode = Integer.parseInt(elems[0]);
-							int hangarCode = Integer.parseInt(elems[1]);
-							float groundDistance = Float.parseFloat(elems[2]);
-							//String door = elems[4];
-							//float temp = Float.parseFloat(elems[5]);
+							// <hangar>,<distance>,<temp>
+							int hangarCode = Integer.parseInt(elems[0]);
+							float groundDistance = Float.parseFloat(elems[1]);
+							float hangarTemperature = Float.parseFloat(elems[2]);
 							
-							
-							view.setDroneState(droneStates[droneCode]);
 							view.setHangarState(hangarStates[hangarCode]);
-							//view.setDoorState(door);
 							view.setGroundDistance(groundDistance);
-							//view.setCurrentTemperature(temp);
-							//view.setContainerState(stateNames[stateCode]);
-
+							view.setHangarTemperature(hangarTemperature);
+							// TODO Aggiungere stato drone
 							
 							
 
-							if (droneCode == INSIDE && !canTakeoff) { // inside
+							if (hangarTemperature == INSIDE && !canTakeoff) { // inside
 								canTakeoff = true;
 								groundDistance = 0;
 								view.enableTakeoff();
 								
-							} else if (droneCode == OPERATING && !canLand) {
+							} else if (hangarTemperature == OPERATING && !canLand) {
 								canLand = true;
 								view.enableLanding();
-							} else if (droneCode != OPERATING && canLand) {
+							} else if (hangarTemperature != OPERATING && canLand) {
 								canLand = false;
 								view.disableLanding();
 							}
-							else if (droneCode != INSIDE && canTakeoff) { // inside
+							else if (hangarTemperature != INSIDE && canTakeoff) { // inside
 								canTakeoff = false;
 								view.disableTakeoff();
 							}
@@ -145,9 +139,9 @@ public class MonitoringAgent extends Thread {
 						ex.printStackTrace();
 						System.err.println("Error in msg: " + msg);
 					}
-				} else if (msg.startsWith(ALARM_MSG)){
+				} else if (msg.startsWith(ERROR_MSG)){
 					//this.logger.log(msg.substring(LOG_PREFIX.length()));
-					String cmd = msg.substring(ALARM_MSG.length());
+					String cmd = msg.substring(ERROR_MSG.length());
 					System.out.println(cmd);
 					logger.log("!!! ALARM !!! " + msg);
 					view.setHangarState("ALARM");

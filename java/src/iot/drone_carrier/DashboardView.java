@@ -32,7 +32,7 @@ the current state of the drone hangar (normal, alarm);
 	//private JButton openDoor; //todo: rivedere il meccanismo di come funziona
 
 	// Show state of the drone (rest, taking off, operating, landing)
-    private JTextField droneState;
+    private JTextField hangarTemperature;
 	// Show state of the hangar (normal, alarm, prealarm)
 	private JTextField hangarState;      
 
@@ -65,11 +65,11 @@ the current state of the drone hangar (normal, alarm);
 		infoLine.add(hangarState);
 
 		// Drone State
-		droneState = new JTextField("--");
-		droneState.setEditable(false);
-		droneState.setPreferredSize(new Dimension(200,15));
+		hangarTemperature = new JTextField("--");
+		hangarTemperature.setEditable(false);
+		hangarTemperature.setPreferredSize(new Dimension(200,15));
 		infoLine.add(new JLabel("Drone State:")); 
-		infoLine.add(droneState);
+		infoLine.add(hangarTemperature);
 
 		// Ground Distance
 		groundDistance = new JTextField("--");
@@ -150,9 +150,9 @@ the current state of the drone hangar (normal, alarm);
 		});
 	}
 
-	public void setDroneState(String msg) {
+	public void setHangarTemperature(Float msg) {
 		SwingUtilities.invokeLater(() -> {
-			droneState.setText(msg);
+			hangarTemperature.setText("" + msg);
 		});
 	}
 
@@ -209,33 +209,18 @@ the current state of the drone hangar (normal, alarm);
 
 	// Cosa fare quando un tasto e' cliccato
 	public void actionPerformed(ActionEvent ev){
-		/* 
-		  try {
-			  if (ev.getSource() == landButton){
-				  controller.notifyLanding();
-				  landButton.setEnabled(false);
-			  } else if (ev.getSource() == takeOffButton){
-				  controller.notifyTakingOff();
-				  takeOffButton.setEnabled(false);
-			  } 
-		  } catch (Exception ex){
-			  ex.printStackTrace();
-
-		  }*/
 		try {
 			if (ev.getSource() == landButton) {
 				// Se premuto il tasto Land
-				takeOffButton.setEnabled(true);
 				landButton.setEnabled(false);
 				controller.notifyLanding();
-				droneState.setText("Inside"); // change drone state
+				hangarTemperature.setText("Inside"); // change drone state
 			}
 			else if (ev.getSource() == takeOffButton) {
-				// se premuto il asto takeoff
+				// se premuto il tasto takeoff
 				takeOffButton.setEnabled(false);
-				landButton.setEnabled(true);
 				controller.notifyTakingOff();
-				droneState.setText("Operating"); // change drone state
+				hangarTemperature.setText("Operating"); // change drone state
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();

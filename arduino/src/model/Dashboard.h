@@ -8,21 +8,19 @@
 class Dashboard {
 
 public:
-  Dashboard(Hangar* pHangar); //? Hangar serve?
+  Dashboard(Hangar* pHangar);
 
   void init();
   
-  void notifyNewState();  // TODO RIVEDERE
+  void notifyNewState();
   
-  bool checkAndResetDischargeRequest(); // TODO RIVEDERE
-  bool checkAndResetMaintenanceDone();  // TODO RIVEDERE
+  bool checkAndResetOpenDoorRequest();
 
   void sync();
 
 private:
   Hangar* pHangar;
-  bool dischargeCmdRequested;   // TODO RIVEDERE
-  bool maintenanceDoneNotified; // TODO RIVEDERE
+  bool openDoorNotification;
 };
 
 #endif
