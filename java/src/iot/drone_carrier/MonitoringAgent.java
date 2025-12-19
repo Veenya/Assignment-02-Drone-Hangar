@@ -1,13 +1,9 @@
 // TODO: aggiungo il tasto di debug (o due: on, off) o simula allarme...
 // TODO: simulare stringhe arduino per fare cose per finire interfaccia
 
-/* Ogni riga e' uno di questi tipi:
-    log -> lo:<testo libero>
-	stato-> STATE,<drone>,<hangar>,<door>,<distance>,<temp>
-	allarme -> ALARM (opzionale: ALARM,<reason>)
-	(opzionale, prealarm)
- */
 package iot.drone_carrier;
+
+import java.util.concurrent.TimeUnit;
 
 public class MonitoringAgent extends Thread {
 
@@ -20,19 +16,37 @@ public class MonitoringAgent extends Thread {
 	private static final String LOG_PREFIX = "lo,";
 	
 	/* "ENUMS" */
-	// State Names
-	static final String[] stateNames = {"Normal", "Allarm", "Preallarm"};  
+
+	// Drone state Names
+	static final String[] droneStates = {"Inside", "Operating", "Request Landing", "Request Takeoff"};  
+	static final int INSIDE = 0;
+	static final int OPERATING = 1;
+	static final int REQUEST_LANDING = 2;
+	static final int REQUEST_TAKEOFF = 3;
+
+	// Hangar state Names
+	static final String[] hangarStates = {"Normal", "Allarm", "Preallarm"};  
 	static final int NORMAL = 0;
 	static final int ALLARM = 1;
 	static final int PREALLARM = 2;
 
+	/*
 	// Door state names
-	static final String[] doorStateNames = {"Open", "Closed", "Moving", "Opening", "Closing"};  
+	static final String[] doorStates = {"Open", "Closed", "Moving", "Opening", "Closing"};  
 	static final int OPEN = 0;
 	static final int CLOSED = 1;
 	static final int MOVING = 2;
 	static final int OPENING = 3;
 	static final int CLOSING = 4;
+	*/
+
+	/* ************************************************ */
+	/* ******************* DEBUGGING ****************** */
+	/* ************************************************ */
+	/* How to make a message */
+	/* State,<the drone state(Inside, Operating)>,<the hangar state (allarm, normal)>,<distance from ground, it's a number> */
+	static final boolean DEBUGGING = true; 
+	static final String debuggingMsg = "STATE,0,0,100";
 
 	
 	
@@ -43,10 +57,12 @@ public class MonitoringAgent extends Thread {
 	}
 	
 	public void run(){
+		boolean isInside = true;
+
 		boolean canLand = false;
 		boolean canTakeoff = false;
 
-		//boolean inAllarm = false; 
+		boolean inAllarm = false; 
 		//boolean inPreallarm = false;
 		//boolean doorOpen = false;
 
@@ -62,8 +78,18 @@ public class MonitoringAgent extends Thread {
 		
 		while (true){
 			try {
-				String msg = channel.receiveMsg();  // bloccante, aspetta una riga dal seriale finche' arduino non manda \n
-				logger.log("new msg: "+msg);				
+
+				/* DEBUGGING */
+				String msg;
+				if(DEBUGGING){
+					msg = debuggingMsg;
+				} else {
+					msg = channel.receiveMsg();
+				}
+
+				logger.log("new msg: "+msg);
+
+				TimeUnit.SECONDS.sleep(1);
 				if (msg.startsWith(LOG_PREFIX)) {   // poi decide che messaggio e' (se inizia con log ava nella finestra di log, senno' aggiorna la gui)
 					
 					String cmd = msg.substring(LOG_PREFIX.length());
@@ -79,21 +105,37 @@ public class MonitoringAgent extends Thread {
 						
 						if (elems.length >= 3) {
 							// <drone>,<hangar>,<distance>
-							String drone = elems[0];
-							String hangar = elems[1];
-							String dist = elems[2];
+							int droneCode = Integer.parseInt(elems[0]);
+							int hangarCode = Integer.parseInt(elems[1]);
+							float groundDistance = Float.parseFloat(elems[2]);
 							//String door = elems[4];
 							//float temp = Float.parseFloat(elems[5]);
 							
 							
-							view.setDroneState(drone);
-							view.setHangarState(hangar);
+							view.setDroneState(droneStates[droneCode]);
+							view.setHangarState(hangarStates[hangarCode]);
 							//view.setDoorState(door);
-							view.setGroundDistance(dist);
+							view.setGroundDistance(groundDistance);
 							//view.setCurrentTemperature(temp);
-						//view.setContainerState(stateNames[stateCode]);
+							//view.setContainerState(stateNames[stateCode]);
 
 							
+							
+
+							if (droneCode == INSIDE) {
+								// disable landing
+								view.disableLanding();
+								// enable takeoff
+								view.enableTakeoff();
+							} else if (droneCode == OPERATING) {
+								// disable takeoff
+								view.disableTakeoff();
+								// enable landing
+								view.enableLanding();
+							} else {
+								view.enableLanding();
+								view.enableTakeoff();
+							}
 						}
 					} catch (Exception ex) {
 						ex.printStackTrace();

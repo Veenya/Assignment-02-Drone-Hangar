@@ -156,9 +156,9 @@ the current state of the drone hangar (normal, alarm);
 		});
 	}
 
-	public void setGroundDistance(String msg) {
+	public void setGroundDistance(Float msg) {
 		SwingUtilities.invokeLater(() -> {
-			groundDistance.setText(msg);
+			groundDistance.setText(""+msg);
 		});
 	}
 
@@ -184,20 +184,15 @@ the current state of the drone hangar (normal, alarm);
 
 	/* ENABLERS */
 
-	// todo: fare
 	public void enableTakeoff() {
 		SwingUtilities.invokeLater(()-> {
-			landButton.setEnabled(true);
-			//porta si apre
-			takeOffButton.setEnabled(false);
+			takeOffButton.setEnabled(true);
 		});
 	}
 
 	public void enableLanding() {
 		SwingUtilities.invokeLater(() -> {
-			landButton.setEnabled(false);
-			// porta si apre
-			takeOffButton.setEnabled(true);
+			landButton.setEnabled(true);
 		});
 	}
 
@@ -214,6 +209,7 @@ the current state of the drone hangar (normal, alarm);
 
 	// TODO: fare logica bene
 	public void actionPerformed(ActionEvent ev){
+		/* 
 		  try {
 			  if (ev.getSource() == landButton){
 				  controller.notifyLanding();
@@ -225,6 +221,6 @@ the current state of the drone hangar (normal, alarm);
 		  } catch (Exception ex){
 			  ex.printStackTrace();
 
-		  }
+		  }*/
 	}
 }
