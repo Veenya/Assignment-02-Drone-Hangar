@@ -1,45 +1,28 @@
 #ifndef __DASHBOARD__
 #define __DASHBOARD__
 
-#include <Arduino.h>
-#include <LiquidCrystal_I2C.h>
-
+#include "config.h"
 #include "HWPlatform.h"
-#include "States.h"
+#include "model/Hangar.h"
 
 class Dashboard {
+
 public:
-  Dashboard(HWPlatform* hw);
+  Dashboard(Hangar* pHangar); //? Hangar serve?
 
-  void init();   // opzionale, per impostare lo schermo iniziale
+  void init();
+  
+  void notifyNewState();  // TODO RIVEDERE
+  
+  bool checkAndResetDischargeRequest(); // TODO RIVEDERE
+  bool checkAndResetMaintenanceDone();  // TODO RIVEDERE
 
-  // --- messaggi principali su LCD/LED ---
-
-  void showDroneInside();
-  void showDroneOut();
-  void showTakeOff();
-  void showLanding();
-  void showPreAlarm();
-  void showAlarm();
-
-  // --- gestione LED L2 / L3 ---
-
-  // L2 lampeggia: ogni chiamata inverte lo stato
-  void blinkL2();
-
-  // Imposta L2 / L3 esplicitamente
-  void setL2(bool on);
-  void setL3(bool on);
+  void sync();
 
 private:
-  HWPlatform* hw;
-
-  LiquidCrystal_I2C* lcd;
-  Led* l1;
-  Led* l2;
-  Led* l3;
-
-  bool l2State;
+  Hangar* pHangar;
+  bool dischargeCmdRequested;   // TODO RIVEDERE
+  bool maintenanceDoneNotified; // TODO RIVEDERE
 };
 
 #endif

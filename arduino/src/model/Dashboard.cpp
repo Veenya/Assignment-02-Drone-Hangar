@@ -1,133 +1,54 @@
 #include "Dashboard.h"
+#include <Arduino.h>
+#include "kernel/MsgService.h"
+#include "kernel/Logger.h"
 
-Dashboard::Dashboard(HWPlatform* hw)
-  : hw(hw),
-    lcd(nullptr),
-    l1(nullptr),
-    l2(nullptr),
-    l3(nullptr),
-    l2State(false) {
+Dashboard::Dashboard(Hangar* pHangar): pHangar(pHangar){
+}
 
-  // prendo subito i puntatori dai getter dell'HWPlatform
-  if (hw) {
-    lcd = hw->getOperatorLcd();
-    l1  = hw->getL1();
-    l2  = hw->getL2();
-    l3  = hw->getL3();
+void Dashboard::init(){
+  maintenanceDoneNotified = false;
+  dischargeCmdRequested = false;
+}
+
+void Dashboard::notifyNewState(){
+  String st;
+  if (pHangar->getHangarState() == HangarState::NORMAL){ // TODO Rivedere segnaposto
+    st = "2";
+  } else if (pHangar->getHangarState() == HangarState::NORMAL){ // TODO Rivedere segnaposto
+    st = "1";
+  } else {   
+    st = "0";
+  }
+  int wasteLevel = pHangar->getDistance(); // TODO Rivedere segnaposto
+  float currentTemp = pHangar->getDistance(); // TODO Rivedere segnaposto
+  // TODO Rivedere messaggio mandato
+  MsgService.sendMsg(String("cw:st:") + st + ":" + String(wasteLevel).substring(0,5) + ":" +  String(currentTemp).substring(0,5));  
+}
+
+void Dashboard::sync(){
+  if (MsgService.isMsgAvailable()){
+    Msg* msg = MsgService.receiveMsg();
+    if (msg != NULL){
+      Logger.log("Received msg: " + msg->getContent());
+      if (msg->getContent() == "ok"){ // TODO Rivedere segnaposto
+        maintenanceDoneNotified = true;
+      } else if (msg->getContent() == "di"){ // TODO Rivedere segnaposto
+        dischargeCmdRequested = true;
+      }
+      delete msg;
+    }  
   }
 }
 
-void Dashboard::init() {
-  // stato iniziale: DRONE INSIDE, sistema normale
-  if (lcd) {
-    lcd->clear();
-    lcd->setCursor(0, 0);
-    lcd->print("DRONE INSIDE");
-    lcd->setCursor(0, 1);
-    lcd->print("STATE: NORMAL   ");
-  }
-
-  if (l1) l1->switchOn();   // sistema acceso
-  if (l2) l2->switchOff();
-  if (l3) l3->switchOff();
+bool Dashboard::checkAndResetDischargeRequest(){
+  bool com = this->dischargeCmdRequested;
+  dischargeCmdRequested = false;
+  return com;
 }
 
-/* --------- Messaggi principali --------- */
-
-void Dashboard::showDroneInside() {
-  if (lcd) {
-    lcd->clear();
-    lcd->setCursor(0, 0);
-    lcd->print("DRONE INSIDE");
-    lcd->setCursor(0, 1);
-    lcd->print("STATE: NORMAL   ");
-  }
-  if (l2) l2->switchOff();
-}
-
-void Dashboard::showDroneOut() {
-  if (lcd) {
-    lcd->clear();
-    lcd->setCursor(0, 0);
-    lcd->print("DRONE OUT");
-    lcd->setCursor(0, 1);
-    lcd->print("STATE: NORMAL   ");
-  }
-  if (l2) l2->switchOff();
-}
-
-void Dashboard::showTakeOff() {
-  if (lcd) {
-    lcd->clear();
-    lcd->setCursor(0, 0);
-    lcd->print("TAKE OFF");
-    lcd->setCursor(0, 1);
-    lcd->print("PLEASE WAIT     ");
-  }
-  // durante take-off L2 deve blinkare: sarà il task a chiamare blinkL2()
-}
-
-void Dashboard::showLanding() {
-  if (lcd) {
-    lcd->clear();
-    lcd->setCursor(0, 0);
-    lcd->print("LANDING");
-    lcd->setCursor(0, 1);
-    lcd->print("PLEASE WAIT     ");
-  }
-  // anche qui L2 blink, gestito dal task
-}
-
-void Dashboard::showPreAlarm() {
-  if (lcd) {
-    lcd->clear();
-    lcd->setCursor(0, 0);
-    lcd->print("TEMP HIGH");
-    lcd->setCursor(0, 1);
-    lcd->print("PRE-ALARM       ");
-  }
-  if (l3) l3->switchOff();   // rosso solo in ALLARM pieno
-}
-
-void Dashboard::showAlarm() {
-  if (lcd) {
-    lcd->clear();
-    lcd->setCursor(0, 0);
-    lcd->print("ALLARM");
-    lcd->setCursor(0, 1);
-    lcd->print("CHECK HANGAR    ");
-  }
-  if (l3) l3->switchOn();    // rosso acceso in ALLARM
-}
-
-/* --------- LED L2 / L3 --------- */
-
-void Dashboard::blinkL2() {
-  if (!l2) return;
-
-  l2State = !l2State;
-  if (l2State) {
-    l2->switchOn();
-  } else {
-    l2->switchOff();
-  }
-}
-
-void Dashboard::setL2(bool on) {
-  if (!l2) return;
-  l2State = on;
-  if (on) {
-    l2->switchOn();
-  } else {
-    l2->switchOff();
-  }
-}
-
-void Dashboard::setL3(bool on) {
-  if (!l3) return;
-  if (on) {
-    l3->switchOn();
-  } else {
-    l3->switchOff();
-  }
+bool Dashboard::checkAndResetMaintenanceDone(){
+  bool com = this->maintenanceDoneNotified;
+  maintenanceDoneNotified = false;
+  return com;
 }
