@@ -2,6 +2,7 @@
 #define __DRONE_REMOTE_TASK__
 
 #include "kernel/Task.h"
+#include "model/Dashboard.h"
 #include "model/Hangar.h"
 #include "model/DroneRemoteUnit.h"   // <--- classe modello lato PC (tipo Dashboard)
 
@@ -14,7 +15,7 @@
 class DroneRemoteTask : public Task {
 
 public:
-  DroneRemoteTask(Hangar* pHangar, DroneRemoteUnit* pRemote);
+  DroneRemoteTask(Dashboard* pDashboard, Hangar* pHangar);
   void tick();
 
 private:
@@ -23,7 +24,7 @@ private:
     WAITING_FOR_RESET_ALARM // siamo in allarme: aspettiamo reset dal DRU o dal bottone
   };
 
-  void setState(State s);
+  void setState(State state);
   long elapsedTimeInState();
   bool checkAndSetJustEntered();
 
@@ -31,8 +32,8 @@ private:
   long stateTimestamp;
   bool justEntered;
 
+  Dashboard* pDashboard;
   Hangar* pHangar;
-  DroneRemoteUnit* pRemote;
 };
 
 #endif
