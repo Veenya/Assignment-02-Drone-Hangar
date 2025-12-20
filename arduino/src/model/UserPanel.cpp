@@ -33,7 +33,8 @@ void UserPanel::sync() {
 }
 
 bool UserPanel::isResetPressed() const {
-  return resetPressed;
+  // ? Va salvato e resettato? 
+  return resetPressed; 
 }
 
 bool UserPanel::isResetPressedEdge() {

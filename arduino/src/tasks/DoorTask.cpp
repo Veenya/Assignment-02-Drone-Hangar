@@ -3,9 +3,6 @@
 #include "config.h"
 #include "kernel/Logger.h"
 
-// puoi decidere un periodo di invio stato, ad es. 500 ms
-#define STATE_UPDATE_PERIOD 500
-
 DoorTask::DoorTask(CommunicationCenter* pCommunicationCenter, Hangar* pHangar, UserPanel* pUserPanel)
     :   pCommunicationCenter(pCommunicationCenter),
         pHangar(pHangar),
@@ -13,12 +10,16 @@ DoorTask::DoorTask(CommunicationCenter* pCommunicationCenter, Hangar* pHangar, U
     setDoorState(DoorState::CLOSED);
 }
 
-void DoorTask::tick(){    
+void DoorTask::tick() {    
     if (pHangar->getHangarState() == HangarState::ALARM) {
-        // TODO fai cose e non aprire la porta
+
         if (pUserPanel) {
             pUserPanel->sync(); // aggiorno stato del pannello (bottone reset)
-        }
+            if (pUserPanel->isResetPressed()) {
+                pHangar->setHangarState(HangarState::NORMAL);
+                Logger.log(F("[DR] Hangar is not in alarm state anymore"));
+            }
+        } 
 
     } else if (this->state == DoorState::CLOSED) {
         // --- controlla se c'è una richiesta di TAKE-OFF dal DRU ---
@@ -44,10 +45,6 @@ void DoorTask::tick(){
             // TODO ApriPorta ecc..
         }
 
-        // --- se l'hangar va in allarme, passiamo allo stato di attesa reset ---
-        if (pHangar->getHangarState() == HangarState::ALARM) {
-            pHangar->setDroneState(DroneState::WAITING_FOR_RESET_ALARM);
-        }
 
     } else if (this->state == DoorState::OPENING && elapsedTimeInState() > DOOR_TIME) {
         // TODO Se la porta si sta aprendo da n secondi
