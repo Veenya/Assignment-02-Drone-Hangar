@@ -6,6 +6,29 @@ Pir::Pir(int pin) {
     pinMode(pin, INPUT);
 }
 
+void Pir::sync() {
+    detected = digitalRead(pin) == HIGH;
+    updateSyncTime(millis());
+}
+
+bool Pir::isDetected() {
+    return detected;
+}
+
+void Pir::calibrate() {
+    delay(10000);
+}
+
+void Pir::updateSyncTime(long time) {
+    lastTimeSync = time;
+}
+
+long Pir::getLastSyncTime() {
+    return lastTimeSync;
+}
+
+/* Metodo alternativo a isDetected */
+/*
 bool Pir::isDetected() {
     int val = digitalRead(pin);
     if (val == HIGH) {
@@ -13,4 +36,4 @@ bool Pir::isDetected() {
     } else {
         return false;
     }
-}
+}*/
