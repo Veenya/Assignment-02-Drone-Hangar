@@ -16,15 +16,17 @@ public:
   void tick();
 
 private:  
-  void setState(int state);
+  enum State {NORMAL, PRE_ALARM, ALARM};
+  
+  void setState(State s);
   long elapsedTimeInState();
   void log(const String& msg);
   
   bool checkAndSetJustEntered();
-  
-  enum { NORMAL, PRE_ALARM, ALARM} state;
+
   long stateTimestamp;
   bool justEntered;
+  State state;
 
   Hangar* pHangar;
 };

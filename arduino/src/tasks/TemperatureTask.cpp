@@ -12,14 +12,14 @@ TemperatureTask::TemperatureTask(Hangar* pHangar) :
 }
 
 void TemperatureTask::tick(){
-    // aggiorna i valori (temperatura / distanza ecc.)
     pHangar->sync();
 
-    float temp = pHangar->getTemperature();
+    float temp = pHangar->getTemperature(); //! controlla se il prof lo mette
 
     switch (state){    
     case NORMAL: {
-        if (checkAndSetJustEntered()){
+        // TODO: possibilmente togliere l'if
+        if (this->checkAndSetJustEntered()){ //? Serve?
             Logger.log(F("[TEMP] normal"));
             pHangar->setHangarState(HangarState::NORMAL);
         }
@@ -33,8 +33,6 @@ void TemperatureTask::tick(){
     case PRE_ALARM: {        
         if (checkAndSetJustEntered()){
             Logger.log(F("[TEMP] pre-alarm"));
-            // se hai uno stato PRE_ALARM nell'enum, puoi metterlo qui
-            // pHangar->setHangarState(HangarState::PRE_ALARM);
         }
         
         if (temp < MAXTEMP){
@@ -55,6 +53,7 @@ void TemperatureTask::tick(){
         }
 
         // Esci dall'allarme quando qualcuno rimette l'hangar in stato normale
+        // TODO: controlla se va col tasto
         if (pHangar->getHangarState() == HangarState::NORMAL){
             setState(NORMAL);
         }
@@ -63,8 +62,8 @@ void TemperatureTask::tick(){
     }
 }
 
-void TemperatureTask::setState(int s){
-    //state state = s;
+void TemperatureTask::setState(State s){ 
+    state = s;
     stateTimestamp = millis();
     justEntered = true;
 }

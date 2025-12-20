@@ -34,12 +34,43 @@ void HWPlatform::init() {
 
   //attachInterrupt(digitalPinToInterrupt(PIR_PIN), wakeUp, RISING);
 
-  Button* HWPlatform::getResetButton(){
-    return this->pButton;
-  }
-
 }
 
+Button* HWPlatform::getResetButton(){
+    return this->pResetButton;
+}
+
+Led* HWPlatform::getL1() {
+  return this->pL1;
+}
+
+Led* HWPlatform::getL2() {
+  return this->pL2;
+}
+
+Led* HWPlatform::getL3() {
+  return this->pL3;
+}
+
+LiquidCrystal_I2C* HWPlatform::getOperatorLcd() {
+  return this->pLcd;
+}
+
+TempSensor* HWPlatform::getTempSensor(){
+  return this->pTempSensor;
+}
+
+ServoMotor* HWPlatform::getHangarDoorMotor() {
+  return this->pDoorMotor;
+}
+
+Sonar* HWPlatform::getDDD() {
+  return this->pDdd;
+}
+
+Pir* HWPlatform::getDPD() {
+  return this->pDpd;
+}
 
 void HWPlatform::test() {
   // --- static state (persists between calls) ---
@@ -142,43 +173,4 @@ void HWPlatform::test() {
 
   // small delay so we don't hammer the CPU too hard
   delay(5);
-}
-
-
-// --- getters ---
-
-Sonar* HWPlatform::getDDD() {
-  return pDdd;
-}
-
-Pir* HWPlatform::getDPD() {
-  return pDpd;
-}
-
-ServoMotor* HWPlatform::getHangarDoorMotor() {
-  return pDoorMotor;
-}
-
-TempSensor* HWPlatform::getTempSensor() {
-  return pTempSensor;
-}
-
-LiquidCrystal_I2C* HWPlatform::getOperatorLcd() {
-  return pLcd;
-}
-
-Led* HWPlatform::getL1() {
-  return pL1;
-}
-
-Led* HWPlatform::getL2() {
-  return pL2;
-}
-
-Led* HWPlatform::getL3() {
-  return pL3;
-}
-
-Button* HWPlatform::getResetButton() {
-  return pResetButton;
 }
