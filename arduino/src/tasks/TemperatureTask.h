@@ -2,7 +2,7 @@
 #define __TEMPERATURE_TASK__
 
 #include "kernel/Task.h"
-#include "model/Dashboard.h"
+#include "model/CommunicationCenter.h"
 #include "model/Hangar.h"
 #include "model/HangarDoor.h"
 #include "model/HWPlatform.h"

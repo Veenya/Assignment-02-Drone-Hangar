@@ -1,16 +1,16 @@
-#include "Dashboard.h"
+#include "CommunicationCenter.h"
 #include <Arduino.h>
 #include "kernel/MsgService.h"
 #include "kernel/Logger.h"
 
-Dashboard::Dashboard(Hangar* pHangar): pHangar(pHangar){
+CommunicationCenter::CommunicationCenter(Hangar* pHangar): pHangar(pHangar){
 }
 
-void Dashboard::init(){
+void CommunicationCenter::init(){
   openDoorNotification = false;
 }
 
-void Dashboard::notifyNewState(){
+void CommunicationCenter::notifyNewState(){
   String st;
   if (pHangar->getHangarState() == HangarState::ALARM) {
     st = "2";
@@ -25,7 +25,7 @@ void Dashboard::notifyNewState(){
   MsgService.sendMsg(String("STATE,") + st + "," + String(droneDistance).substring(0,5) + "," +  String(currentTemp).substring(0,5));  
 }
 
-void Dashboard::sync(){
+void CommunicationCenter::sync(){
   if (MsgService.isMsgAvailable()){
     Msg* msg = MsgService.receiveMsg();
     if (msg != NULL){
@@ -39,7 +39,7 @@ void Dashboard::sync(){
   }
 }
 
-bool Dashboard::checkAndResetOpenDoorRequest(){
+bool CommunicationCenter::checkAndResetOpenDoorRequest(){
   bool com = this->openDoorNotification;
   openDoorNotification = false;
   return com;

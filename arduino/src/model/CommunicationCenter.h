@@ -1,5 +1,5 @@
-#ifndef __DASHBOARD__
-#define __DASHBOARD__
+#ifndef __COMMUNICATIONCENTER__
+#define __COMMUNICATIONCENTER__
 
 #include "config.h"
 #include "HWPlatform.h"
@@ -12,10 +12,10 @@
  * - Espone metodi "checkAndReset..." per i Task.
  * - Invia periodicamente lo stato corrente al DRU.
  */
-class Dashboard {
+class CommunicationCenter {
 
 public:
-  Dashboard(Hangar* pHangar);
+  CommunicationCenter(Hangar* pHangar);
 
   void init();
   

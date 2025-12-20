@@ -2,9 +2,8 @@
 #define __DRONE_REMOTE_TASK__
 
 #include "kernel/Task.h"
-#include "model/Dashboard.h"
+#include "model/CommunicationCenter.h"
 #include "model/Hangar.h"
-#include "model/DroneRemoteUnit.h"   // <--- classe modello lato PC (tipo Dashboard)
 
 /*
  * Task che gestisce la comunicazione con il DRU (Drone Remote Unit).
@@ -15,7 +14,7 @@
 class DroneRemoteTask : public Task {
 
 public:
-  DroneRemoteTask(Dashboard* pDashboard, Hangar* pHangar);
+  DroneRemoteTask(CommunicationCenter* pCommunicationCenter, Hangar* pHangar);
   void tick();
 
 private:
@@ -32,7 +31,7 @@ private:
   long stateTimestamp;
   bool justEntered;
 
-  Dashboard* pDashboard;
+  CommunicationCenter* pCommunicationCenter;
   Hangar* pHangar;
 };
 
