@@ -5,7 +5,7 @@
 #include <avr/sleep.h>
 
 #define DOOR_TIME           1000      // ms per aprire/chiudere la porta
-#define SPILLING_MAX_TIME   20000     // ms di "operazione" (decollo/landing)
+#define SPILLING_MAX_TIME   20000     //! ms di "operazione" (decollo/landing)
 
 DroneOperationTask::DroneOperationTask(Hangar* pHangar, UserPanel* pPanel)
   : pHangar(pHangar),
@@ -14,7 +14,7 @@ DroneOperationTask::DroneOperationTask(Hangar* pHangar, UserPanel* pPanel)
 }
   
 void DroneOperationTask::tick(){    
-  // aggiorno hangar (sensori ecc.)
+  //! aggiorno hangar (sensori ecc.)
   pHangar->sync();
 
   // aggiorno stato del pannello (bottone reset)
