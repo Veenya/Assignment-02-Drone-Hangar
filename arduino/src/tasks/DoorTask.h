@@ -22,6 +22,8 @@ private:
     void setDoorState(DoorState state);
     long elapsedTimeInState();
 
+    bool droneInRange;
+
     DoorState doorState;
     DroneState droneState;
     long stateTimestamp;

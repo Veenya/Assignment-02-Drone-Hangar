@@ -8,6 +8,7 @@ DoorTask::DoorTask(CommunicationCenter* pCommunicationCenter, Hangar* pHangar, U
         pHangar(pHangar),
         pUserPanel(pUserPanel) {
     setDoorState(DoorState::CLOSED);
+    droneInRange = true;
 }
 
 void DoorTask::tick() {
@@ -83,12 +84,24 @@ void DoorTask::tick() {
         this->stateTimestamp = millis();
         Logger.log(F("[DO] Door is Open"));
 
-    } else if (this->doorState == DoorState::OPEN && elapsedTimeInState() > SPILLING_MAX_TIME) { // TODO Check drone
-        this->setDoorState(DoorState::CLOSING);
-        pUserPanel->displayDroneOut();
-        this->stateTimestamp = millis();
-        pHangar->closeDoor();
-        Logger.log(F("[DO] closing door"));
+    } else if (this->doorState == DoorState::OPEN && pHangar->getDroneState() == DroneState::NORMAL) { // TODO Check drone
+        pHangar->setDroneState(DroneState::TAKING_OFF);
+        Logger.log(F("[DO] drone is taking off"));
+        
+    } else if ( this->doorState == DoorState::OPEN && pHangar->getDroneState() == DroneState::TAKING_OFF) {
+        if (pHangar->getDistance() >= D1 && droneInRange) {  // drone uscito dal range
+            droneInRange = false;
+            this->stateTimestamp = millis();
+        } else if (pHangar->getDistance() >= D1 && !droneInRange && millis() - this->stateTimestamp > T1) { // drone uscito dal range per più di n secondi
+            pHangar->setDroneState(DroneState::OPERATING);
+            pUserPanel->displayDroneOut();
+            Logger.log(F("[DO] drone is took off"));
+            this->setDoorState(DoorState::CLOSING);
+            pHangar->closeDoor();
+            Logger.log(F("[DO] closing door")); 
+        } else if (pHangar->getDistance() < D1 && !droneInRange) { // drone torna in range prima di n secondi, resetto il timer
+            droneInRange = true;
+        }
         
     } else if (this->doorState == DoorState::CLOSING && elapsedTimeInState() > DOOR_TIME) {
         this->setDoorState(DoorState::CLOSED);

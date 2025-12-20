@@ -36,6 +36,7 @@ public:
     }
   }
 
+
   void setCompleted(){
     completed = true;
     active = false;
