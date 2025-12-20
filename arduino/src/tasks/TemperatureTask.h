@@ -20,8 +20,6 @@ private:
     long elapsedTimeInState();
     void log(const String& msg);
     
-    bool checkAndSetJustEntered();
-
     long stateTimestamp;
     bool justEntered;
     HangarState state;

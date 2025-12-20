@@ -18,11 +18,8 @@ void TemperatureTask::tick(){
 
     switch (state){    
     case HangarState::NORMAL: {
-        // TODO: possibilmente togliere l'if
-        if (this->checkAndSetJustEntered()){ //? Serve?
-            Logger.log(F("[TEMP] normal"));
-            pHangar->setHangarState(HangarState::NORMAL);
-        }
+        Logger.log(F("[TEMP] normal"));
+        pHangar->setHangarState(HangarState::NORMAL);
 
         if (temp > MAXTEMP){
             setState(HangarState::PRE_ALARM);
@@ -31,9 +28,7 @@ void TemperatureTask::tick(){
     }
 
     case HangarState::PRE_ALARM: {        
-        if (checkAndSetJustEntered()){
-            Logger.log(F("[TEMP] pre-alarm"));
-        }
+        Logger.log(F("[TEMP] pre-alarm"));
         
         if (temp < MAXTEMP){
             // la temperatura è tornata sotto soglia
@@ -46,11 +41,8 @@ void TemperatureTask::tick(){
     }
 
     case HangarState::ALARM: {
-        if (checkAndSetJustEntered()){
-            Logger.log(F("[TEMP] alarm"));
-            // qui metti lo stato di allarme / manutenzione
+        Logger.log(F("[TEMP] alarm"));
             pHangar->setHangarState(HangarState::ALARM);
-        }
 
         // Esci dall'allarme quando qualcuno rimette l'hangar in stato normale
         // TODO: controlla se va col tasto
@@ -70,12 +62,4 @@ void TemperatureTask::setState(HangarState state){
 
 long TemperatureTask::elapsedTimeInState(){
     return millis() - stateTimestamp;
-}
-
-bool TemperatureTask::checkAndSetJustEntered(){
-    bool bak = justEntered;
-    if (justEntered){
-        justEntered = false;
-    }
-    return bak;
 }

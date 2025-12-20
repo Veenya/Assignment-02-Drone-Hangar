@@ -12,10 +12,10 @@
  * - aggiorna lo stato del drone nell'hangar
  * - notifica al DRU lo stato corrente (drone, hangar, distanza)
  */
-class DroneRemoteTask : public Task {
+class CommunicationTask : public Task {
 
 public:
-    DroneRemoteTask(CommunicationCenter* pCommunicationCenter, Hangar* pHangar);
+    CommunicationTask(CommunicationCenter* pCommunicationCenter, Hangar* pHangar);
     void tick();
 
 private:
@@ -23,7 +23,6 @@ private:
     unsigned long now;
     void setState(DroneState state);
     long elapsedTimeInState();
-    bool checkAndSetJustEntered();
 
     DroneState state;
     long stateTimestamp;

@@ -5,5 +5,5 @@
 
 enum class DroneState { REST, TAKING_OFF, OPERATING, LANDING, NORMAL, WAITING_FOR_RESET_ALARM }; // TODO Rivedere qui e in DroneRemoteTask
 enum class HangarState { NORMAL, PRE_ALARM, ALARM };
-enum class DoorState { OPEN, OPENING, CLOSED, CLOSING};
+enum class DoorState { OPEN, OPENING, CLOSED, CLOSING };
 #endif
