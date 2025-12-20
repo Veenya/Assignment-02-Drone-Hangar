@@ -6,7 +6,7 @@
 #define MAXTEMP      40      // es: 40°C, metti il valore che vuoi
 #define MAXTEMPTIME  10000   // ms sopra soglia prima di entrare in allarme
 
-TemperatureTask::TemperatureTask(Hangar* pHangar) : 
+TemperatureTask::TemperatureTask(Hangar* pHangar, UserPanel* pUserPanel) : 
     pHangar(pHangar) {
     setState(HangarState::NORMAL);
 }
@@ -36,6 +36,8 @@ void TemperatureTask::tick(){
         } else if (elapsedTimeInState() > MAXTEMPTIME){
             // troppo tempo sopra soglia -> allarme
             setState(HangarState::ALARM);
+            pUserPanel->displayAlarm();
+            
         }
         break;       
     }

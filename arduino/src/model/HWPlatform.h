@@ -37,7 +37,7 @@ public:
   TempSensor* getTempSensor();
 
   // LCD dell’operatore
-  LiquidCrystal_I2C* getOperatorLcd();
+  LiquidCrystal_I2C* getLcd();
 
   // LED
   Led* getL1();    // verde

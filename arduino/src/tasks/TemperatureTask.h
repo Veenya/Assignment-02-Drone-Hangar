@@ -12,18 +12,19 @@
 class TemperatureTask: public Task {
 
 public:
-    TemperatureTask(Hangar* pHangar); 
+    TemperatureTask(Hangar *pHangar, UserPanel *pUserPanel);
     void tick();
 
-private:  
+private:
     void setState(HangarState s);
     long elapsedTimeInState();
     void log(const String& msg);
-    
+
     long stateTimestamp;
     bool justEntered;
     HangarState state;
 
+    UserPanel* pUserPanel;
     Hangar* pHangar;
 };
 

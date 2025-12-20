@@ -52,7 +52,7 @@ Led* HWPlatform::getL3() {
   return this->pL3;
 }
 
-LiquidCrystal_I2C* HWPlatform::getOperatorLcd() {
+LiquidCrystal_I2C* HWPlatform::getLcd() {
   return this->pLcd;
 }
 

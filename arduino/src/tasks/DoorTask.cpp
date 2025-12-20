@@ -46,6 +46,7 @@ void DoorTask::tick() {
             Logger.log(F("[DR] take-off request from DRU"));
             // il drone parte dal REST dentro l'hangar
             pHangar->setDroneState(DroneState::TAKING_OFF);
+            pUserPanel->displayTakeOff();
             this->setDoorState(DoorState::OPENING);
             this->stateTimestamp = millis();
             pHangar->openDoor();
@@ -65,35 +66,36 @@ void DoorTask::tick() {
         /*
         During the take-off and landing phases, L2 blinks, with period 0.5 second -- otherwise it is off.
         */
-        if (pCommunicationCenter && pCommunicationCenter->checkAndResetLandingRequest()) {
+        if (pCommunicationCenter && pCommunicationCenter->checkAndResetLandingRequest() && pHangar->isDroneAbove()) {
             Logger.log(F("[DR] landing request from DRU"));
             pHangar->setDroneState(DroneState::LANDING);
+            pUserPanel->displayLanding();
             this->setDoorState(DoorState::OPENING);
             this->stateTimestamp = millis();
             pHangar->openDoor();
             Logger.log(F("[DO] opening door"));
-            // TODO ApriPorta ecc..
         }
 
 
     } else if (this->doorState == DoorState::OPENING && elapsedTimeInState() > DOOR_TIME) {
-        // TODO Se la porta si sta aprendo da n secondi
         this->setDoorState(DoorState::OPEN);
+        // pUserPanel->displayDroneOut();
         this->stateTimestamp = millis();
         Logger.log(F("[DO] Door is Open"));
 
-    } else if (this->doorState == DoorState::CLOSING && elapsedTimeInState() > DOOR_TIME) {
-        // TODO Se la porta si sta aprendo da n secondi
-        this->setDoorState(DoorState::CLOSED);
-        Logger.log(F("[DO] Door is Closed"));
-
     } else if (this->doorState == DoorState::OPEN && elapsedTimeInState() > SPILLING_MAX_TIME) { // TODO Check drone
         this->setDoorState(DoorState::CLOSING);
+        pUserPanel->displayDroneOut();
         this->stateTimestamp = millis();
         pHangar->closeDoor();
         Logger.log(F("[DO] closing door"));
-        // TODO Se la porta è aperta da n secondi e il drone è volato via chiudi
-    } 
+        
+    } else if (this->doorState == DoorState::CLOSING && elapsedTimeInState() > DOOR_TIME) {
+        this->setDoorState(DoorState::CLOSED);
+        pUserPanel->displayDroneInside();
+        Logger.log(F("[DO] Door is Closed"));
+
+    }
 }
 
 void DoorTask::setDoorState(DoorState state) {
