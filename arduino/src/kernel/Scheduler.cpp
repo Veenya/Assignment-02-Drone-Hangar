@@ -1,13 +1,23 @@
 #include "Scheduler.h"
+#include <TimerOne.h>
+
+volatile bool timerFlag;
+
+void timerHandler(void){
+  timerFlag = true;
+}
 
 void Scheduler::init(int basePeriod){
   this->basePeriod = basePeriod;
+  timerFlag = false;
+  long period = 1000l*basePeriod;
+  Timer1.initialize(period);
+  Timer1.attachInterrupt(timerHandler);
   nTasks = 0;
-  lastRun = millis();    // primo riferimento temporale
 }
 
 bool Scheduler::addTask(Task* task){
-  if (nTasks < MAX_TASKS){
+  if (nTasks < MAX_TASKS-1){
     taskList[nTasks] = task;
     nTasks++;
     return true;
@@ -17,15 +27,8 @@ bool Scheduler::addTask(Task* task){
 }
   
 void Scheduler::schedule(){   
-  unsigned long now = millis();
-
-  // se non è ancora passato il periodo base, non facciamo nulla
-  if (now - lastRun < (unsigned long)basePeriod){
-    return;
-  }
-
-  // aggiorna il riferimento
-  lastRun = now;
+  while (!timerFlag){}
+  timerFlag = false;
 
   for (int i = 0; i < nTasks; i++){
     if (taskList[i]->isActive()){
