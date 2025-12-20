@@ -1,5 +1,5 @@
+#include <Arduino.h>
 #include "HWPlatform.h"
-
 #include "devices/button/ButtonImpl.h"
 #include "devices/led/Led.h"
 #include "devices/pir/Pir.h"
@@ -7,79 +7,39 @@
 #include "devices/temperature_sensor/TemperatureSensorDHT11.h"
 #include "devices/servo_motor/servo_motor_impl.h"
 
-HWPlatform::HWPlatform()
-  : pDdd(nullptr),
-    pDpd(nullptr),
-    pDoorMotor(nullptr),
-    pTempSensor(nullptr),
-    pLcd(nullptr),
-    pL1(nullptr),
-    pL2(nullptr),
-    pL3(nullptr),
-    pResetButton(nullptr) {
-}
+void wakeUp() {}
 
-void HWPlatform::init() {
-  // --- crea i sensori / attuatori usando i pin da config.h ---
-
-  // Sonar per distanza del drone (DDD)
+HWPlatform::HWPlatform() {
   pDdd = new Sonar(SONAR_ECHO_PIN, SONAR_TRIG_PIN, MAX_TIME_US); 
-  // se non hai DDD_MAX_TIME_US, puoi definirlo in config.h (es. 30000L)
-
-  // PIR per presenza drone (DPD)
   pDpd = new Pir(PIR_PIN);
-
-  // Servo porta hangar
   pDoorMotor = new ServoMotorImpl(SERVO_PIN);
-  pDoorMotor->on();    // attacca subito il servo
-
-  // Sensore temperatura (DHT11) dietro interfaccia TempSensor
   pTempSensor = new TempSensorDHT11(TEMP_PIN);
-
-  // LCD I2C operatore
   pLcd = new LiquidCrystal_I2C(LCD_ADDR, 16, 2);
-  pLcd->init();
-  pLcd->backlight();
-  pLcd->clear();
-  pLcd->setCursor(0, 0);
-  pLcd->print("DRONE INSIDE");   // stato iniziale richiesto
-
-  // LED
   pL1 = new Led(L1_PIN);
   pL2 = new Led(L2_PIN);
   pL3 = new Led(L3_PIN);
-
-  // Assicuriamoci che all'inizio siano nello stato di default
-  pL1->switchOn();     // ad esempio "sistema acceso"
-  pL2->switchOff();
-  pL3->switchOff();
-
-  // Bottone reset allarme
   pResetButton = new ButtonImpl(BUTTON_PIN);
 }
 
-/*
+void HWPlatform::init() {
+  //pDoorMotor->on();    // attacca subito il servo
+  pLcd->init();
+  pLcd->backlight();
+  //pLcd->clear();
+  //pLcd->setCursor(0, 0);
+  //pLcd->print("DRONE INSIDE");   // stato iniziale richiesto
+  //pL1->switchOn();     // ad esempio "sistema acceso"
+  //pL2->switchOff();
+  //pL3->switchOff();
 
-In HWPlatform::test() scrivo tutte le prove:
+  //attachInterrupt(digitalPinToInterrupt(PIR_PIN), wakeUp, RISING);
 
-muovi il servo,
+  Button* HWPlatform::getResetButton(){
+    return this->pButton;
+  }
 
-leggi sonar e stampi sul seriale,
+}
 
-accendi/spegni led,
-
-scrivi qualcosa sull’LCD,
-
-ecc.
-
-Registri questo task nello Scheduler con un certo periodo (es. 100 ms).
-
-Finché il task è attivo, chiamerà continuamente pHW->test() e tu vedi se tutto funziona.
-
-*/
-
-#include <Arduino.h>
-#include "HWPlatform.h"
 
 void HWPlatform::test() {
   // --- static state (persists between calls) ---

@@ -22,7 +22,7 @@ public:
   void init();   // inizializza tutto l'hardware (lcd, pins, ecc.)
   void test();   // inizializza i test
 
-  // --- accesso ai device ---
+  /* ---------------------------------- ACCESSO AI DEVICE ---------------------------------- */
 
   // Drone Distance Detector (sonar dentro l’hangar)
   Sonar* getDDD();
@@ -52,7 +52,7 @@ private:
   Sonar* pDdd;
   Pir* pDpd;
   ServoMotor* pDoorMotor;
-  TempSensor* pTempSensor;           // in .cpp la costruirai come TempSensorDHT11
+  TempSensor* pTempSensor;       
   LiquidCrystal_I2C* pLcd;
   Led* pL1;
   Led* pL2;
