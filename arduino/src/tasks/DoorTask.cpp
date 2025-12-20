@@ -23,7 +23,8 @@ void DoorTask::tick() {
     All operations are suspended until the RESET button is pressed by an operator. When RESET is pressed, 
     it is assumed that all issues have been resolved, and the system returns to the normal state.
     */
-    if (pHangar->getHangarState() == HangarState::ALARM) {
+    this->droneState = pHangar->getDroneState();
+    if (pHangar->getHangarState() == HangarState::ALARM && (this->droneState != DroneState::TAKING_OFF || this->droneState != DroneState::LANDING)) {
 
         if (pUserPanel) {
             pUserPanel->sync(); // aggiorno stato del pannello (bottone reset)
@@ -33,7 +34,7 @@ void DoorTask::tick() {
             }
         } 
 
-    } else if (this->state == DoorState::CLOSED) {
+    } else if (this->doorState == DoorState::CLOSED) {
         // --- controlla se c'è una richiesta di TAKE-OFF dal DRU ---
         /*
         Take-off phase: The drone activates the hangar door opening command by sending a message through the DRU subsystem. 
@@ -75,18 +76,18 @@ void DoorTask::tick() {
         }
 
 
-    } else if (this->state == DoorState::OPENING && elapsedTimeInState() > DOOR_TIME) {
+    } else if (this->doorState == DoorState::OPENING && elapsedTimeInState() > DOOR_TIME) {
         // TODO Se la porta si sta aprendo da n secondi
         this->setDoorState(DoorState::OPEN);
         this->stateTimestamp = millis();
         Logger.log(F("[DO] Door is Open"));
 
-    } else if (this->state == DoorState::CLOSING && elapsedTimeInState() > DOOR_TIME) {
+    } else if (this->doorState == DoorState::CLOSING && elapsedTimeInState() > DOOR_TIME) {
         // TODO Se la porta si sta aprendo da n secondi
         this->setDoorState(DoorState::CLOSED);
         Logger.log(F("[DO] Door is Closed"));
 
-    } else if (this->state == DoorState::OPEN && elapsedTimeInState() > SPILLING_MAX_TIME) { // TODO Check drone
+    } else if (this->doorState == DoorState::OPEN && elapsedTimeInState() > SPILLING_MAX_TIME) { // TODO Check drone
         this->setDoorState(DoorState::CLOSING);
         this->stateTimestamp = millis();
         pHangar->closeDoor();
@@ -96,7 +97,7 @@ void DoorTask::tick() {
 }
 
 void DoorTask::setDoorState(DoorState state) {
-    this->state = state;
+    this->doorState = state;
     stateTimestamp = millis();
 }
 

@@ -22,7 +22,8 @@ private:
     void setDoorState(DoorState state);
     long elapsedTimeInState();
 
-    DoorState state;
+    DoorState doorState;
+    DroneState droneState;
     long stateTimestamp;
 
     CommunicationCenter* pCommunicationCenter;
