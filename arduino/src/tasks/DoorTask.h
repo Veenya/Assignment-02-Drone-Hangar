@@ -5,6 +5,7 @@
 #include "model/States.h"
 #include "model/CommunicationCenter.h"
 #include "model/Hangar.h"
+#include "model/UserPanel.h"
 
 /*
  * Task che gestisce la porta dell'hangar.
@@ -14,7 +15,7 @@
 class DoorTask : public Task {
 
 public:
-    DoorTask(CommunicationCenter* pCommunicationCenter, Hangar* pHangar);
+    DoorTask(CommunicationCenter* pCommunicationCenter, Hangar* pHangar, UserPanel* pPanel);
     void tick();
 
 private:
@@ -26,6 +27,7 @@ private:
 
     CommunicationCenter* pCommunicationCenter;
     Hangar* pHangar;
+    UserPanel* pUserPanel;
 };
 
 #endif

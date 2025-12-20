@@ -20,5 +20,7 @@
 
 #define DOOR_CLOSED_ANGLE 0
 #define DOOR_OPEN_ANGLE   90
+#define DOOR_TIME           1000      // ms per aprire/chiudere la porta
+#define SPILLING_MAX_TIME   20000     // ms di "operazione" (decollo/landing)
 
 #endif
