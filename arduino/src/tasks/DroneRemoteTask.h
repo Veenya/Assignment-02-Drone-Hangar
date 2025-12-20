@@ -4,6 +4,7 @@
 #include "kernel/Task.h"
 #include "model/CommunicationCenter.h"
 #include "model/Hangar.h"
+#include "model/States.h"
 
 /*
  * Task che gestisce la comunicazione con il DRU (Drone Remote Unit).
@@ -14,25 +15,22 @@
 class DroneRemoteTask : public Task {
 
 public:
-  DroneRemoteTask(CommunicationCenter* pCommunicationCenter, Hangar* pHangar);
-  void tick();
+    DroneRemoteTask(CommunicationCenter* pCommunicationCenter, Hangar* pHangar);
+    void tick();
 
 private:
-  enum State {
-    NORMAL,                 // situazione normale: nessun allarme
-    WAITING_FOR_RESET_ALARM // siamo in allarme: aspettiamo reset dal DRU o dal bottone
-  };
+    unsigned long lastStateUpdate;
+    unsigned long now;
+    void setState(DroneState state);
+    long elapsedTimeInState();
+    bool checkAndSetJustEntered();
 
-  void setState(State state);
-  long elapsedTimeInState();
-  bool checkAndSetJustEntered();
+    DroneState state;
+    long stateTimestamp;
+    bool justEntered;
 
-  State state;
-  long stateTimestamp;
-  bool justEntered;
-
-  CommunicationCenter* pCommunicationCenter;
-  Hangar* pHangar;
+    CommunicationCenter* pCommunicationCenter;
+    Hangar* pHangar;
 };
 
 #endif

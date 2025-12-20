@@ -12,23 +12,21 @@
 class TemperatureTask: public Task {
 
 public:
-  TemperatureTask(Hangar* pHangar); 
-  void tick();
+    TemperatureTask(Hangar* pHangar); 
+    void tick();
 
 private:  
-  enum State {NORMAL, PRE_ALARM, ALARM};
-  
-  void setState(State s);
-  long elapsedTimeInState();
-  void log(const String& msg);
-  
-  bool checkAndSetJustEntered();
+    void setState(HangarState s);
+    long elapsedTimeInState();
+    void log(const String& msg);
+    
+    bool checkAndSetJustEntered();
 
-  long stateTimestamp;
-  bool justEntered;
-  State state;
+    long stateTimestamp;
+    bool justEntered;
+    HangarState state;
 
-  Hangar* pHangar;
+    Hangar* pHangar;
 };
 
 #endif

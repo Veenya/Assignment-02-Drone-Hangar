@@ -8,7 +8,7 @@
 
 TemperatureTask::TemperatureTask(Hangar* pHangar) : 
     pHangar(pHangar) {
-    setState(NORMAL);
+    setState(HangarState::NORMAL);
 }
 
 void TemperatureTask::tick(){
@@ -17,7 +17,7 @@ void TemperatureTask::tick(){
     float temp = pHangar->getTemperature(); //! controlla se il prof lo mette
 
     switch (state){    
-    case NORMAL: {
+    case HangarState::NORMAL: {
         // TODO: possibilmente togliere l'if
         if (this->checkAndSetJustEntered()){ //? Serve?
             Logger.log(F("[TEMP] normal"));
@@ -25,27 +25,27 @@ void TemperatureTask::tick(){
         }
 
         if (temp > MAXTEMP){
-            setState(PRE_ALARM);
+            setState(HangarState::PRE_ALARM);
         }
         break;
     }
 
-    case PRE_ALARM: {        
+    case HangarState::PRE_ALARM: {        
         if (checkAndSetJustEntered()){
             Logger.log(F("[TEMP] pre-alarm"));
         }
         
         if (temp < MAXTEMP){
             // la temperatura è tornata sotto soglia
-            setState(NORMAL);
+            setState(HangarState::NORMAL);
         } else if (elapsedTimeInState() > MAXTEMPTIME){
             // troppo tempo sopra soglia -> allarme
-            setState(ALARM);
+            setState(HangarState::ALARM);
         }
         break;       
     }
 
-    case ALARM: {
+    case HangarState::ALARM: {
         if (checkAndSetJustEntered()){
             Logger.log(F("[TEMP] alarm"));
             // qui metti lo stato di allarme / manutenzione
@@ -55,15 +55,15 @@ void TemperatureTask::tick(){
         // Esci dall'allarme quando qualcuno rimette l'hangar in stato normale
         // TODO: controlla se va col tasto
         if (pHangar->getHangarState() == HangarState::NORMAL){
-            setState(NORMAL);
+            setState(HangarState::NORMAL);
         }
         break;
     }    
     }
 }
 
-void TemperatureTask::setState(State s){ 
-    state = s;
+void TemperatureTask::setState(HangarState state){ 
+    this->state = state;
     stateTimestamp = millis();
     justEntered = true;
 }
@@ -75,7 +75,7 @@ long TemperatureTask::elapsedTimeInState(){
 bool TemperatureTask::checkAndSetJustEntered(){
     bool bak = justEntered;
     if (justEntered){
-      justEntered = false;
+        justEntered = false;
     }
     return bak;
 }

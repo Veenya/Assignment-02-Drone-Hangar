@@ -26,8 +26,8 @@ void Hangar::init() {
 
 /* --------- Stato drone --------- */
 
-void Hangar::setDroneState(DroneState s) {
-  droneState = s;
+void Hangar::setDroneState(DroneState state) {
+  droneState = state;
 }
 
 DroneState Hangar::getDroneState() const {

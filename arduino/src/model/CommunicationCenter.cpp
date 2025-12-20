@@ -31,17 +31,44 @@ void CommunicationCenter::sync(){
     if (msg != NULL){
       String msgContent = msg->getContent();
       Logger.log("Received msg: " + msgContent);
-      if (msgContent == "to" || msgContent == "la"){ // Take off or landing
+      if (msgContent == "to" ){ // Take off
+        openDoorNotification = true; // TODO decidere quale tenere
+        takeOffNotification = true;
+      } else if (msgContent == "la") { // Landing
         openDoorNotification = true;
-      } 
+        landingNotification = true;
+      }
       delete msg;
     }  
   }
 }
 
 bool CommunicationCenter::checkAndResetOpenDoorRequest(){
-  bool com = this->openDoorNotification;
+  bool request = this->openDoorNotification;
   openDoorNotification = false;
-  return com;
+  return request;
 }
 
+bool CommunicationCenter::checkAndResetTakeOffRequest(){
+  bool request = this->takeOffNotification;
+  takeOffNotification = false;
+  return request;
+}
+
+bool CommunicationCenter::checkAndResetLandingRequest(){
+  bool request = this->landingNotification;
+  landingNotification = false;
+  return request;
+}
+
+bool CommunicationCenter::checkAndResetAlarmRequest() {
+  bool request = this->resetAlarmsNotification;
+  resetAlarmsNotification = false;
+  return request;
+}
+
+bool CommunicationCenter::notifyAlarm(){
+  bool request = this->alarmNotification;
+  alarmNotification = false;
+  return request;
+}

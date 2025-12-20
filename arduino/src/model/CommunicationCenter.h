@@ -24,7 +24,7 @@ public:
   bool checkAndResetOpenDoorRequest();
   bool checkAndResetTakeOffRequest(); //? Serve la distinzione?
   bool checkAndResetLandingRequest(); //? Serve la distinzione?
-  bool checkAndResetAlarmResetRequest(); //? Serve?
+  bool checkAndResetAlarmRequest(); //? Serve?
   bool notifyAlarm(); //? Serve?
   
 
@@ -34,6 +34,10 @@ public:
 private:
   Hangar* pHangar;
   bool openDoorNotification;
+  bool takeOffNotification;
+  bool landingNotification;
+  bool resetAlarmsNotification;
+  bool alarmNotification;
 };
 
 #endif

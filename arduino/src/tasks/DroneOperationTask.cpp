@@ -79,8 +79,8 @@ void DroneOperationTask::tick(){
   }
 }
 
-void DroneOperationTask::setState(State s){
-  state = s;
+void DroneOperationTask::setState(State state){
+  this->state = state;
   stateTimestamp = millis();
   justEntered = true;
 }

@@ -9,7 +9,7 @@
 DroneRemoteTask::DroneRemoteTask(CommunicationCenter* pCommunicationCenter, Hangar* pHangar)
   : pCommunicationCenter(pCommunicationCenter),
     pHangar(pHangar) {
-  setState(NORMAL);
+  setState(DroneState::NORMAL);
 }
   
 void DroneRemoteTask::tick(){    
@@ -19,75 +19,17 @@ void DroneRemoteTask::tick(){
   }
 
   // 2) invia periodicamente lo stato corrente al DRU
-  static unsigned long lastStateUpdate = 0;
-  unsigned long now = millis();
+  lastStateUpdate = 0;
+  now = millis();
 
   if (pCommunicationCenter && (now - lastStateUpdate >= STATE_UPDATE_PERIOD)) {
     lastStateUpdate = now;
     pCommunicationCenter->notifyNewState();
   }
-
-  // 3) gestione macchina a stati
-  switch (state) {
-
-  case NORMAL: {
-    if (checkAndSetJustEntered()) {
-      Logger.log(F("[DR] normal"));
-    }
-
-    // --- controlla se c'è una richiesta di TAKE-OFF dal DRU ---
-    if (pCommunicationCenter && pCommunicationCenter->checkAndResetTakeOffRequest()) {
-      Logger.log(F("[DR] take-off request from DRU"));
-      // il drone parte dal REST dentro l'hangar
-      pHangar->setDroneState(DroneState::TAKING_OFF);
-      // altri task (es. DroneOperationTask) si occuperanno di aprire porta, ecc.
-    }
-
-    // --- controlla se c'è una richiesta di LANDING dal DRU ---
-    if (pCommunicationCenter && pCommunicationCenter->checkAndResetLandingRequest()) {
-      Logger.log(F("[DR] landing request from DRU"));
-      pHangar->setDroneState(DroneState::LANDING);
-      // anche qui: la logica di porta/sonar viene gestita da altri task
-    }
-
-    // --- se l'hangar va in allarme, passiamo allo stato di attesa reset ---
-    if (pHangar->getHangarState() == HangarState::ALARM) {
-      setState(WAITING_FOR_RESET_ALARM);
-    }
-
-    break;
-  }
-
-  case WAITING_FOR_RESET_ALARM: {
-    if (checkAndSetJustEntered()) {
-      Logger.log(F("[DR] alarm state, notifying DRU"));
-
-      // se il drone è fuori, manda un messaggio di ALLARM al DRU
-      if (!pHangar->isDroneInside() && pCommunicationCenter) {
-        // TODO: adatta al tuo protocollo
-        pCommunicationCenter->notifyAlarm();      // ad es. manda "ALLARM" sul canale seriale
-      }
-    }
-
-    // qui puoi decidere come uscire dall'allarme:
-    // - reset da PC (DRU)
-    // - reset da bottone locale (UserPanel)
-    bool resetFromRemote = pCommunicationCenter && pCommunicationCenter->checkAndResetAlarmResetRequest();
-    bool hangarBackToNormal = (pHangar->getHangarState() == HangarState::NORMAL);
-
-    if (resetFromRemote || hangarBackToNormal) {
-      Logger.log(F("[DR] alarm reset, back to NORMAL"));
-      setState(NORMAL);
-    }
-
-    break;
-  }
-
-  } // end switch
 }
 
-void DroneRemoteTask::setState(State s){
-  state = s;
+void DroneRemoteTask::setState(DroneState state){
+  this->state = state;
   stateTimestamp = millis();
   justEntered = true;
 }

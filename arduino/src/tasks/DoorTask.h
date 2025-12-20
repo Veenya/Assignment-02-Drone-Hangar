@@ -1,0 +1,31 @@
+#ifndef __DOOR_TASK__
+#define __DOOR_TASK__
+
+#include "kernel/Task.h"
+#include "model/States.h"
+#include "model/CommunicationCenter.h"
+#include "model/Hangar.h"
+
+/*
+ * Task che gestisce la porta dell'hangar.
+ * - legge lo stato delle richieste/notifiche
+ * - apre e chiude la porta
+ */
+class DoorTask : public Task {
+
+public:
+    DoorTask(CommunicationCenter* pCommunicationCenter, Hangar* pHangar);
+    void tick();
+
+private:
+    void setDoorState(DoorState state);
+    long elapsedTimeInState();
+
+    DoorState state;
+    long stateTimestamp;
+
+    CommunicationCenter* pCommunicationCenter;
+    Hangar* pHangar;
+};
+
+#endif
