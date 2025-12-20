@@ -14,14 +14,14 @@ HangarDoor::HangarDoor(ServoMotor* doorMotor)
 }
 
 void HangarDoor::setOpenAngle(int angle) {
-  if (angle < 0)   angle = 0;
-  if (angle > 180) angle = 180;
+  if (angle < DOOR_OPEN_ANGLE)   angle = DOOR_OPEN_ANGLE;
+  if (angle > DOOR_CLOSED_ANGLE) angle = DOOR_CLOSED_ANGLE;
   openAngle = angle;
 }
 
 void HangarDoor::setClosedAngle(int angle) {
-  if (angle < 0)   angle = 0;
-  if (angle > 180) angle = 180;
+  if (angle < DOOR_OPEN_ANGLE)   angle = DOOR_OPEN_ANGLE;
+  if (angle > DOOR_CLOSED_ANGLE) angle = DOOR_CLOSED_ANGLE;
   closedAngle = angle;
 }
 
