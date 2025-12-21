@@ -29,30 +29,22 @@ public class MonitoringAgent extends Thread {
 	
 
 	// Hangar state Names
+	// TODO riscrivere in enum
 	static final String[] hangarStates = {"Normal", "Allarm", "Preallarm"};  
 	static final int NORMAL = 0;
 	static final int ALLARM = 1;
 	static final int PREALLARM = 2;
 
-	/*
-	// Door state names
-	static final String[] doorStates = {"Open", "Closed", "Moving", "Opening", "Closing"};  
-	static final int OPEN = 0;
-	static final int CLOSED = 1;
-	static final int MOVING = 2;
-	static final int OPENING = 3;
-	static final int CLOSING = 4;
-	*/
 
 	/* ************************************************ */
 	/* ******************* DEBUGGING ****************** */
 	/* ************************************************ */
 	/* How to make a message */
 	/* State,<the drone state(Inside, Operating)>,<the hangar state (allarm, normal)>,<distance from ground, it's a number> */
-	static final boolean DEBUGGING = true; 
-	// static final boolean DEBUGGING = false; 
+	// static final boolean DEBUGGING = true; 
+	static final boolean DEBUGGING = false; 
 	// static final String debuggingMsg = "STATE,1,0,100"; // STATE,<hangar>,<distance>,<temp>
-	static final String debuggingMsg = "STATE,0,10,20.70"; // STATE,<hangar>,<distance>,<temp>
+	static final String debuggingMsg = "STATE,0,0,10,20.70"; // STATE,<hangar state>,<drone state><distance>,<temp>
 
 	
 	
@@ -107,15 +99,20 @@ public class MonitoringAgent extends Thread {
 						if (elems.length >= 3) {
 							// <hangar>,<distance>,<temp>
 							int hangarCode = Integer.parseInt(elems[0]);
-							float groundDistance = Float.parseFloat(elems[1]);
-							float hangarTemperature = Float.parseFloat(elems[2]);
+							int droneCode = Integer.parseInt(elems[1]);
+							float groundDistance = Float.parseFloat(elems[2]);
+							float hangarTemperature = Float.parseFloat(elems[3]);
 							
 							view.setHangarState(hangarStates[hangarCode]);
 							view.setGroundDistance(groundDistance);
 							view.setHangarTemperature(hangarTemperature);
 							// TODO Aggiungere stato drone
 							
-							
+							if (droneCode == 0) {
+								droneState = DroneState.INSIDE;
+							} else if (droneCode == 1) {
+								droneState = DroneState.OPERATING;
+							}
 
 							if (droneState == DroneState.INSIDE && !canTakeoff) { // inside
 								canTakeoff = true;

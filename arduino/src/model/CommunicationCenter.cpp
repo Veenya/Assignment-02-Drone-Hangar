@@ -11,20 +11,29 @@ void CommunicationCenter::init(){
 }
 
 void CommunicationCenter::notifyNewState(){
-  String st;
-  if (pHangar->getHangarState() == HangarState::ALARM) {
-    st = "2";
-  } else if (pHangar->getHangarState() == HangarState::PRE_ALARM) {
-    st = "1";
+  HangarState hangarState = pHangar->getHangarState();
+  String hangarStateStr;
+  if (hangarState == HangarState::ALARM) {
+    hangarStateStr = "2";
+  } else if (hangarState == HangarState::PRE_ALARM) {
+    hangarStateStr = "1";
   } else {   // NORMAL
-    st = "0";
+    hangarStateStr = "0";
+  }
+
+  DroneState droneState = pHangar->getDroneState();
+  String droneStateStr = "-1";
+  if (droneState == DroneState::REST) {
+      droneStateStr = "0";
+    } else if (droneState == DroneState::OPERATING) {
+    droneStateStr = "1";
   }
   // int droneDistance = pHangar->getDistance();
   int droneDistance = 10;
   float currentTemp = pHangar->getTemperature();
 
-  // stato del hangar, distanza drone, temperatura
-  MsgService.sendMsg(String("STATE,") + st + "," + String(droneDistance).substring(0,5) + "," +  String(currentTemp).substring(0,5));  
+  // stato del hangar, stato drone, distanza drone, temperatura
+  MsgService.sendMsg(String("STATE,") + hangarStateStr + "," + droneStateStr + "," + String(droneDistance).substring(0,5) + "," +  String(currentTemp).substring(0,5));  
 }
 
 void CommunicationCenter::sync(){
