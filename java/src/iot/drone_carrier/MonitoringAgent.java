@@ -18,11 +18,15 @@ public class MonitoringAgent extends Thread {
 	/* "ENUMS" */
 
 	// Drone state Names
-	static final String[] droneStates = {"Inside", "Operating", "Request Landing", "Request Takeoff"};  
-	static final int INSIDE = 0;
-	static final int OPERATING = 1;
-	static final int REQUEST_LANDING = 2;
-	static final int REQUEST_TAKEOFF = 3;
+	public enum DroneState {
+		INSIDE,
+		OPERATING,
+		REQUEST_LANDING,
+		REQUEST_TAKEOFF;
+	}
+	public DroneState droneState = DroneState.INSIDE;
+
+	
 
 	// Hangar state Names
 	static final String[] hangarStates = {"Normal", "Allarm", "Preallarm"};  
@@ -46,7 +50,9 @@ public class MonitoringAgent extends Thread {
 	/* How to make a message */
 	/* State,<the drone state(Inside, Operating)>,<the hangar state (allarm, normal)>,<distance from ground, it's a number> */
 	static final boolean DEBUGGING = true; 
-	static final String debuggingMsg = "STATE,1,0,100"; // STATE,<hangar>,<distance>,<temp>
+	// static final boolean DEBUGGING = false; 
+	// static final String debuggingMsg = "STATE,1,0,100"; // STATE,<hangar>,<distance>,<temp>
+	static final String debuggingMsg = "STATE,0,10,20.70"; // STATE,<hangar>,<distance>,<temp>
 
 	
 	
@@ -57,14 +63,8 @@ public class MonitoringAgent extends Thread {
 	}
 	
 	public void run(){
-		boolean isInside = true;
-
 		boolean canLand = false;
 		boolean canTakeoff = false;
-
-		boolean inAllarm = false; 
-		//boolean inPreallarm = false;
-		//boolean doorOpen = false;
 
 
 		/* Logica:
@@ -117,19 +117,18 @@ public class MonitoringAgent extends Thread {
 							
 							
 
-							if (hangarTemperature == INSIDE && !canTakeoff) { // inside
+							if (droneState == DroneState.INSIDE && !canTakeoff) { // inside
 								canTakeoff = true;
-								groundDistance = 0;
 								view.enableTakeoff();
-								
-							} else if (hangarTemperature == OPERATING && !canLand) {
+
+							} else if (droneState == DroneState.OPERATING && !canLand) {
 								canLand = true;
 								view.enableLanding();
-							} else if (hangarTemperature != OPERATING && canLand) {
+							} else if (droneState != DroneState.OPERATING && canLand) {
 								canLand = false;
 								view.disableLanding();
 							}
-							else if (hangarTemperature != INSIDE && canTakeoff) { // inside
+							else if (droneState != DroneState.INSIDE && canTakeoff) { // inside
 								canTakeoff = false;
 								view.disableTakeoff();
 							}
@@ -152,6 +151,15 @@ public class MonitoringAgent extends Thread {
 			}
 		}
 
+		
 	}
 
+
+	void setDroneStateInside() {
+		this.droneState = DroneState.INSIDE;
+	}
+
+	void setDroneStateOperating() {
+		this.droneState = DroneState.OPERATING;
+	}
 }

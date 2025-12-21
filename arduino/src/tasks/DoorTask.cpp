@@ -8,6 +8,7 @@ DoorTask::DoorTask(CommunicationCenter* pCommunicationCenter, Hangar* pHangar, U
         pHangar(pHangar),
         pUserPanel(pUserPanel) {
     setDoorState(DoorState::CLOSED);
+    pHangar->setDroneState(DroneState::REST);
     droneInRange = true;
 }
 
@@ -35,7 +36,7 @@ void DoorTask::tick() {
             }
         } 
 
-    } else if (this->doorState == DoorState::CLOSED) {
+    } else if (this->doorState == DoorState::CLOSED && pHangar->getDroneState() == DroneState::REST) {
         // --- controlla se c'è una richiesta di TAKE-OFF dal DRU ---
         /*
         Take-off phase: The drone activates the hangar door opening command by sending a message through the DRU subsystem. 
@@ -67,7 +68,7 @@ void DoorTask::tick() {
         /*
         During the take-off and landing phases, L2 blinks, with period 0.5 second -- otherwise it is off.
         */
-        if (pCommunicationCenter && pCommunicationCenter->checkAndResetLandingRequest() && pHangar->isDroneAbove()) {
+        else if (pCommunicationCenter && pCommunicationCenter->checkAndResetLandingRequest() && pHangar->isDroneAbove()) {
             Logger.log(F("[DR] landing request from DRU"));
             pHangar->setDroneState(DroneState::LANDING);
             pUserPanel->displayLanding();
@@ -75,6 +76,9 @@ void DoorTask::tick() {
             this->stateTimestamp = millis();
             pHangar->openDoor();
             Logger.log(F("[DO] opening door"));
+        } else {
+            Logger.log(F("[DR] DRONE Chilling"));
+            pUserPanel->displayDroneInside();
         }
 
 
@@ -84,7 +88,7 @@ void DoorTask::tick() {
         this->stateTimestamp = millis();
         Logger.log(F("[DO] Door is Open"));
 
-    } else if (this->doorState == DoorState::OPEN && pHangar->getDroneState() == DroneState::NORMAL) { // TODO Check drone
+    } else if (this->doorState == DoorState::OPEN && pHangar->getDroneState() == DroneState::NORMAL) {
         pHangar->setDroneState(DroneState::TAKING_OFF);
         Logger.log(F("[DO] drone is taking off"));
         
@@ -101,7 +105,7 @@ void DoorTask::tick() {
             Logger.log(F("[DO] closing door")); 
         } else if (pHangar->getDistance() < D1 && !droneInRange) { // drone torna in range prima di n secondi, resetto il timer
             droneInRange = true;
-        }
+        } // TODO manca parte atterraggio
         
     } else if (this->doorState == DoorState::CLOSING && elapsedTimeInState() > DOOR_TIME) {
         this->setDoorState(DoorState::CLOSED);

@@ -210,17 +210,13 @@ the current state of the drone hangar (normal, alarm);
 	// Cosa fare quando un tasto e' cliccato
 	public void actionPerformed(ActionEvent ev){
 		try {
-			if (ev.getSource() == landButton) {
-				// Se premuto il tasto Land
+			if (ev.getSource() == landButton) {			// Se premuto il tasto Land
 				landButton.setEnabled(false);
 				controller.notifyLanding();
-				hangarTemperature.setText("Inside"); // change drone state
 			}
-			else if (ev.getSource() == takeOffButton) {
-				// se premuto il tasto takeoff
+			else if (ev.getSource() == takeOffButton) { // se premuto il tasto takeoff
 				takeOffButton.setEnabled(false);
 				controller.notifyTakingOff();
-				hangarTemperature.setText("Operating"); // change drone state
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
