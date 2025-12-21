@@ -20,6 +20,7 @@ public:
   void turnOffDisplay();
   void displayDroneInside();
   void displayTakeOff();
+  void displayWaitingDoor();
   void displayDroneOut();
   void displayLanding();
   void displayAlarm();

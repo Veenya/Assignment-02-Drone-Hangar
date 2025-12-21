@@ -45,6 +45,12 @@ void UserPanel::displayTakeOff() {
   pLcd->print("TAKE OFF");
 }
 
+void UserPanel::displayWaitingDoor() {
+  pLcd->clear();
+  pLcd->setCursor(0, 0); 
+  pLcd->print("WAITING DOOR");
+}
+
 void UserPanel::displayDroneOut() {
   pLcd->clear();
   pLcd->setCursor(0, 0); 
