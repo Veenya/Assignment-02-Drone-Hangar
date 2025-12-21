@@ -40,6 +40,7 @@ private:
   bool alarmNotification;
   float droneDistance;
   float currentTemp;
+  DroneState droneState;
 };
 
 #endif

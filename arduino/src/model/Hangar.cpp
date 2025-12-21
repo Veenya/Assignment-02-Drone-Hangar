@@ -13,34 +13,29 @@ Hangar::Hangar(HWPlatform* hw)
 }
 
 void Hangar::init() {
-  // stato iniziale richiesto:
-  // - porta chiusa
-  // - drone dentro
-  // - hangar normale
-
-  closeDoor();                   // chiude fisicamente la porta
-  droneInside = true;
-  droneState = DroneState::REST;
-  hangarState = HangarState::NORMAL;
+    closeDoor();                   // chiude fisicamente la porta
+    droneInside = true;
+    droneState = DroneState::REST;
+    hangarState = HangarState::NORMAL;
 }
 
 /* --------- Stato drone --------- */
 
 void Hangar::setDroneState(DroneState state) {
-  droneState = state;
+    this->droneState = state;
 }
 
-DroneState Hangar::getDroneState() const {
-  return droneState;
+DroneState Hangar::getDroneState() {
+    return this->droneState;
 }
 
-void Hangar::setDroneInside(bool inside) {
-  droneInside = inside;
-}
+// void Hangar::setDroneInside(bool inside) {
+//   droneInside = inside;
+// }
 
-bool Hangar::isDroneInside() const {
-  return droneInside;
-}
+// bool Hangar::isDroneInside() const {
+//   return droneInside;
+// }
 
 /* --------- Porta hangar --------- */
 
@@ -60,7 +55,7 @@ void Hangar::closeDoor() {
   }
 }
 
-bool Hangar::isDoorOpen() const {
+bool Hangar::isDoorOpen() {
   return doorOpen;
 }
 
@@ -84,33 +79,33 @@ bool Hangar::isDroneAbove() {
 }
 
 float Hangar::getTemperature() {
-  auto ts = hw->getTempSensor();
-  if (!ts) {
+  auto temperatureSensor = hw->getTempSensor();
+  if (!temperatureSensor) {
     return NAN;
   }
-  return ts->getTemperature();
+  return temperatureSensor->getTemperature();
 }
 
 /* --------- Stato hangar / allarmi --------- */
 
-void Hangar::setHangarState(HangarState s) {
-  hangarState = s;
+void Hangar::setHangarState(HangarState state) {
+    this->hangarState = state;
 }
 
-HangarState Hangar::getHangarState() const {
-  return hangarState;
+HangarState Hangar::getHangarState() {
+    return this->hangarState;
 }
 
 
 void Hangar::sync(){
-  float dist = lastDistance; 
-  currentTemp = lastTemperature;
-  
+    float dist = lastDistance; 
+    currentTemp = lastTemperature;
+    
     currentTemp = hw->getTempSensor()->getTemperature();
     dist = hw->getDDD()->getDistance();
-    if (dist == SONAR_NO_OBJ_DETECTED){
-      dist = 1000; // TODO: cambia
-    }
+    // if (dist == SONAR_NO_OBJ_DETECTED){
+    //   dist = 1000; // TODO: cambia
+    // }
     lastDistance = dist; 
     lastTemperature = currentTemp; 
 }

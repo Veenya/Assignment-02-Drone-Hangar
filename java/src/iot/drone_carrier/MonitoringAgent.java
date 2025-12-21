@@ -82,7 +82,7 @@ public class MonitoringAgent extends Thread {
 
 				logger.log("new msg: "+msg);
 
-				TimeUnit.SECONDS.sleep(1);
+				TimeUnit.MILLISECONDS.sleep(100);  // Pausa di 0.1 secondi
 				if (msg.startsWith(LOG_PREFIX)) {   // poi decide che messaggio e' (se inizia con log ava nella finestra di log, senno' aggiorna la gui)
 					
 					String cmd = msg.substring(LOG_PREFIX.length());

@@ -21,7 +21,8 @@ void CommunicationCenter::notifyNewState(){
     hangarStateStr = "0";
   }
 
-  DroneState droneState = pHangar->getDroneState();
+  droneState = pHangar->getDroneState();
+  // droneState =DroneState::OPERATING;
   String droneStateStr = "-1";
   if (droneState == DroneState::REST) {
       droneStateStr = "0";

@@ -15,17 +15,17 @@ public:
 
   /* --------- Stato drone --------- */
 
-  void setDroneState(DroneState s);
-  DroneState getDroneState() const;
+  void setDroneState(DroneState state);
+  DroneState getDroneState();
 
-  void setDroneInside(bool inside);
-  bool isDroneInside() const;
+  // void setDroneInside(bool inside);
+  // bool isDroneInside();
 
   /* --------- Porta hangar --------- */
 
   void openDoor();
   void closeDoor();
-  bool isDoorOpen() const;
+  bool isDoorOpen();
 
   /* --------- Letture sensori --------- */
 
@@ -40,10 +40,10 @@ public:
 
   /* --------- Stato hangar / allarmi --------- */
 
-  void setHangarState(HangarState s);
-  HangarState getHangarState() const;
+  void setHangarState(HangarState state);
+  HangarState getHangarState();
 
-private:
+  private:
   HWPlatform* hw;
 
   DroneState droneState;
