@@ -10,27 +10,20 @@
 void wakeUp() {}
 
 HWPlatform::HWPlatform() {
-  pDdd = new Sonar(SONAR_ECHO_PIN, SONAR_TRIG_PIN, MAX_TIME_US); 
-  pDpd = new Pir(PIR_PIN);
-  pDoorMotor = new ServoMotorImpl(SERVO_PIN);
-  pTempSensor = new TempSensorDHT11(TEMP_PIN);
-  pLcd = new LiquidCrystal_I2C(LCD_ADDR, 16, 2);
-  pL1 = new Led(L1_PIN);
-  pL2 = new Led(L2_PIN);
-  pL3 = new Led(L3_PIN);
-  pResetButton = new ButtonImpl(BUTTON_PIN);
+    pDdd = new Sonar(SONAR_ECHO_PIN, SONAR_TRIG_PIN, MAX_TIME_US); 
+    pDpd = new Pir(PIR_PIN);
+    pDoorMotor = new ServoMotorImpl(SERVO_PIN);
+    pTempSensor = new TempSensorDHT11(TEMP_PIN);
+    pLcd = new LiquidCrystal_I2C(LCD_ADDR, 16, 2);
+    pL1 = new Led(L1_PIN);
+    pL2 = new Led(L2_PIN);
+    pL3 = new Led(L3_PIN);
+    pResetButton = new ButtonImpl(BUTTON_PIN);
 }
 
 void HWPlatform::init() {
-  //pDoorMotor->on();    // attacca subito il servo
-  pLcd->init();
-  pLcd->backlight();
-  //pLcd->clear();
-  //pLcd->setCursor(0, 0);
-  //pLcd->print("DRONE INSIDE");   // stato iniziale richiesto
-  //pL1->switchOn();     // ad esempio "sistema acceso"
-  //pL2->switchOff();
-  //pL3->switchOff();
+    pLcd->init();
+    pLcd->backlight();
 
   //attachInterrupt(digitalPinToInterrupt(PIR_PIN), wakeUp, RISING);
 

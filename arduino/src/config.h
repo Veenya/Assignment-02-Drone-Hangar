@@ -26,6 +26,8 @@
 #define D1                  100       // TODO decidere distanza tra hangar e drone
 #define T1                  2000      // TODO decidere tempo per confermare decollo drone
 
-
+#define DOOR_TASK            50       // TODO decidere il periodo
+#define COMMUNICATION_PERIOD 100      // TODO decidere il periodo
+#define TEMPERATURE_TASK     200      // TODO decidere il periodo
 
 #endif
