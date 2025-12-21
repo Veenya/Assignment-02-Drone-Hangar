@@ -25,12 +25,14 @@ void CommunicationCenter::notifyNewState(){
   String droneStateStr = "-1";
   if (droneState == DroneState::REST) {
       droneStateStr = "0";
-    } else if (droneState == DroneState::OPERATING) {
+  } else if (droneState == DroneState::OPERATING) {
     droneStateStr = "1";
+  } else {
+    droneStateStr = "2";
   }
-  // int droneDistance = pHangar->getDistance();
-  int droneDistance = 10;
-  float currentTemp = pHangar->getTemperature();
+  droneDistance = pHangar->getDistance(); // solitamente tra 0 e 0.2
+  // int droneDistance = 10;
+  currentTemp = pHangar->getTemperature();
 
   // stato del hangar, stato drone, distanza drone, temperatura
   MsgService.sendMsg(String("STATE,") + hangarStateStr + "," + droneStateStr + "," + String(droneDistance).substring(0,5) + "," +  String(currentTemp).substring(0,5));  

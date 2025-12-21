@@ -24,7 +24,7 @@ float Sonar::getDistance(){
     
     float tUS = pulseIn(echoPin, HIGH, timeOut);
     if (tUS == 0) {
-        return NO_OBJ_DETECTED;
+        return SONAR_NO_OBJ_DETECTED;
     } else {
         float t = tUS / 1000.0 / 1000.0 / 2;
         float d = t*getSoundSpeed();

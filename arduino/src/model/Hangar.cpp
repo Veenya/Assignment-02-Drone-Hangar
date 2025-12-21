@@ -69,7 +69,7 @@ bool Hangar::isDoorOpen() const {
 float Hangar::getDistance() {
   auto sonar = hw->getDDD();
   if (!sonar) {
-    return NO_OBJ_DETECTED;
+    return SONAR_NO_OBJ_DETECTED;
   }
   return sonar->getDistance();
 }
@@ -108,7 +108,7 @@ void Hangar::sync(){
   
     currentTemp = hw->getTempSensor()->getTemperature();
     dist = hw->getDDD()->getDistance();
-    if (dist == NO_OBJ_DETECTED){
+    if (dist == SONAR_NO_OBJ_DETECTED){
       dist = 1000; // TODO: cambia
     }
     lastDistance = dist; 

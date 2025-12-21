@@ -53,5 +53,7 @@ void setup() {
 
 
 void loop() {
-		scheduler.schedule();
+	scheduler.schedule();
+	// float distance = pHangar->getDistance();
+	// MsgService.sendMsg(String(distance).substring(0,5));
 }

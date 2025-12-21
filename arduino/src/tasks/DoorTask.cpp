@@ -68,7 +68,7 @@ void DoorTask::tick() {
         /*
         During the take-off and landing phases, L2 blinks, with period 0.5 second -- otherwise it is off.
         */
-        else if (pCommunicationCenter && pCommunicationCenter->checkAndResetLandingRequest() && pHangar->isDroneAbove()) {
+        else if (pCommunicationCenter && pCommunicationCenter->checkAndResetLandingRequest() && pHangar->isDroneAbove() && this->droneState == DroneState::OPERATING) {
             Logger.log(F("[DR] landing request from DRU"));
             pHangar->setDroneState(DroneState::LANDING);
             pUserPanel->displayLanding();

@@ -23,11 +23,12 @@
 #define DOOR_TIME           1000      // ms per aprire/chiudere la porta
 #define SPILLING_MAX_TIME   20000     // ms di "operazione" (decollo/landing)
 
-#define D1                  100       // TODO decidere distanza tra hangar e drone
+#define D1                  0.01      // 0.1 è circa una spanna, 0 durante lo sviluppo
+#define SONAR_NO_OBJ_DETECTED 1      // default -1, 1 durante sviluppo
 #define T1                  2000      // TODO decidere tempo per confermare decollo drone
 
-#define DOOR_TASK            50       // TODO decidere il periodo
-#define COMMUNICATION_PERIOD 100      // TODO decidere il periodo
-#define TEMPERATURE_TASK     200      // TODO decidere il periodo
+#define DOOR_TASK            500       // TODO decidere il periodo
+#define COMMUNICATION_PERIOD 500      // TODO decidere il periodo
+#define TEMPERATURE_TASK     1000      // TODO decidere il periodo
 
 #endif

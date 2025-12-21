@@ -2,6 +2,7 @@
 #define __HANGAR__
 
 #include "States.h"
+#include "config.h"
 #include "HWPlatform.h"
 
 class Hangar {

@@ -38,6 +38,8 @@ private:
   bool landingNotification;
   bool resetAlarmsNotification;
   bool alarmNotification;
+  float droneDistance;
+  float currentTemp;
 };
 
 #endif
