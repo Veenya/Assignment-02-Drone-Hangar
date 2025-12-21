@@ -42,13 +42,24 @@ the current state of the drone hangar (normal, alarm);
 	//private JTextField doorState;           // stato della porta (aperta, chiusa, movimento)
 	// temperature of hangar
 	private JTextField currentTemperature; 
+
+	private int WINDOW_WIDTH;
+	private int WINDOW_HEIGHT; 
+	private int FIELD_WIDTH;
+	private int FIELD_HEIGHT;
+
 	
 	
 	private DashboardController controller;	
 	
 	public DashboardView(){
 		super(".:: Drone Carrier ::.");
-		setSize(600,150);
+		WINDOW_WIDTH = 600;
+		WINDOW_HEIGHT = 150;
+		FIELD_WIDTH = 200;
+		FIELD_HEIGHT = 15;
+
+		setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 		this.setResizable(false);
 		JPanel mainPanel = new JPanel();
 		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
@@ -60,28 +71,28 @@ the current state of the drone hangar (normal, alarm);
 		// Hangar State
 		hangarState = new JTextField("--");
 		hangarState.setEditable(false);
-		hangarState.setPreferredSize(new Dimension(200,15));
+		hangarState.setPreferredSize(new Dimension(FIELD_WIDTH,FIELD_HEIGHT));
 		infoLine.add(new JLabel("Hangar State:")); 
 		infoLine.add(hangarState);
 
 		// Drone State
 		hangarTemperature = new JTextField("--");
 		hangarTemperature.setEditable(false);
-		hangarTemperature.setPreferredSize(new Dimension(200,15));
+		hangarTemperature.setPreferredSize(new Dimension(FIELD_WIDTH,FIELD_HEIGHT));
 		infoLine.add(new JLabel("Drone State:")); 
 		infoLine.add(hangarTemperature);
 
 		// Ground Distance
 		groundDistance = new JTextField("--");
 		groundDistance.setEditable(false);
-		groundDistance.setPreferredSize(new Dimension(200,15));
+		groundDistance.setPreferredSize(new Dimension(FIELD_WIDTH,FIELD_HEIGHT));
 		infoLine.add(new JLabel("Ground Distance:")); 
 		infoLine.add(groundDistance);
 
 		// Temperature of hangar
 		currentTemperature = new JTextField("--");
 		currentTemperature.setEditable(false);
-		currentTemperature.setPreferredSize(new Dimension(200,15));
+		currentTemperature.setPreferredSize(new Dimension(FIELD_WIDTH,FIELD_HEIGHT));
 		infoLine.add(new JLabel("Current Temperature:"));
 		infoLine.add(currentTemperature);
 		
@@ -96,7 +107,7 @@ the current state of the drone hangar (normal, alarm);
 		
 		mainPanel.add(infoLine);
 		mainPanel.add(Box.createRigidArea(new Dimension(0,20)));
-		mainPanel.setPreferredSize(new Dimension(200,20));
+		mainPanel.setPreferredSize(new Dimension(FIELD_WIDTH,FIELD_HEIGHT));
 
 		// Button to simulate landing
 		JPanel buttonPanel = new JPanel();

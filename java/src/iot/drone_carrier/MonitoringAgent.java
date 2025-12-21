@@ -42,7 +42,7 @@ public class MonitoringAgent extends Thread {
 	/* How to make a message */
 	/* State,<the drone state(Inside, Operating)>,<the hangar state (allarm, normal)>,<distance from ground, it's a number> */
 	// static final boolean DEBUGGING = true; 
-	static final boolean DEBUGGING = false; 
+	static final boolean DEBUGGING = true; 
 	// static final String debuggingMsg = "STATE,1,0,100"; // STATE,<hangar>,<distance>,<temp>
 	static final String debuggingMsg = "STATE,0,0,10,20.70"; // STATE,<hangar state>,<drone state><distance>,<temp>
 
