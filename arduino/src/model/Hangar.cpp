@@ -74,8 +74,7 @@ bool Hangar::isDroneAbove() {
   if (!pir) {
     return false;
   }
-  // adatta al nome del metodo reale del tuo Pir
-  return pir->isDetected();   // oppure pir->isPresent(), pir->isMotionDetected()...
+  return pir->isDetected();
 }
 
 float Hangar::getTemperature() {

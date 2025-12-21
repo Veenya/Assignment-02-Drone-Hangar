@@ -24,8 +24,10 @@
 #define SPILLING_MAX_TIME   20000     // ms di "operazione" (decollo/landing)
 
 #define D1                  0.01      // 0.1 è circa una spanna, 0 durante lo sviluppo
+#define D2                  1      // 0.1 è circa una spanna, 1 durante lo sviluppo
 #define SONAR_NO_OBJ_DETECTED 1      // default -1, 1 durante sviluppo
 #define T1                  2000      // TODO decidere tempo per confermare decollo drone
+#define T2                  2000      // TODO decidere tempo per confermare decollo drone
 
 #define DOOR_TASK            500       // TODO decidere il periodo
 #define COMMUNICATION_PERIOD 500      // TODO decidere il periodo

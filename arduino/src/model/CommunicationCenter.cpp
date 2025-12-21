@@ -22,7 +22,6 @@ void CommunicationCenter::notifyNewState(){
   }
 
   droneState = pHangar->getDroneState();
-  // droneState =DroneState::OPERATING;
   String droneStateStr = "-1";
   if (droneState == DroneState::REST) {
       droneStateStr = "0";
@@ -68,11 +67,18 @@ bool CommunicationCenter::checkAndResetTakeOffRequest(){
   takeOffNotification = false;
   return request;
 }
+bool CommunicationCenter::checkTakeOffRequest(){
+  return this->takeOffNotification;
+}
 
 bool CommunicationCenter::checkAndResetLandingRequest(){
   bool request = this->landingNotification;
   landingNotification = false;
   return request;
+}
+
+bool CommunicationCenter::checkLandingRequest(){
+  return this->landingNotification;
 }
 
 bool CommunicationCenter::checkAndResetAlarmRequest() {

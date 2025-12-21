@@ -23,7 +23,9 @@ public:
   
   bool checkAndResetOpenDoorRequest();
   bool checkAndResetTakeOffRequest(); //? Serve la distinzione?
+  bool checkTakeOffRequest();
   bool checkAndResetLandingRequest(); //? Serve la distinzione?
+  bool checkLandingRequest();
   bool checkAndResetAlarmRequest(); //? Serve?
   bool notifyAlarm(); //? Serve?
   
