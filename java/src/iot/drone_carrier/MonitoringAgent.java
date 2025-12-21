@@ -42,7 +42,7 @@ public class MonitoringAgent extends Thread {
 	/* How to make a message */
 	/* State,<the drone state(Inside, Operating)>,<the hangar state (allarm, normal)>,<distance from ground, it's a number> */
 	// static final boolean DEBUGGING = true; 
-	static final boolean DEBUGGING = true; 
+	static final boolean DEBUGGING = false; 
 	// static final String debuggingMsg = "STATE,1,0,100"; // STATE,<hangar>,<distance>,<temp>
 	static final String debuggingMsg = "STATE,0,0,10,20.70"; // STATE,<hangar state>,<drone state><distance>,<temp>
 
@@ -99,11 +99,12 @@ public class MonitoringAgent extends Thread {
 						if (elems.length >= 3) {
 							// <hangar>,<distance>,<temp>
 							int hangarCode = Integer.parseInt(elems[0]);
-							int droneCode = Integer.parseInt(elems[1]);
+							float droneCode = Integer.parseInt(elems[1]);
 							float groundDistance = Float.parseFloat(elems[2]);
 							float hangarTemperature = Float.parseFloat(elems[3]);
 							
 							view.setHangarState(hangarStates[hangarCode]);
+							view.setDroneState(droneCode);
 							view.setGroundDistance(groundDistance);
 							view.setHangarTemperature(hangarTemperature);
 							// TODO Aggiungere stato drone

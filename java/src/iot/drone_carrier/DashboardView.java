@@ -32,7 +32,7 @@ the current state of the drone hangar (normal, alarm);
 	//private JButton openDoor; //todo: rivedere il meccanismo di come funziona
 
 	// Show state of the drone (rest, taking off, operating, landing)
-    private JTextField hangarTemperature;
+    private JTextField droneState;
 	// Show state of the hangar (normal, alarm, prealarm)
 	private JTextField hangarState;      
 
@@ -41,7 +41,7 @@ the current state of the drone hangar (normal, alarm);
 	
 	//private JTextField doorState;           // stato della porta (aperta, chiusa, movimento)
 	// temperature of hangar
-	private JTextField currentTemperature; 
+	private JTextField hangarTemperature; 
 
 	private int WINDOW_WIDTH;
 	private int WINDOW_HEIGHT; 
@@ -76,11 +76,11 @@ the current state of the drone hangar (normal, alarm);
 		infoLine.add(hangarState);
 
 		// Drone State
-		hangarTemperature = new JTextField("--");
-		hangarTemperature.setEditable(false);
-		hangarTemperature.setPreferredSize(new Dimension(FIELD_WIDTH,FIELD_HEIGHT));
+		droneState = new JTextField("--");
+		droneState.setEditable(false);
+		droneState.setPreferredSize(new Dimension(FIELD_WIDTH,FIELD_HEIGHT));
 		infoLine.add(new JLabel("Drone State:")); 
-		infoLine.add(hangarTemperature);
+		infoLine.add(droneState);
 
 		// Ground Distance
 		groundDistance = new JTextField("--");
@@ -90,11 +90,11 @@ the current state of the drone hangar (normal, alarm);
 		infoLine.add(groundDistance);
 
 		// Temperature of hangar
-		currentTemperature = new JTextField("--");
-		currentTemperature.setEditable(false);
-		currentTemperature.setPreferredSize(new Dimension(FIELD_WIDTH,FIELD_HEIGHT));
+		hangarTemperature = new JTextField("--");
+		hangarTemperature.setEditable(false);
+		hangarTemperature.setPreferredSize(new Dimension(FIELD_WIDTH,FIELD_HEIGHT));
 		infoLine.add(new JLabel("Current Temperature:"));
-		infoLine.add(currentTemperature);
+		infoLine.add(hangarTemperature);
 		
 		/*
 		// Door state
@@ -161,15 +161,27 @@ the current state of the drone hangar (normal, alarm);
 		});
 	}
 
-	public void setHangarTemperature(Float msg) {
+	public void setDroneState(float msg) {
 		SwingUtilities.invokeLater(() -> {
-			hangarTemperature.setText("" + msg);
+			if (msg == 0) {
+				droneState.setText("REST");
+			} else if (msg == 1) {
+				droneState.setText("FLY");
+			} else {
+				droneState.setText("WAIT");
+			}
 		});
 	}
 
 	public void setGroundDistance(Float msg) {
 		SwingUtilities.invokeLater(() -> {
 			groundDistance.setText(""+msg);
+		});
+	}
+
+	public void setHangarTemperature(Float msg) {
+		SwingUtilities.invokeLater(() -> {
+			hangarTemperature.setText(""+msg);
 		});
 	}
 
