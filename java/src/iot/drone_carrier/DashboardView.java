@@ -41,7 +41,7 @@ the current state of the drone hangar (normal, alarm);
 	
 	//private JTextField doorState;           // stato della porta (aperta, chiusa, movimento)
 	// temperature of hangar
-	//private JTextField currentTemperature; 
+	private JTextField currentTemperature; 
 	
 	
 	private DashboardController controller;	
@@ -77,6 +77,13 @@ the current state of the drone hangar (normal, alarm);
 		groundDistance.setPreferredSize(new Dimension(200,15));
 		infoLine.add(new JLabel("Ground Distance:")); 
 		infoLine.add(groundDistance);
+
+		// Temperature of hangar
+		currentTemperature = new JTextField("--");
+		currentTemperature.setEditable(false);
+		currentTemperature.setPreferredSize(new Dimension(200,15));
+		infoLine.add(new JLabel("Current Temperature:"));
+		infoLine.add(currentTemperature);
 		
 		/*
 		// Door state
@@ -85,13 +92,6 @@ the current state of the drone hangar (normal, alarm);
 		doorState.setPreferredSize(new Dimension(100,15));
 		infoLine.add(new JLabel("Door State:"));
 		infoLine.add(doorState);
-
-		// Temperature of hangar
-		currentTemperature = new JTextField("--");
-		currentTemperature.setEditable(false);
-		currentTemperature.setPreferredSize(new Dimension(200,15));
-		infoLine.add(new JLabel("Current Temperature:"));
-		infoLine.add(currentTemperature);
 		*/
 		
 		mainPanel.add(infoLine);
