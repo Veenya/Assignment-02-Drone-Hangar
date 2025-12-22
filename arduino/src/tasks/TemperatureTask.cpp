@@ -3,8 +3,7 @@
 #include "config.h"
 #include "kernel/Logger.h"
 
-#define MAXTEMP      40
-#define MAXTEMPTIME  10000
+
 bool DEBUG_TEMP = false;
 
 TemperatureTask::TemperatureTask(Hangar* pHangar, UserPanel* pUserPanel) : 

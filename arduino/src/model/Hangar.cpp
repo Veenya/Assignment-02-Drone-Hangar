@@ -9,7 +9,7 @@ Hangar::Hangar(HWPlatform* hw)
   : pHW(hw),
     droneState(DroneState::REST),
     hangarState(HangarState::NORMAL),
-    droneInside(true),   // da specifica: stato iniziale = dentro
+    droneInside(true),
     doorOpen(false) {
 }
 
@@ -18,6 +18,7 @@ void Hangar::init() {
     L2isBlinking  = false;
     L3isOn  = false;
 
+    alarmRaised = false;
 
     pHW->getHangarDoorMotor()->motorOn();
     closeDoor();
@@ -30,7 +31,7 @@ void Hangar::init() {
         
         delay(1000);
         
-        openDoor(); // TODO test collegamento pin e alimentazione, togliere alla fine dello sviluppo
+        openDoor();
         
         delay(1000);
 
@@ -150,6 +151,26 @@ void Hangar::setL3Off() {
     this->L3isOn = false;
 }
 
+void Hangar::raiseAlarm() {
+    this->alarmRaised = true;
+}
+
+void Hangar::resetAlarm() {
+    this->alarmRaised = false;
+}
+
+void Hangar::manageAlarm() {
+    if (   alarmRaised 
+        || droneState != DroneState::TAKING_OFF
+        || droneState != DroneState::LANDING
+        || droneState != DroneState::WAITING
+      ) {
+        hangarState = HangarState::ALARM;
+    } else {
+        hangarState = HangarState::NORMAL;
+    }
+}
+
 void Hangar::manageLeds() {
     if (L1isOn) {
         pHW->getL1()->switchOn();
@@ -171,17 +192,18 @@ void Hangar::manageLeds() {
 
 
 void Hangar::sync(){
+    manageAlarm();
     manageLeds();
 
     float dist = lastDistance; 
     currentTemp = lastTemperature;
     
-    currentTemp = pHW->getTempSensor()->getTemperature();
-    dist = pHW->getDDD()->getDistance();
-    // if (dist == SONAR_NO_OBJ_DETECTED){
-    //   dist = 1000; // TODO: cambia
-    // }
-    lastDistance = dist; 
-    lastTemperature = currentTemp; 
+    // currentTemp = pHW->getTempSensor()->getTemperature();
+    // dist = pHW->getDDD()->getDistance();
+    // // if (dist == SONAR_NO_OBJ_DETECTED){
+    // //   dist = 1000; // TODO: cambia
+    // // }
+    // lastDistance = dist; 
+    // lastTemperature = currentTemp; 
 }
 

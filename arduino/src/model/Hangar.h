@@ -42,12 +42,15 @@ public:
 
     void setHangarState(HangarState state);
     HangarState getHangarState();
+    void raiseAlarm();
+    void resetAlarm();
+    
 
     void setL1On();
     void setL2Blinking();
     void setL3On();
 
-    void manageLeds();
+    
 
     void setL1Off();
     void setL2Off();
@@ -70,6 +73,14 @@ private:
     float lastDistance;
     float currentTemp;
     float lastTemperature;
+
+    bool alarmRaised;
+
+
+    void manageLeds();
+    void manageAlarm();
+
+    
 };
 
 #endif
