@@ -156,12 +156,12 @@ void Hangar::manageLeds() {
     } else {
         pHW->getL1()->switchOff();
     }
-    if (L2isBlinking) {
-        pHW->getL2()->switchOn(); // TODO: fare il blink
+    if (droneState == DroneState::TAKING_OFF || droneState == DroneState::LANDING) {
+        pHW->getL2()->blink(L2_BLINK_PERIOD);
     } else {
-        pHW->getL2()->switchOff();
+        pHW->getL2()->stopBlinking();
     }
-    if (L3isOn) { // LED ROSSO
+    if (hangarState == HangarState::ALARM) { // LED ROSSO
         pHW->getL3()->switchOn();
     } else {
         pHW->getL3()->switchOff();

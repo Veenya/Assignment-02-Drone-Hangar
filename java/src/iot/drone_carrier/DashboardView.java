@@ -247,8 +247,7 @@ the current state of the drone hangar (normal, alarm);
 			if (ev.getSource() == landButton) {			// Se premuto il tasto Land
 				landButton.setEnabled(false);
 				controller.notifyLanding();
-			}
-			else if (ev.getSource() == takeOffButton) { // se premuto il tasto takeoff
+			} else if (ev.getSource() == takeOffButton) { // se premuto il tasto takeoff
 				takeOffButton.setEnabled(false);
 				controller.notifyTakingOff();
 			} else if (ev.getSource() == alarmButton) {

@@ -7,6 +7,7 @@
 #define L1_PIN              9 // green 
 #define L2_PIN              2 // green
 #define L3_PIN              6 // red
+#define L2_BLINK_PERIOD     100
 
 #define BUTTON_PIN          10
 
@@ -34,5 +35,8 @@
 #define DOOR_TASK            500       // TODO decidere il periodo
 #define COMMUNICATION_PERIOD 500      // TODO decidere il periodo
 #define TEMPERATURE_TASK     1000      // TODO decidere il periodo
+
+#define MAXTEMP      40                 // temperatura oltre la quale scatta prealarm e poi alarm
+#define MAXTEMPTIME  10000              // ms di prealarm dopo i quali scatta allarm
 
 #endif

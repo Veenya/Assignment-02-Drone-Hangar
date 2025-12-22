@@ -29,12 +29,28 @@ public class MonitoringAgent extends Thread {
 	
 
 	// Hangar state Names
-	// TODO riscrivere in enum
-	static final String[] hangarStates = {"Normal", "Allarm", "Preallarm"};  
-	static final int NORMAL = 0;
-	static final int ALLARM = 1;
-	static final int PREALLARM = 2;
+	public enum HangarState {
+		NORMAL("Normal"),
+		PREALARM("Prealarm"),
+		ALARM("Alarm");
 
+		private final String name;
+
+		HangarState(String name) {
+			this.name = name;
+		}
+
+		public String getName() {
+			return name;
+		}
+
+		public static HangarState fromCode(int code) {
+			if (code < 0 || code >= values().length) {
+				throw new IllegalArgumentException("Invalid hangar code: " + code);
+			}
+			return values()[code];
+		}
+	}
 
 	/* ************************************************ */
 	/* ******************* DEBUGGING ****************** */
@@ -103,7 +119,7 @@ public class MonitoringAgent extends Thread {
 							float groundDistance = Float.parseFloat(elems[2]);
 							float hangarTemperature = Float.parseFloat(elems[3]);
 							
-							view.setHangarState(hangarStates[hangarCode]);
+							view.setHangarState(HangarState.fromCode(hangarCode).getName());
 							view.setDroneState(droneCode);
 							view.setGroundDistance(groundDistance);
 							view.setHangarTemperature(hangarTemperature);

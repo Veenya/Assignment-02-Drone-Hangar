@@ -43,6 +43,7 @@ private:
   float droneDistance;
   float currentTemp;
   DroneState droneState;
+  HangarState hangarState;
 };
 
 #endif
