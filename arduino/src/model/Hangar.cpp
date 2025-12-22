@@ -13,7 +13,14 @@ Hangar::Hangar(HWPlatform* hw)
 }
 
 void Hangar::init() {
-    closeDoor();                   // chiude fisicamente la porta
+    hw->getHangarDoorMotor()->motorOn(); // TODO rivedere
+    Serial.println("Door TEST");
+    closeDoor();
+    delay(1000);
+    openDoor(); // TODO test collegamento pin e alimentazione, togliere alla fine dello sviluppo
+    delay(1000);
+    closeDoor();
+    Serial.println("Door is READY");
     droneInside = true;
     droneState = DroneState::REST;
     hangarState = HangarState::NORMAL;
@@ -41,17 +48,23 @@ DroneState Hangar::getDroneState() {
 
 void Hangar::openDoor() {
   auto motor = hw->getHangarDoorMotor();
-  if (motor && !doorOpen) {
+  // if (motor && !doorOpen) {
+  if (motor) {
     motor->setPosition(DOOR_OPEN_ANGLE);  // es. 90°
     doorOpen = true;
+  } else {
+    Serial.println("NO MOTOR");
   }
 }
 
 void Hangar::closeDoor() {
   auto motor = hw->getHangarDoorMotor();
-  if (motor && doorOpen) {
+  // if (motor && doorOpen) {
+  if (motor) {
     motor->setPosition(DOOR_CLOSED_ANGLE);  // es. 0°
     doorOpen = false;
+  } else {
+    Serial.println("NO MOTOR");
   }
 }
 

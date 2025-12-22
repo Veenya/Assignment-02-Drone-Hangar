@@ -19,11 +19,13 @@ HWPlatform::HWPlatform() {
     pL2 = new Led(L2_PIN);
     pL3 = new Led(L3_PIN);
     pResetButton = new ButtonImpl(BUTTON_PIN);
-}
-
-void HWPlatform::init() {
+    Serial.println("HWPlatform istanziata");
+  }
+  
+  void HWPlatform::init() {
     pLcd->init();
     pLcd->backlight();
+    Serial.println("HWPlatform inizializzata");
 
   //attachInterrupt(digitalPinToInterrupt(PIR_PIN), wakeUp, RISING);
 

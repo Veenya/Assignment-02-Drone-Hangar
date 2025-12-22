@@ -27,9 +27,10 @@ bool Scheduler::addTask(Task* task){
 }
   
 void Scheduler::schedule(){   
+  // Serial.println("timerFlag " + String(timerFlag));
   while (!timerFlag){}
   timerFlag = false;
-
+  // Serial.println("nTasks " + String(nTasks));
   for (int i = 0; i < nTasks; i++){
     if (taskList[i]->isActive()){
       if (taskList[i]->isPeriodic()){

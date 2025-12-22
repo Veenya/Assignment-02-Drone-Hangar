@@ -4,11 +4,12 @@
 #include "servo_motor.h"
 #include <arduino.h>
 #include "ServoTimer2.h"
+// #include <Servo.h> //! non si può usare perché usa Timer1 che serve per l'interrupt dello scheduler
 
 class ServoMotorImpl: public ServoMotor {
     public:
         ServoMotorImpl(int pin);
-        void on();
+        void motorOn();
         bool isOn();
         void setPosition(int angle);
         void off();

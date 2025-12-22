@@ -8,6 +8,8 @@ CommunicationCenter::CommunicationCenter(Hangar* pHangar): pHangar(pHangar){
 
 void CommunicationCenter::init(){
   openDoorNotification = false;
+  landingNotification = false;
+  takeOffNotification = false;
 }
 
 void CommunicationCenter::notifyNewState(){
@@ -45,7 +47,7 @@ void CommunicationCenter::sync(){
       String msgContent = msg->getContent();
       Logger.log("Received msg: " + msgContent);
       if (msgContent == "to" ){ // Take off
-        openDoorNotification = true; // TODO decidere quale tenere
+        openDoorNotification = true;
         takeOffNotification = true;
       } else if (msgContent == "la") { // Landing
         openDoorNotification = true;
@@ -56,12 +58,14 @@ void CommunicationCenter::sync(){
   }
 }
 
+//* OPEN DOOR
 bool CommunicationCenter::checkAndResetOpenDoorRequest(){
   bool request = this->openDoorNotification;
   openDoorNotification = false;
   return request;
 }
 
+//* TAKEOFF
 bool CommunicationCenter::checkAndResetTakeOffRequest(){
   bool request = this->takeOffNotification;
   takeOffNotification = false;
@@ -71,6 +75,7 @@ bool CommunicationCenter::checkTakeOffRequest(){
   return this->takeOffNotification;
 }
 
+//* LANDING
 bool CommunicationCenter::checkAndResetLandingRequest(){
   bool request = this->landingNotification;
   landingNotification = false;
@@ -81,6 +86,7 @@ bool CommunicationCenter::checkLandingRequest(){
   return this->landingNotification;
 }
 
+//* ALLARM
 bool CommunicationCenter::checkAndResetAlarmRequest() {
   bool request = this->resetAlarmsNotification;
   resetAlarmsNotification = false;

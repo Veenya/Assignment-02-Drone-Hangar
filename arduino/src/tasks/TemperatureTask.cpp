@@ -18,7 +18,7 @@ void TemperatureTask::tick(){
 
     switch (state){    
     case HangarState::NORMAL: {
-        Logger.log(F("[TEMP] normal"));
+        // Logger.log(F("[TEMP] normal"));
         pHangar->setHangarState(HangarState::NORMAL);
 
         if (temp > MAXTEMP){

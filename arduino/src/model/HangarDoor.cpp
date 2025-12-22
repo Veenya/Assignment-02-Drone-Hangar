@@ -5,12 +5,6 @@ HangarDoor::HangarDoor(ServoMotor* doorMotor)
     openAngle(DOOR_OPEN_ANGLE),
     closedAngle(DOOR_CLOSED_ANGLE),
     openFlag(false) {
-
-  // opzionale: se vuoi assicurarti che all'inizio sia chiusa:
-  if (motor) {
-    motor->on();                      // attacca il servo, se non già fatto altrove
-    motor->setPosition(closedAngle);  // chiudi la porta
-  }
 }
 
 void HangarDoor::setOpenAngle(int angle) {
