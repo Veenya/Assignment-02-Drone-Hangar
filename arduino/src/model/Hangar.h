@@ -8,53 +8,68 @@
 class Hangar {
 
 public:
-  Hangar(HWPlatform* hw);
+    Hangar(HWPlatform* hw);
 
-  void init();
-  void sync();
+    void init();
+    void sync();
 
-  /* --------- Stato drone --------- */
+    /* --------- Stato drone --------- */
 
-  void setDroneState(DroneState state);
-  DroneState getDroneState();
+    void setDroneState(DroneState state);
+    DroneState getDroneState();
 
-  // void setDroneInside(bool inside);
-  // bool isDroneInside();
+    // void setDroneInside(bool inside);
+    // bool isDroneInside();
 
-  /* --------- Porta hangar --------- */
+    /* --------- Porta hangar --------- */
 
-  void openDoor();
-  void closeDoor();
-  bool isDoorOpen();
+    void openDoor();
+    void closeDoor();
+    bool isDoorOpen();
 
-  /* --------- Letture sensori --------- */
+    /* --------- Letture sensori --------- */
 
-  // distanza dal sonar (DDD), in metri
-  float getDistance();
+    // distanza dal sonar (DDD), in metri
+    float getDistance();
 
-  // presenza sopra l’hangar dal PIR (DPD)
-  bool isDroneAbove();
+    // presenza sopra l’hangar dal PIR (DPD)
+    bool isDroneAbove();
 
-  // temperatura interna (°C)
-  float getTemperature();
+    // temperatura interna (°C)
+    float getTemperature();
 
-  /* --------- Stato hangar / allarmi --------- */
+    /* --------- Stato hangar / allarmi --------- */
 
-  void setHangarState(HangarState state);
-  HangarState getHangarState();
+    void setHangarState(HangarState state);
+    HangarState getHangarState();
 
-  private:
-  HWPlatform* hw;
+    void setL1On();
+    void setL2Blinking();
+    void setL3On();
 
-  DroneState droneState;
-  HangarState hangarState;
+    void manageLeds();
 
-  bool droneInside;
-  bool doorOpen;
+    void setL1Off();
+    void setL2Off();
+    void setL3Off();
 
-  float lastDistance;
-  float currentTemp;
-  float lastTemperature;
+private:
+    HWPlatform* pHW;
+
+    DroneState droneState;
+    HangarState hangarState;
+
+    bool L1isOn;
+    bool L2isBlinking;
+    bool L3isOn;
+
+
+    bool droneInside;
+    bool doorOpen;
+
+    float lastDistance;
+    float currentTemp;
+    float lastTemperature;
 };
 
 #endif

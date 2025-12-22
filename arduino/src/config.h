@@ -2,14 +2,16 @@
 #ifndef __CONFIG__
 #define __CONFIG__
 
-#define L1_PIN              13 // green 
-#define L2_PIN              12 // green
-#define L3_PIN              11 // red
+#define SCHEDULER_PERIOD     100 // interrupt fa ripartire lo scheduler ogni n millisecondi
+
+#define L1_PIN              9 // green 
+#define L2_PIN              2 // green
+#define L3_PIN              6 // red
 
 #define BUTTON_PIN          10
 
 #define TEMP_PIN            A0
-#define PIR_PIN             9
+#define PIR_PIN             11
 #define MAX_TIME_US         30000L      
 #define LCD_ADDR            0x27
 #define SONAR_TRIG_PIN      8

@@ -28,7 +28,7 @@ The system is composed by two subsystems:
   - This GUI-based subsystem simulates a bridge to the drone, to send/receive commands. 
   - It communicates via **serial line** with the DRONE HANGAR subsystem.  
 
-#### Description of the behaviour
+#### Description of the behavior
 
 At startup, the system begins with the hangar door **HD** closed, and it is assumed that the drone is inside, at rest. Indicator light **L1** is on, **L2** and **L3** are off, and the **LCD** displays the message `DRONE INSIDE`. 
 

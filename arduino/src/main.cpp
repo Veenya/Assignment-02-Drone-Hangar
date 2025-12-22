@@ -9,11 +9,7 @@
 #include "tasks/CommunicationTask.h"
 #include "tasks/DoorTask.h"
 #include "tasks/TemperatureTask.h"
-// #include "tasks/TestHWTask.h"
-#include <Servo.h>
 
-// #include "avr8-stub.h" // debug
-// #include "app_api.h"   // debug
 
 Scheduler scheduler;
 
@@ -25,11 +21,8 @@ CommunicationCenter* pCommunicationCenter;
 
 
 void setup() {
-
-	// debug_init();
-
 	MsgService.init();
-	scheduler.init(100);
+	scheduler.init(SCHEDULER_PERIOD);
 	Logger.log(":::::: Drone Hangar ::::::");
 	pHWPlatform = new HWPlatform();
 	pHWPlatform->init();
@@ -55,16 +48,18 @@ void setup() {
 	scheduler.addTask(pCommunicationTask);
 	scheduler.addTask(pDoorTask);
 	scheduler.addTask(pTemperatureTask);
-	// motor.attach(3);
 }
 
 
 
 
 void loop() {
-	// Serial.println("Pre scheduler");
 	scheduler.schedule();
-	// Serial.println("Post scheduler");
+	
+	// pHWPlatform->getL1()->switchOn();
+	// pHWPlatform->getL2()->switchOn();
+	// pHWPlatform->getL3()->switchOn();
+	// Serial.println("LED ON");
 
 	// float distance = pHangar->getDistance();
 	// MsgService.sendMsg(String(distance).substring(0,5));

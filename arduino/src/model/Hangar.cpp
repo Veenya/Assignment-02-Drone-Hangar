@@ -3,9 +3,10 @@
 #include "Hangar.h"
 #include "config.h"   // per eventuali angoli porta ecc.
 
+bool SVILUPPO = true;
 
 Hangar::Hangar(HWPlatform* hw)
-  : hw(hw),
+  : pHW(hw),
     droneState(DroneState::REST),
     hangarState(HangarState::NORMAL),
     droneInside(true),   // da specifica: stato iniziale = dentro
@@ -13,15 +14,35 @@ Hangar::Hangar(HWPlatform* hw)
 }
 
 void Hangar::init() {
-    hw->getHangarDoorMotor()->motorOn(); // TODO rivedere
-    Serial.println("Door TEST");
+    L1isOn = false;
+    L2isBlinking  = false;
+    L3isOn  = false;
+
+
+    pHW->getHangarDoorMotor()->motorOn();
     closeDoor();
-    delay(1000);
-    openDoor(); // TODO test collegamento pin e alimentazione, togliere alla fine dello sviluppo
-    delay(1000);
-    closeDoor();
+    if (SVILUPPO) {
+        Serial.println("Door and Led TEST");
+
+        pHW->getL1()->switchOn();
+        pHW->getL2()->switchOn();
+        pHW->getL3()->switchOn();
+        
+        delay(1000);
+        
+        openDoor(); // TODO test collegamento pin e alimentazione, togliere alla fine dello sviluppo
+        
+        delay(1000);
+
+        closeDoor();
+        pHW->getL1()->switchOff();
+        pHW->getL2()->switchOff();
+        pHW->getL3()->switchOff();
+        
+    }
     Serial.println("Door is READY");
     droneInside = true;
+    L1isOn = true;
     droneState = DroneState::REST;
     hangarState = HangarState::NORMAL;
 }
@@ -47,7 +68,7 @@ DroneState Hangar::getDroneState() {
 /* --------- Porta hangar --------- */
 
 void Hangar::openDoor() {
-  auto motor = hw->getHangarDoorMotor();
+  auto motor = pHW->getHangarDoorMotor();
   // if (motor && !doorOpen) {
   if (motor) {
     motor->setPosition(DOOR_OPEN_ANGLE);  // es. 90°
@@ -58,7 +79,7 @@ void Hangar::openDoor() {
 }
 
 void Hangar::closeDoor() {
-  auto motor = hw->getHangarDoorMotor();
+  auto motor = pHW->getHangarDoorMotor();
   // if (motor && doorOpen) {
   if (motor) {
     motor->setPosition(DOOR_CLOSED_ANGLE);  // es. 0°
@@ -75,7 +96,7 @@ bool Hangar::isDoorOpen() {
 /* --------- Letture sensori --------- */
 
 float Hangar::getDistance() {
-  auto sonar = hw->getDDD();
+  auto sonar = pHW->getDDD();
   if (!sonar) {
     return SONAR_NO_OBJ_DETECTED;
   }
@@ -83,7 +104,7 @@ float Hangar::getDistance() {
 }
 
 bool Hangar::isDroneAbove() {
-  auto pir = hw->getDPD();
+  auto pir = pHW->getDPD();
   if (!pir) {
     return false;
   }
@@ -91,7 +112,7 @@ bool Hangar::isDroneAbove() {
 }
 
 float Hangar::getTemperature() {
-  auto temperatureSensor = hw->getTempSensor();
+  auto temperatureSensor = pHW->getTempSensor();
   if (!temperatureSensor) {
     return NAN;
   }
@@ -109,12 +130,54 @@ HangarState Hangar::getHangarState() {
 }
 
 
+void Hangar::setL1On() {
+    this->L1isOn = true;
+}
+void Hangar::setL2Blinking() {
+    this->L2isBlinking = true;
+}
+void Hangar::setL3On() {
+    this->L3isOn = true;
+}
+
+void Hangar::setL1Off() {
+    this->L1isOn = false;
+}
+void Hangar::setL2Off() {
+    this->L2isBlinking = false;
+}
+void Hangar::setL3Off() {
+    this->L3isOn = false;
+}
+
+void Hangar::manageLeds() {
+    if (L1isOn) {
+        pHW->getL1()->switchOn();
+    } else {
+        pHW->getL1()->switchOff();
+    }
+    if (L2isBlinking) {
+        pHW->getL2()->switchOn(); // TODO: fare il blink
+    } else {
+        pHW->getL2()->switchOff();
+    }
+    if (L3isOn) { // LED ROSSO
+        pHW->getL3()->switchOn();
+    } else {
+        pHW->getL3()->switchOff();
+    }
+
+}
+
+
 void Hangar::sync(){
+    manageLeds();
+
     float dist = lastDistance; 
     currentTemp = lastTemperature;
     
-    currentTemp = hw->getTempSensor()->getTemperature();
-    dist = hw->getDDD()->getDistance();
+    currentTemp = pHW->getTempSensor()->getTemperature();
+    dist = pHW->getDDD()->getDistance();
     // if (dist == SONAR_NO_OBJ_DETECTED){
     //   dist = 1000; // TODO: cambia
     // }
