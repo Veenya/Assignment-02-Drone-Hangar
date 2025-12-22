@@ -17,6 +17,10 @@ public class DashboardController  {
 	
 	static final String MSG_RESET       = "re";
 	static final String MSG_OPERATING 	= "op";
+
+	//TODO: metterne che arduino sa leggere
+	static final String MSG_ALARM_ON = "ao";
+	static final String MSG_ALARM_OFF = "af";
 	
 	SerialCommChannel channel;
 	DashboardView view;
@@ -38,9 +42,10 @@ public class DashboardController  {
 	}
 
 
-	public void notifyReset() {
-		channel.sendMsg(MSG_RESET);
-	}
+    public void notifyReset() {
+        channel.sendMsg(MSG_RESET);
+        logger.log("RESET");
+    }
 	
 	public void notifyTakingOff() {
 		channel.sendMsg(MSG_TAKING_OFF);
@@ -56,5 +61,15 @@ public class DashboardController  {
 		channel.sendMsg(MSG_LANDING);
 		logger.log("LANDING");
 	}
+
+	public void notifyStartAlarm() {
+		channel.sendMsg(MSG_ALARM_ON);
+		logger.log("ALARM ON");
+	}
+	public void notifyStopAlarm()  {
+		channel.sendMsg(MSG_ALARM_OFF);
+		logger.log("ALARM OFF");
+	}
+
 
 }
