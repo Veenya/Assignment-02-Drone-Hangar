@@ -8,8 +8,15 @@ CommunicationCenter::CommunicationCenter(Hangar* pHangar): pHangar(pHangar){
 
 void CommunicationCenter::init(){
   openDoorNotification = false;
+<<<<<<< HEAD
   landingNotification = false;
   takeOffNotification = false;
+=======
+  takeOffNotification = false;
+  landingNotification = false;
+  alarmNotification = false;
+  resetAlarmsNotification = false;
+>>>>>>> feature/new-UI
 }
 
 void CommunicationCenter::notifyNewState(){
@@ -52,6 +59,10 @@ void CommunicationCenter::sync(){
       } else if (msgContent == "la") { // Landing
         openDoorNotification = true;
         landingNotification = true;
+      } else if (msgContent == "ao") { // Alarm on
+        alarmNotification = true;
+      } else if (msgContent == "af") { // Alarm off
+        resetAlarmsNotification = true;
       }
       delete msg;
     }  

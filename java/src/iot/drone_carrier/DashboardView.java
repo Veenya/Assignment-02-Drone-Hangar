@@ -28,6 +28,11 @@ the current state of the drone hangar (normal, alarm);
 	// Send commands from GUI to Hangar simulating:
 	private JButton landButton;      // - Landing
 	private JButton takeOffButton;   // - Taking off
+
+	private JButton alarmButton;     // Alarm simulation
+	private boolean alarmActive = false;
+
+
 	//private JButton reset;
 	//private JButton openDoor; //todo: rivedere il meccanismo di come funziona
 
@@ -119,6 +124,12 @@ the current state of the drone hangar (normal, alarm);
 		takeOffButton = new JButton("Take Off");
 		takeOffButton.setEnabled(false);
 		takeOffButton.addActionListener(this);
+
+		// Button to simulate alarm
+		alarmButton = new JButton("Start Alarm State");
+		alarmButton.setEnabled(true);
+		alarmButton.addActionListener(this);
+		buttonPanel.add(alarmButton);
 
 		/*
 		reset = new JButton("Reset");
@@ -240,6 +251,16 @@ the current state of the drone hangar (normal, alarm);
 			else if (ev.getSource() == takeOffButton) { // se premuto il tasto takeoff
 				takeOffButton.setEnabled(false);
 				controller.notifyTakingOff();
+			} else if (ev.getSource() == alarmButton) {
+				alarmActive = !alarmActive;
+
+				if (alarmActive) {
+					alarmButton.setText("Stop Alarm State");
+					controller.notifyStartAlarm(); 
+				} else {
+					alarmButton.setText("Start Alarm State");
+					controller.notifyStopAlarm();
+				}
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
