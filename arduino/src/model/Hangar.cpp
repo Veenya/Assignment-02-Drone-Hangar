@@ -166,6 +166,9 @@ void Hangar::manageAlarm() {
         || droneState != DroneState::WAITING
       ) {
         hangarState = HangarState::ALARM;
+        if (pHW->getResetButton()->isPressed()) {
+          hangarState = HangarState::NORMAL;
+        }
     } else {
         hangarState = HangarState::NORMAL;
     }
