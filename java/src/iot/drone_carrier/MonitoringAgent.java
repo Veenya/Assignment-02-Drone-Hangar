@@ -62,7 +62,7 @@ public class MonitoringAgent extends Thread {
 	// static final String debuggingMsg = "STATE,1,0,100"; // STATE,<hangar>,<distance>,<temp>
 	static final String debuggingMsg = "STATE,0,0,10,20.70"; // STATE,<hangar state>,<drone state><distance>,<temp>
 
-	
+	HangarState hangarState;
 	
 	public MonitoringAgent(SerialCommChannel channel, DashboardView view, LogView log) throws Exception {
 		this.view = view;
@@ -131,7 +131,21 @@ public class MonitoringAgent extends Thread {
 								droneState = DroneState.OPERATING;
 							}
 
-							if (droneState == DroneState.INSIDE && !canTakeoff) { // inside
+							if (hangarCode == 0) {
+								hangarState = HangarState.NORMAL;
+							} else if (hangarCode == 1) {
+								hangarState = HangarState.PREALARM;
+							} else if (hangarCode == 2) {
+								hangarState = HangarState.ALARM;
+							}
+
+							if (hangarState == HangarState.ALARM) {
+								view.disableTakeoff();
+								view.disableLanding();
+								canTakeoff = false;
+								canLand = false;
+								
+							} else if (droneState == DroneState.INSIDE && !canTakeoff) { // inside
 								canTakeoff = true;
 								view.enableTakeoff();
 

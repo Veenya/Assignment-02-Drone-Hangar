@@ -56,6 +56,10 @@ void setup() {
 void loop() {
 	scheduler.schedule();
 	
+	// pHWPlatform->getResetButton()->sync();
+	// Logger.log("Reset Alarm Pressed" + String(pHangar->getResetButton()->isPressed()));
+
+
 	// pHWPlatform->getL1()->switchOn();
 	// pHWPlatform->getL2()->switchOn();
 	// pHWPlatform->getL3()->switchOn();

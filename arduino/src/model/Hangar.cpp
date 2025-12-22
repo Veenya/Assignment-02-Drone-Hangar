@@ -10,6 +10,7 @@ Hangar::Hangar(HWPlatform* hw)
     droneState(DroneState::REST),
     hangarState(HangarState::NORMAL),
     droneInside(true),
+    pResetButton(pHW->getResetButton()),
     doorOpen(false) {
 }
 
@@ -161,14 +162,11 @@ void Hangar::resetAlarm() {
 
 void Hangar::manageAlarm() {
     if (   alarmRaised 
-        || droneState != DroneState::TAKING_OFF
-        || droneState != DroneState::LANDING
-        || droneState != DroneState::WAITING
+        && droneState != DroneState::TAKING_OFF
+        && droneState != DroneState::LANDING
+        && droneState != DroneState::WAITING
       ) {
         hangarState = HangarState::ALARM;
-        if (pHW->getResetButton()->isPressed()) {
-          hangarState = HangarState::NORMAL;
-        }
     } else {
         hangarState = HangarState::NORMAL;
     }
@@ -191,6 +189,11 @@ void Hangar::manageLeds() {
         pHW->getL3()->switchOff();
     }
 
+}
+
+ButtonImpl* Hangar::getResetButton() {
+  //  return this->pHW->getResetButton();
+    return this->pResetButton;
 }
 
 

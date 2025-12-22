@@ -55,9 +55,12 @@ public:
     void setL1Off();
     void setL2Off();
     void setL3Off();
+    ButtonImpl *getResetButton();
 
 private:
     HWPlatform* pHW;
+
+    ButtonImpl* pResetButton;
 
     DroneState droneState;
     HangarState hangarState;
@@ -78,9 +81,8 @@ private:
 
 
     void manageLeds();
-    void manageAlarm();
 
-    
+    void manageAlarm();
 };
 
 #endif

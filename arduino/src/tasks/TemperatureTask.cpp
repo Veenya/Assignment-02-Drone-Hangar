@@ -4,7 +4,7 @@
 #include "kernel/Logger.h"
 
 
-bool DEBUG_TEMP = false;
+bool DEBUG_TEMP = true;
 
 TemperatureTask::TemperatureTask(Hangar* pHangar, UserPanel* pUserPanel) : 
     pHangar(pHangar) {

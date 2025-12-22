@@ -31,7 +31,7 @@ HWPlatform::HWPlatform() {
 
 }
 
-Button* HWPlatform::getResetButton(){
+ButtonImpl* HWPlatform::getResetButton(){
     return this->pResetButton;
 }
 

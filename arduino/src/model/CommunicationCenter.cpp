@@ -55,16 +55,23 @@ void CommunicationCenter::sync(){
         openDoorNotification = true;
         landingNotification = true;
       } else if (msgContent == "ao") { // Alarm on
-        pHangar->setHangarState(HangarState::ALARM);
-        this->hangarState = HangarState::ALARM;
+        pHangar->raiseAlarm();
+        // pHangar->setHangarState(HangarState::ALARM);
+        // this->hangarState = HangarState::ALARM;
         // alarmNotification = true;
       } else if (msgContent == "af") { // Alarm off
-        pHangar->setHangarState(HangarState::NORMAL);
-        this->hangarState = HangarState::NORMAL;
+        pHangar->resetAlarm();
+        // pHangar->setHangarState(HangarState::NORMAL);
+        // this->hangarState = HangarState::NORMAL;
         // resetAlarmsNotification = true;
       }
       delete msg;
     }  
+  }
+  pHangar->getResetButton()->sync();
+  // Logger.log("Reset Alarm Pressed" + String(pHangar->getResetButton()->isPressed()));
+  if ( pHangar->getResetButton()->isPressed()) {
+    pHangar->resetAlarm();
   }
 }
 

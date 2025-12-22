@@ -4,7 +4,7 @@
 
 #include "config.h"                                 // pins
 
-#include "devices/button/Button.h"                  // button
+#include "devices/button/ButtonImpl.h"                  // button
 #include "devices/led/Led.h"                        // led
 #include "devices/pir/Pir.h"                        // pir
 #include "devices/proximity_sensor/Sonar.h"         // proximity sensor
@@ -45,7 +45,7 @@ public:
   Led* getL3();    // rosso allarme
 
   // Bottone di reset allarme
-  Button* getResetButton();
+  ButtonImpl* getResetButton();
 
 private:
   // istanze concrete dei device
@@ -57,7 +57,7 @@ private:
   Led* pL1;
   Led* pL2;
   Led* pL3;
-  Button* pResetButton;
+  ButtonImpl* pResetButton;
 };
 
 #endif

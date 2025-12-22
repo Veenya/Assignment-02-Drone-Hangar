@@ -9,7 +9,7 @@
 #define L3_PIN              6 // red
 #define L2_BLINK_PERIOD     100
 
-#define BUTTON_PIN          10
+#define BUTTON_PIN          5
 
 #define TEMP_PIN            A0
 #define PIR_PIN             11
