@@ -7,7 +7,7 @@
 #include "model/UserPanel.h"
 #include "model/CommunicationCenter.h"
 #include "tasks/CommunicationTask.h"
-#include "tasks/DoorTask.h"
+#include "tasks/HangarTask.h"
 #include "tasks/TemperatureTask.h"
 
 
@@ -39,14 +39,14 @@ void setup() {
 	Task* pCommunicationTask = new CommunicationTask(pCommunicationCenter, pHangar);
 	pCommunicationTask->init(COMMUNICATION_PERIOD);
 
-	Task* pDoorTask = new DoorTask(pCommunicationCenter, pHangar, pUserPanel);
-	pDoorTask->init(DOOR_TASK);
+	Task* pHangarTask = new HangarTask(pCommunicationCenter, pHangar, pUserPanel);
+	pHangarTask->init(DOOR_TASK);
 
 	Task* pTemperatureTask = new TemperatureTask(pHangar, pUserPanel);
 	pTemperatureTask->init(TEMPERATURE_TASK);
 
 	scheduler.addTask(pCommunicationTask);
-	scheduler.addTask(pDoorTask);
+	scheduler.addTask(pHangarTask);
 	scheduler.addTask(pTemperatureTask);
 }
 

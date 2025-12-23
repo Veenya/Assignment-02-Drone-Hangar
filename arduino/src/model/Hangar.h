@@ -13,6 +13,10 @@ public:
     void init();
     void sync();
 
+    void setDoorState(DoorState state);
+
+    DoorState getDoorState();
+
     /* --------- Stato drone --------- */
 
     void setDroneState(DroneState state);
@@ -60,6 +64,7 @@ public:
 private:
     HWPlatform* pHW;
     DroneState droneState;
+    DoorState doorState;
     HangarState hangarState;
     ButtonImpl* pResetButton;
 
@@ -73,6 +78,7 @@ private:
     bool alarmRaised;
     void manageLeds();
     void manageAlarm();
+    void manageDoor();
 };
 
 #endif

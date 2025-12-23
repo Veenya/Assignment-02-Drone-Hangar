@@ -2,6 +2,7 @@
 
 #include "Hangar.h"
 #include "config.h"
+#include "kernel/Logger.h"
 
 bool SVILUPPO = true;
 
@@ -161,32 +162,70 @@ void Hangar::manageAlarm() {
 }
 
 void Hangar::manageLeds() {
+    // Led1 Verde
     if (L1isOn) {
         pHW->getL1()->switchOn();
     } else {
         pHW->getL1()->switchOff();
     }
+
+    // Led2 Verde
     if (droneState == DroneState::TAKING_OFF || droneState == DroneState::LANDING) {
         pHW->getL2()->blink(L2_BLINK_PERIOD);
     } else {
         pHW->getL2()->stopBlinking();
     }
-    if (hangarState == HangarState::ALARM) { // LED ROSSO
+
+    // Led3 Rosso
+    if (hangarState == HangarState::ALARM) { 
         pHW->getL3()->switchOn();
     } else {
         pHW->getL3()->switchOff();
     }
+}
+
+void Hangar::manageDoor() {
+    switch (doorState) {
+        case DoorState::OPEN:
+          Logger.log(F("[DO] Door is Open"));
+          break;
+        case DoorState::OPENING:
+          this->openDoor();
+          Logger.log(F("[DO] opening door"));
+          break;
+        case DoorState::CLOSED:
+          Logger.log(F("[DO] Door is Closed"));
+          break;
+        case DoorState::CLOSING:
+          this->closeDoor();
+          Logger.log(F("[DO] closing door")); 
+          break;
+        
+        default:
+          break;
+    }
+
 
 }
+
+
+
 
 ButtonImpl* Hangar::getResetButton() {
   //  return this->pHW->getResetButton();
     return this->pResetButton;
 }
 
+void Hangar::setDoorState(DoorState state) {
+    this->doorState = state;
+    this->manageDoor();
+}
+
+DoorState Hangar::getDoorState() {
+    return this->doorState;
+}
 
 void Hangar::sync(){
     manageAlarm();
     manageLeds();
 }
-
