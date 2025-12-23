@@ -59,29 +59,19 @@ public:
 
 private:
     HWPlatform* pHW;
-
-    ButtonImpl* pResetButton;
-
     DroneState droneState;
     HangarState hangarState;
+    ButtonImpl* pResetButton;
 
     bool L1isOn;
     bool L2isBlinking;
     bool L3isOn;
-
-
-    bool droneInside;
     bool doorOpen;
-
     float lastDistance;
     float currentTemp;
     float lastTemperature;
-
     bool alarmRaised;
-
-
     void manageLeds();
-
     void manageAlarm();
 };
 

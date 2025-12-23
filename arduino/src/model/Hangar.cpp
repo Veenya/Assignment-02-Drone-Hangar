@@ -1,7 +1,7 @@
 #include "Arduino.h"
 
 #include "Hangar.h"
-#include "config.h"   // per eventuali angoli porta ecc.
+#include "config.h"
 
 bool SVILUPPO = true;
 
@@ -9,9 +9,7 @@ Hangar::Hangar(HWPlatform* hw)
   : pHW(hw),
     droneState(DroneState::REST),
     hangarState(HangarState::NORMAL),
-    droneInside(true),
-    pResetButton(pHW->getResetButton()),
-    doorOpen(false) {
+    pResetButton(pHW->getResetButton()) {
 }
 
 void Hangar::init() {
@@ -22,6 +20,7 @@ void Hangar::init() {
     alarmRaised = false;
 
     pHW->getHangarDoorMotor()->motorOn();
+    doorOpen = true; // serve per far funzionare la prima volta closeDoor();
     closeDoor();
     if (SVILUPPO) {
         Serial.println("Door and Led TEST");
@@ -43,7 +42,6 @@ void Hangar::init() {
         
     }
     Serial.println("Door is READY");
-    droneInside = true;
     L1isOn = true;
     droneState = DroneState::REST;
     hangarState = HangarState::NORMAL;
@@ -59,21 +57,12 @@ DroneState Hangar::getDroneState() {
     return this->droneState;
 }
 
-// void Hangar::setDroneInside(bool inside) {
-//   droneInside = inside;
-// }
-
-// bool Hangar::isDroneInside() const {
-//   return droneInside;
-// }
-
 /* --------- Porta hangar --------- */
 
 void Hangar::openDoor() {
   auto motor = pHW->getHangarDoorMotor();
-  // if (motor && !doorOpen) {
-  if (motor) {
-    motor->setPosition(DOOR_OPEN_ANGLE);  // es. 90°
+  if (motor && !doorOpen) {
+    motor->setPosition(DOOR_OPEN_ANGLE);
     doorOpen = true;
   } else {
     Serial.println("NO MOTOR");
@@ -82,9 +71,8 @@ void Hangar::openDoor() {
 
 void Hangar::closeDoor() {
   auto motor = pHW->getHangarDoorMotor();
-  // if (motor && doorOpen) {
-  if (motor) {
-    motor->setPosition(DOOR_CLOSED_ANGLE);  // es. 0°
+  if (motor && doorOpen) {
+    motor->setPosition(DOOR_CLOSED_ANGLE);
     doorOpen = false;
   } else {
     Serial.println("NO MOTOR");
@@ -200,16 +188,5 @@ ButtonImpl* Hangar::getResetButton() {
 void Hangar::sync(){
     manageAlarm();
     manageLeds();
-
-    float dist = lastDistance; 
-    currentTemp = lastTemperature;
-    
-    // currentTemp = pHW->getTempSensor()->getTemperature();
-    // dist = pHW->getDDD()->getDistance();
-    // // if (dist == SONAR_NO_OBJ_DETECTED){
-    // //   dist = 1000; // TODO: cambia
-    // // }
-    // lastDistance = dist; 
-    // lastTemperature = currentTemp; 
 }
 
