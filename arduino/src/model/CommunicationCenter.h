@@ -22,12 +22,12 @@ public:
   void notifyNewState();
   
   bool checkAndResetOpenDoorRequest();
-  bool checkAndResetTakeOffRequest(); //? Serve la distinzione?
+  bool checkAndResetTakeOffRequest();
   bool checkTakeOffRequest();
-  bool checkAndResetLandingRequest(); //? Serve la distinzione?
+  bool checkAndResetLandingRequest();
   bool checkLandingRequest();
-  bool checkAndResetAlarmRequest(); //? Serve?
-  bool notifyAlarm(); //? Serve?
+  bool checkAndResetAlarmRequest();
+  bool notifyAlarm();
   
 
 

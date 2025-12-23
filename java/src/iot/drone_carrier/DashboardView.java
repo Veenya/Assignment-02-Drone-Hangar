@@ -1,30 +1,20 @@
 package iot.drone_carrier;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.LayoutManager;
-import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.LinkedList;
+// import java.awt.BorderLayout;
+// import java.awt.Graphics;
+// import java.awt.Graphics2D;
+// import java.awt.LayoutManager;
+// import java.awt.RenderingHints;
+// import java.util.LinkedList;
 
 import javax.swing.*;
 
 class DashboardView extends JFrame implements ActionListener  {
-	/*
-The DRU subsystem is meant to have a GUI with controls to:
-
-send command to the hangar, simulating behaviour of the drone (taking off and landing).
-visualise:
-the current state of the drone (rest, taking off, operating, landing);
-the current state of the drone hangar (normal, alarm);
-(when landing) the current distance to ground.
-*/
-
 	// Send commands from GUI to Hangar simulating:
 	private JButton landButton;      // - Landing
 	private JButton takeOffButton;   // - Taking off
@@ -32,20 +22,14 @@ the current state of the drone hangar (normal, alarm);
 	private JButton alarmButton;     // Alarm simulation
 	private boolean alarmActive = false;
 
-
-	//private JButton reset;
-	//private JButton openDoor; //todo: rivedere il meccanismo di come funziona
-
-	// Show state of the drone (rest, taking off, operating, landing)
+	// Shows state of the drone (rest, taking off, operating, landing)
     private JTextField droneState;
-	// Show state of the hangar (normal, alarm, prealarm)
+	// Shows state of the hangar (normal, alarm, prealarm)
 	private JTextField hangarState;      
 
-	// When landing, the distance from the ground
+	// Drone distance from the ground
 	private JTextField groundDistance;
 	
-	//private JTextField doorState;           // stato della porta (aperta, chiusa, movimento)
-	// temperature of hangar
 	private JTextField hangarTemperature; 
 
 	private int WINDOW_WIDTH;
@@ -101,15 +85,6 @@ the current state of the drone hangar (normal, alarm);
 		infoLine.add(new JLabel("Current Temperature:"));
 		infoLine.add(hangarTemperature);
 		
-		/*
-		// Door state
-		doorState = new JTextField("--");
-		doorState.setEditable(false);
-		doorState.setPreferredSize(new Dimension(100,15));
-		infoLine.add(new JLabel("Door State:"));
-		infoLine.add(doorState);
-		*/
-		
 		mainPanel.add(infoLine);
 		mainPanel.add(Box.createRigidArea(new Dimension(0,20)));
 		mainPanel.setPreferredSize(new Dimension(FIELD_WIDTH,FIELD_HEIGHT));
@@ -130,12 +105,6 @@ the current state of the drone hangar (normal, alarm);
 		alarmButton.setEnabled(true);
 		alarmButton.addActionListener(this);
 		buttonPanel.add(alarmButton);
-
-		/*
-		reset = new JButton("Reset");
-		reset.setEnabled(false);
-		reset.addActionListener(this);
-		*/
 
 		buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));	    
 		buttonPanel.add(landButton);
@@ -196,28 +165,7 @@ the current state of the drone hangar (normal, alarm);
 		});
 	}
 
-
-	// public void setDoorState(String msg) {}
-
-
-	/* 
-	public void setGroundDistance(float perc){
-		SwingUtilities.invokeLater(() -> {
-			doorState.setText("" + perc);
-		});
-	}
-	
-
-	public void setCurrentTemperature(float temp){
-		SwingUtilities.invokeLater(() -> {
-			currentTemperature.setText("" + temp);
-		});
-	}
-	*/
-
-
 	/* ENABLERS */
-
 	public void enableTakeoff() {
 		SwingUtilities.invokeLater(()-> {
 			takeOffButton.setEnabled(true);

@@ -26,14 +26,3 @@ void Pir::updateSyncTime(long time) {
 long Pir::getLastSyncTime() {
     return lastTimeSync;
 }
-
-/* Metodo alternativo a isDetected */
-/*
-bool Pir::isDetected() {
-    int val = digitalRead(pin);
-    if (val == HIGH) {
-        return true;
-    } else {
-        return false;
-    }
-}*/

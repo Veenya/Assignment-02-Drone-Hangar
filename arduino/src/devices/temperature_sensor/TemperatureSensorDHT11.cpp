@@ -1,11 +1,9 @@
 #include "TemperatureSensorDHT11.h"
-#include "Arduino.h"  
-//#include "DHT.h"
-
-#define DHTTYPE DHT11   
+#include "Arduino.h" 
+#include "config.h" 
 
 TempSensorDHT11::TempSensorDHT11(uint8_t pin)
-  : dht(pin, DHTTYPE) {
+  : dht(pin, DHT_TYPE) {
   dht.begin();
 }
 
@@ -13,9 +11,6 @@ float TempSensorDHT11::getTemperature() {
   float t = dht.readTemperature();   // °C di default
 
   if (isnan(t)) {
-    // lettura fallita: gestisci come preferisci:
-    // - return NAN;
-    // - oppure un valore di fallback
     return NAN;
   }
 

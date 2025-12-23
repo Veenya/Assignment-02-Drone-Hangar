@@ -1,6 +1,5 @@
 #include "TempSensorLM35.h"
 #include "Arduino.h"
-//#include "kernel/Logger.h"
 
 #define VCC ((float)5)
 
@@ -11,11 +10,6 @@ float TempSensorLM35::getTemperature(){
   float values[5];
   float max = -1;
   float min = 100; 
-  
-  /* 
-     simple strategy for input conditioning: 
-     - doing multiple measurements, discarding mix and max and returning the average
-  */
   
   for (int i = 0; i < 5; i++){
     int value = analogRead(pin);

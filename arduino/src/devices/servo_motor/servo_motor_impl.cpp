@@ -8,7 +8,7 @@ ServoMotorImpl::ServoMotorImpl(int pin){
 
 void ServoMotorImpl::motorOn(){
   motor.attach(pin);
-  // _on = true;
+  _on = true;
   Serial.println("PIN " + String(pin));
 }
 
@@ -22,7 +22,6 @@ void ServoMotorImpl::setPosition(int angle) {
     } else if (angle < 0) {
         angle = 0;
     }
-    // Range per MS18/SG90: 500us (0°) a 2500us (180°)
     float coeff = (2500.0 - 500.0) / 180.0;
     int pulse = static_cast<int>(500.0 + angle * coeff + 0.5);  // Calcola e arrotonda
     Serial.println("ANGLE " + String(angle) + " (pulse: " + String(pulse) + ")");

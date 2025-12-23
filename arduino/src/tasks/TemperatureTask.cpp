@@ -14,12 +14,11 @@ TemperatureTask::TemperatureTask(Hangar* pHangar, UserPanel* pUserPanel) :
 void TemperatureTask::tick(){
     pHangar->sync();
 
-    float temp = pHangar->getTemperature(); //! controlla se il prof lo mette
+    float temp = pHangar->getTemperature();
 
     if (!DEBUG_TEMP) {
         switch (state){    
             case HangarState::NORMAL: {
-                // Logger.log(F("[TEMP] normal"));
                 pHangar->setHangarState(HangarState::NORMAL);
 
                 if (temp > MAXTEMP){
@@ -48,7 +47,6 @@ void TemperatureTask::tick(){
                     pHangar->setHangarState(HangarState::ALARM);
 
                 // Esci dall'allarme quando qualcuno rimette l'hangar in stato normale
-                // TODO: controlla se va col tasto
                 if (pHangar->getHangarState() == HangarState::NORMAL){
                     setState(HangarState::NORMAL);
                 }

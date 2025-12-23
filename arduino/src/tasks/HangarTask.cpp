@@ -42,12 +42,7 @@ void HangarTask::tick() {
             pUserPanel->displayWaitingDoor();
             pHangar->setDoorState(DoorState::OPENING);
             this->stateTimestamp = millis();
-
-        //* CHILLING
-        } else {
-            Logger.log(F("[DR] DRONE Chilling"));
-            pUserPanel->displayDroneInside();
-        }
+        } 
 
     //* OUTSIDE AND LANDING REQUEST
     // } else if (pCommunicationCenter->checkAndResetLandingRequest() && pHangar->isDroneAbove() && this->droneState == DroneState::OPERATING) {

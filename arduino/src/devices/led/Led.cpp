@@ -1,13 +1,14 @@
-#include "Led.h"
 #include "Arduino.h"
+#include "Led.h"
+#include "config.h"
 
 Led::Led(int pin) {
     this->pin = pin;
     pinMode(pin, OUTPUT);
     state = false;
     blinking = false;
-    lastToggleMs = 0;
-    halfPeriodMs = 250; //TODO; cambiare e mettere nel config
+    lastToggleMs = LAST_TOGGLE;
+    halfPeriodMs = HALF_PERIOD;
     switchOff();
 }
 
@@ -27,7 +28,7 @@ void Led::toggle() {
 }
 
 void Led::blink(unsigned long periodMs) {
-  if (periodMs < 2) periodMs = 2;           // avoid halfPeriod = 0
+  if (periodMs < 2) periodMs = 2;           // evita halfPeriod = 0
   halfPeriodMs = periodMs / 2;
   blinking = true;
 

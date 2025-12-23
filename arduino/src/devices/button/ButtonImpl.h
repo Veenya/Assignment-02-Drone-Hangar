@@ -1,5 +1,5 @@
-#ifndef __BUTTONIMPL__
-#define __BUTTONIMPL__
+#ifndef __BUTTON_IMPL__
+#define __BUTTON_IMPL__
 
 #include "Button.h"
 

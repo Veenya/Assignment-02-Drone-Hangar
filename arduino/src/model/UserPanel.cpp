@@ -87,16 +87,11 @@ void UserPanel::sync() {
     return;
   }
 
-  // Se la tua classe Button ha un metodo sync() (come nel cestino), lo chiamiamo
-  //pResetButton->sync();
-
-  // Salviamo lo stato precedente e leggiamo quello nuovo
   prevResetPressed = resetPressed;
   resetPressed = pResetButton->isPressed();
 }
 
 bool UserPanel::isResetPressed() const {
-  // ? Va salvato e resettato? 
   return resetPressed; 
 }
 

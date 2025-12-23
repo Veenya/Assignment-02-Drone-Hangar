@@ -3,11 +3,17 @@
 #define __CONFIG__
 
 #define SCHEDULER_PERIOD     100 // interrupt fa ripartire lo scheduler ogni n millisecondi
+#define STATE_UPDATE_PERIOD  500 // periodo di invio stato da CommunicationCenter in ms
+
 
 #define L1_PIN              9 // green 
 #define L2_PIN              2 // green
 #define L3_PIN              6 // red
 #define L2_BLINK_PERIOD     100
+#define LAST_TOGGLE         0
+#define HALF_PERIOD         250
+
+#define DHT_TYPE            DHT11  
 
 #define BUTTON_PIN          5
 
@@ -19,7 +25,6 @@
 #define SONAR_ECHO_PIN      7
 
 #define SERVO_PIN           3
-
 
 #define DOOR_CLOSED_ANGLE   0
 #define DOOR_OPEN_ANGLE     90

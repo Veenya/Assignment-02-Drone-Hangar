@@ -56,14 +56,8 @@ void CommunicationCenter::sync(){
         landingNotification = true;
       } else if (msgContent == "ao") { // Alarm on
         pHangar->raiseAlarm();
-        // pHangar->setHangarState(HangarState::ALARM);
-        // this->hangarState = HangarState::ALARM;
-        // alarmNotification = true;
       } else if (msgContent == "af") { // Alarm off
         pHangar->resetAlarm();
-        // pHangar->setHangarState(HangarState::NORMAL);
-        // this->hangarState = HangarState::NORMAL;
-        // resetAlarmsNotification = true;
       }
       delete msg;
     }  

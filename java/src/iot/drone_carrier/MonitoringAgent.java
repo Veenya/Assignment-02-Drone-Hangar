@@ -1,6 +1,3 @@
-// TODO: aggiungo il tasto di debug (o due: on, off) o simula allarme...
-// TODO: simulare stringhe arduino per fare cose per finire interfaccia
-
 package iot.drone_carrier;
 
 import java.util.concurrent.TimeUnit;
@@ -55,11 +52,8 @@ public class MonitoringAgent extends Thread {
 	/* ************************************************ */
 	/* ******************* DEBUGGING ****************** */
 	/* ************************************************ */
-	/* How to make a message */
-	/* State,<the drone state(Inside, Operating)>,<the hangar state (allarm, normal)>,<distance from ground, it's a number> */
 	// static final boolean DEBUGGING = true; 
 	static final boolean DEBUGGING = false; 
-	// static final String debuggingMsg = "STATE,1,0,100"; // STATE,<hangar>,<distance>,<temp>
 	static final String debuggingMsg = "STATE,0,0,10,20.70"; // STATE,<hangar state>,<drone state><distance>,<temp>
 
 	HangarState hangarState;
@@ -73,15 +67,6 @@ public class MonitoringAgent extends Thread {
 	public void run(){
 		boolean canLand = false;
 		boolean canTakeoff = false;
-
-
-		/* Logica:
-			se msg.startsWith("lo:") -> log
-			se msg.startsWith("STATE,") -> split con ,
-			se msg.startsWith("ALARM") -> gestisci allarme
-		*/
-
-
 		// -----------------------------------------------------------------------------
 		
 		while (true){
@@ -104,16 +89,13 @@ public class MonitoringAgent extends Thread {
 					String cmd = msg.substring(LOG_PREFIX.length());
 					System.out.println(cmd);
 
-					// logger.log("new command: "+cmd);				
-					// da DroneRemoteUnit::notifyNewState arduino dovrebbe mandare: "STATE:<dronestate>:<hangarState>:<distance>"
-					// quindi il monitoringAgent ddeve riconoscere lo state, e fare parsing per gli altri campi
+					// da DroneRemoteUnit::notifyNewState la stringa con lo gli stati e la temperatura
 				} else if (msg.startsWith(STATE_PREFIX)){
 					try {
 						String args = msg.substring(STATE_PREFIX.length()); 
 						String[] elems = args.split(",");
 						
 						if (elems.length >= 3) {
-							// <hangar>,<distance>,<temp>
 							int hangarCode = Integer.parseInt(elems[0]);
 							float droneCode = Integer.parseInt(elems[1]);
 							float groundDistance = Float.parseFloat(elems[2]);
@@ -123,7 +105,6 @@ public class MonitoringAgent extends Thread {
 							view.setDroneState(droneCode);
 							view.setGroundDistance(groundDistance);
 							view.setHangarTemperature(hangarTemperature);
-							// TODO Aggiungere stato drone
 							
 							if (droneCode == 0) {
 								droneState = DroneState.INSIDE;
@@ -167,7 +148,6 @@ public class MonitoringAgent extends Thread {
 						System.err.println("Error in msg: " + msg);
 					}
 				} else if (msg.startsWith(ERROR_MSG)){
-					//this.logger.log(msg.substring(LOG_PREFIX.length()));
 					String cmd = msg.substring(ERROR_MSG.length());
 					System.out.println(cmd);
 					logger.log("!!! ALARM !!! " + msg);
@@ -178,10 +158,7 @@ public class MonitoringAgent extends Thread {
 				ex.printStackTrace();
 			}
 		}
-
-		
 	}
-
 
 	void setDroneStateInside() {
 		this.droneState = DroneState.INSIDE;

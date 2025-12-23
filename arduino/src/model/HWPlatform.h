@@ -40,7 +40,7 @@ public:
   LiquidCrystal_I2C* getLcd();
 
   // LED
-  Led* getL1();    // verde
+  Led* getL1();    // verde sempre acceso
   Led* getL2();    // verde blink durante takeoff/landing
   Led* getL3();    // rosso allarme
 
