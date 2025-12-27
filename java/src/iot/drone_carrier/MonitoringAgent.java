@@ -70,8 +70,8 @@ public class MonitoringAgent extends Thread {
 	/* ************************************************ */
 	/* ******************* DEBUGGING ****************** */
 	/* ************************************************ */
-	static final boolean DEBUGGING = true; 
-	//static final boolean DEBUGGING = false; 
+	// static final boolean DEBUGGING = true; 
+	static final boolean DEBUGGING = false; 
 	static final String debuggingMsg = "STATE,0,0,10,20.70,1"; // STATE,<hangar state>,<drone state><distance>,<temp>
 
 
@@ -123,7 +123,7 @@ public class MonitoringAgent extends Thread {
 							view.setDroneState(DroneState.fromCode(droneCode).getName());
 							view.setGroundDistance(groundDistance);
 							view.setCurrentTemperature(currentTemperature);
-							view.setDroneAbove(droneAbove); //! TODO sistema
+							view.setDroneAbove(droneAbove);
 							
 							if (droneCode == 0) {
 								droneState = DroneState.INSIDE;
