@@ -28,17 +28,17 @@
 
 #define DOOR_CLOSED_ANGLE   0
 #define DOOR_OPEN_ANGLE     90
-#define DOOR_TIME           1000      // ms per aprire/chiudere la porta
+#define DOOR_TIME           1500      // ms per aprire/chiudere la porta
 #define SPILLING_MAX_TIME   20000     // ms di "operazione" (decollo/landing)
 
-#define D1                  0.01      // 0.1 è circa una spanna, 0 durante lo sviluppo
-#define D2                  1      // 0.1 è circa una spanna, 1 durante lo sviluppo
-#define SONAR_NO_OBJ_DETECTED 1      // default -1, 1 durante sviluppo
-#define T1                  2000      // TODO decidere tempo per confermare decollo drone
-#define T2                  2000      // TODO decidere tempo per confermare decollo drone
+#define D1                  0.1       // 0.1 è circa una spanna, 0 durante lo sviluppo
+#define D2                  0.1       // 0.1 è circa una spanna, 1 durante lo sviluppo
+#define SONAR_NO_OBJ_DETECTED 1       // default -1, 1 durante sviluppo
+#define T1                  3000      // TODO decidere tempo per confermare decollo drone
+#define T2                  3000      // TODO decidere tempo per confermare atterraggio drone
 
 #define DOOR_TASK            500       // TODO decidere il periodo
-#define COMMUNICATION_PERIOD 500      // TODO decidere il periodo
+#define COMMUNICATION_PERIOD 500       // TODO decidere il periodo
 #define TEMPERATURE_TASK     1000      // TODO decidere il periodo
 
 #define MAXTEMP      40                 // temperatura oltre la quale scatta prealarm e poi alarm

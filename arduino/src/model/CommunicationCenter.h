@@ -40,6 +40,7 @@ private:
   bool landingNotification;
   bool resetAlarmsNotification;
   bool alarmNotification;
+  bool droneAbove;
   float droneDistance;
   float currentTemp;
   DroneState droneState;

@@ -99,6 +99,7 @@ bool Hangar::isDroneAbove() {
   if (!pir) {
     return false;
   }
+  pir->sync();
   return pir->isDetected();
 }
 

@@ -113,11 +113,12 @@ public class MonitoringAgent extends Thread {
 						String args = msg.substring(STATE_PREFIX.length()); 
 						String[] elems = args.split(",");
 						
-						if (elems.length >= 3) {
+						if (elems.length >= 4) {
 							int hangarCode = Integer.parseInt(elems[0]);
 							int droneCode = Integer.parseInt(elems[1]);
 							float groundDistance = Float.parseFloat(elems[2]);
 							float currentTemperature = Float.parseFloat(elems[3]);
+							float droneAbove = Integer.parseInt(elems[4]);
 							view.setHangarState(HangarState.fromCode(hangarCode).getName());
 							view.setDroneState(DroneState.fromCode(droneCode).getName());
 							//view.setDroneState(droneCode);

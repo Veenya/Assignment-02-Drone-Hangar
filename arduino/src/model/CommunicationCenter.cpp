@@ -34,12 +34,29 @@ void CommunicationCenter::notifyNewState(){
   } else {
     droneStateStr = "2";
   }
+  droneAbove = pHangar->isDroneAbove();
+  String droneAboveStr = "-1";
+  if (droneAbove) {
+    droneAboveStr = "1";
+  } else {
+    droneAboveStr = "0";
+  }
+  
+  
+  
   droneDistance = pHangar->getDistance(); // solitamente tra 0 e 0.2
   // int droneDistance = 10;
   currentTemp = pHangar->getTemperature();
+  
 
-  // stato del hangar, stato drone, distanza drone, temperatura
-  MsgService.sendMsg(String("STATE,") + hangarStateStr + "," + droneStateStr + "," + String(droneDistance).substring(0,5) + "," +  String(currentTemp).substring(0,5));  
+
+  // stato del hangar, stato drone, distanza drone, temperatura, drone above
+  MsgService.sendMsg(String("STATE,") + 
+                      hangarStateStr + "," + 
+                      droneStateStr + "," + 
+                      String(droneDistance).substring(0,5) + "," +  
+                      String(currentTemp).substring(0,5) + "," +
+                      String(droneAboveStr));  
 }
 
 void CommunicationCenter::sync(){
@@ -48,7 +65,7 @@ void CommunicationCenter::sync(){
     if (msg != NULL){
       String msgContent = msg->getContent();
       Logger.log("Received msg: " + msgContent);
-      if (msgContent == "to" ){ // Take off
+      if (msgContent == "to" ){       // Take off
         openDoorNotification = true;
         takeOffNotification = true;
       } else if (msgContent == "la") { // Landing
