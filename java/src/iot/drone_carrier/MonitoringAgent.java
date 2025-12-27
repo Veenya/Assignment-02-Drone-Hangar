@@ -70,7 +70,7 @@ public class MonitoringAgent extends Thread {
 	/* ************************************************ */
 	/* ******************* DEBUGGING ****************** */
 	/* ************************************************ */
-	static final boolean DEBUGGING = true; 
+	static final boolean DEBUGGING = false; 
 	//static final boolean DEBUGGING = false; 
 	static final String debuggingMsg = "STATE,0,0,10,20.70"; // STATE,<hangar state>,<drone state><distance>,<temp>
 
