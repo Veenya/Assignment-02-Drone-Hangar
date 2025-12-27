@@ -35,7 +35,9 @@ class DashboardView extends JPanel implements ActionListener  {
 	private JTextField groundDistance;
 	
 	//private JTextField hangarTemperature;
-	private JTextField currentTemperature; 
+	private JTextField currentTemperature;
+	
+	private JTextField droneAbove;
 
 	private int WINDOW_WIDTH;
 	private int WINDOW_HEIGHT; 
@@ -62,15 +64,6 @@ class DashboardView extends JPanel implements ActionListener  {
 		JPanel infoLine = new JPanel();
         infoLine.setLayout(new BoxLayout(infoLine, BoxLayout.X_AXIS));
 
-
-		
-
-		//setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
-		//this.setResizable(false);
-		//JPanel mainPanel = new JPanel();
-		//mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
-		//mainPanel.add(Box.createRigidArea(new Dimension(0,20)));
-		
 
 
 		// Hangar State
@@ -107,6 +100,13 @@ class DashboardView extends JPanel implements ActionListener  {
         currentTemperature.setMaximumSize(new Dimension(FIELD_WIDTH, FIELD_HEIGHT));
         infoLine.add(new JLabel("Temperature: "));
         infoLine.add(currentTemperature);
+
+		// Is the drone above
+		droneAbove = new JTextField("--");
+        droneAbove.setEditable(false);
+        droneAbove.setMaximumSize(new Dimension(FIELD_WIDTH, FIELD_HEIGHT));
+        infoLine.add(new JLabel("Drone Above: "));
+        infoLine.add(droneAbove);
 
         add(infoLine);
         add(Box.createRigidArea(new Dimension(0, 12)));
@@ -164,6 +164,16 @@ class DashboardView extends JPanel implements ActionListener  {
 	public void setDroneState(String msg) {
 		SwingUtilities.invokeLater(() -> {
 			droneState.setText(msg);
+		});
+	}
+
+	public void setDroneAbove(Integer msg) {
+		SwingUtilities.invokeLater(() -> {
+			if(msg == 0) {
+				droneAbove.setText("False");
+			} else {
+				droneAbove.setText("True");
+			}
 		});
 	}
 
