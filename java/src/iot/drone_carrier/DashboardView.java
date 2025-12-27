@@ -14,16 +14,7 @@ import java.util.LinkedList;
 
 import javax.swing.*;
 
-class DashboardView extends JFrame implements ActionListener  {
-	/*
-The DRU subsystem is meant to have a GUI with controls to:
-
-send command to the hangar, simulating behaviour of the drone (taking off and landing).
-visualise:
-the current state of the drone (rest, taking off, operating, landing);
-the current state of the drone hangar (normal, alarm);
-(when landing) the current distance to ground.
-*/
+class DashboardView extends JPanel implements ActionListener  {
 
 	// Send commands from GUI to Hangar simulating:
 	private JButton landButton;      // - Landing
@@ -58,14 +49,16 @@ the current state of the drone hangar (normal, alarm);
 	private DashboardController controller;	
 	
 	public DashboardView(){
-		super(".:: Drone Carrier ::.");
+		//super(".:: Drone Carrier ::.");
 		WINDOW_WIDTH = 600;
 		WINDOW_HEIGHT = 150;
 		FIELD_WIDTH = 200;
 		FIELD_HEIGHT = 15;
 
+		
+
 		setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
-		this.setResizable(false);
+		//this.setResizable(false);
 		JPanel mainPanel = new JPanel();
 		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 		mainPanel.add(Box.createRigidArea(new Dimension(0,20)));
@@ -144,20 +137,41 @@ the current state of the drone hangar (normal, alarm);
 		
 		mainPanel.add(buttonPanel);
 		mainPanel.add(Box.createRigidArea(new Dimension(0,20)));
-		setContentPane(mainPanel);	
-		
+
+		    setLayout(new BorderLayout());
+
+    //JPanel mainPanel = new JPanel();
+    mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+
+    // ... costruisci infoLine, buttonPanel, ecc ...
+    mainPanel.add(infoLine);
+    mainPanel.add(buttonPanel);
+
+    // ✅ aggiungi davvero il mainPanel al JPanel
+    add(mainPanel, BorderLayout.CENTER);
+
+
+		//setContentPane(mainPanel);	
+		/*
 		addWindowListener(new WindowAdapter(){
 			public void windowClosing(WindowEvent ev){
 				System.exit(-1);
 			}
 		});
+
+
+
+
+
+
+
+
+
+
+
+		*/
 	}
 	
-	public void display() {
-		SwingUtilities.invokeLater(() -> {
-			this.setVisible(true);
-		});
-	}
 
 	public void registerController(DashboardController contr){
 		this.controller = contr;
@@ -183,25 +197,6 @@ the current state of the drone hangar (normal, alarm);
 			groundDistance.setText(""+msg);
 		});
 	}
-
-
-	// public void setDoorState(String msg) {}
-
-
-	/* 
-	public void setGroundDistance(float perc){
-		SwingUtilities.invokeLater(() -> {
-			doorState.setText("" + perc);
-		});
-	}
-	
-
-	public void setCurrentTemperature(float temp){
-		SwingUtilities.invokeLater(() -> {
-			currentTemperature.setText("" + temp);
-		});
-	}
-	*/
 
 
 	/* ENABLERS */

@@ -14,8 +14,11 @@ class LogView extends JPanel  {
 	private JTextArea log;
 
 	public LogView(){
+		super(new BorderLayout());
+		log = new JTextArea(18, 16);
+		
 
-		setLayout(new BorderLayout());
+		//setLayout(new BorderLayout());
 
 		log.setEditable(false);
 
