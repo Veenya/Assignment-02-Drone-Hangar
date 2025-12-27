@@ -1,26 +1,28 @@
 package iot.drone_carrier;
 
-import javax.swing.SwingUtilities;
+class DashboardLauncher {
 
-class DashboardLauncher   {
+    static DashboardView view = null;
+    static LogView log = null;
+    static HistoryView history = null;
 
-	static DashboardView view = null;
-	static LogView log = null;
+    static MainWindow mainWindow = null;
 
-	static MainWindow mainWindow = null;
+    public static void main(String[] args) throws Exception {
 
-	public static void main(String[] args) throws Exception {	
+        view = new DashboardView();
+        log = new LogView();
+        history = new HistoryView();
 
-		view = new DashboardView();
-		log = new LogView();
-		mainWindow = new MainWindow(view, log);
+        // Mirror live log messages into the history panel
+        log.addLogListener(history::log);
 
-		String portName = "COM5"; //TODO: puoi metterlo come costante o in config
-		DashboardController contr = new DashboardController(portName,view,log);
-		view.registerController(contr);
-		
-		//view.display();
-		//log.display();
-		mainWindow.display();
-	}
+        mainWindow = new MainWindow(view, log, history);
+
+        String portName = "COM5"; // TODO: put into config/constant
+        DashboardController contr = new DashboardController(portName, view, log);
+        view.registerController(contr);
+
+        mainWindow.display();
+    }
 }

@@ -2,44 +2,61 @@ package iot.drone_carrier;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.function.Consumer;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 
 class LogView extends JPanel  {
 
-	private JTextArea log;
+    private final JTextArea log;
 
-	public LogView(){
-		super(new BorderLayout());
-		log = new JTextArea(18, 16);
-		
+    /**
+     * Optional listeners that receive the raw message string (without timestamp).
+     * Useful to mirror the same events into other panels (e.g., HistoryView).
+     */
+    private final List<Consumer<String>> listeners = new ArrayList<>();
 
-		//setLayout(new BorderLayout());
+    public LogView(){
+        setLayout(new BorderLayout());
 
-		log.setEditable(false);
+        log = new JTextArea();
+        log.setEditable(false);
 
-		// Sfondo bianco + testo nero
-		log.setBackground(Color.WHITE);
-		log.setForeground(Color.BLACK);
+        // stile
+        log.setFont(new Font("Consolas", Font.PLAIN, 12));
+        log.setBackground(Color.BLACK);
+        log.setForeground(Color.GREEN);
 
-		// Testo più grande (monospace comodo per log)
-		log.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 18));
+        Border border = BorderFactory.createEmptyBorder(8, 8, 8, 8);
+        log.setBorder(border);
 
-		// Scroll pane più grande
-		add(new JScrollPane(log), BorderLayout.CENTER);
+        add(new JScrollPane(log), BorderLayout.CENTER);
+    }
 
-	}
+    public void addLogListener(Consumer<String> listener) {
+        if (listener != null) {
+            listeners.add(listener);
+        }
+    }
 
-	public void log(String msg){
-		SwingUtilities.invokeLater(() -> {
-			String date = new Date().toString();
-			log.append("[" + date + "] " + msg + "\n");
-			//log.setCaretPosition(log.getDocument().getLength()); // autoscroll in fondo
-		});
-	}
+    public void log(String msg){
+        SwingUtilities.invokeLater(() -> {
+            String date = new Date().toString();
+            log.append("[" + date + "] " + msg + "\n");
+            //log.setCaretPosition(log.getDocument().getLength()); // autoscroll in fondo
 
+            for (Consumer<String> l : listeners) {
+                try {
+                    l.accept(msg);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
+    }
 }
