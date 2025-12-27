@@ -11,11 +11,11 @@ public class MainWindow extends JFrame {
         setSize(1000, 600);
 
         JSplitPane split = new JSplitPane(
-                JSplitPane.HORIZONTAL_SPLIT,
+                JSplitPane.VERTICAL_SPLIT,
                 dashboardView,
                 logView
         );
-        split.setResizeWeight(0.65);
+        split.setResizeWeight(0.10);
 
         JTabbedPane tabs = new JTabbedPane();
         tabs.addTab("Dashboard", split);
