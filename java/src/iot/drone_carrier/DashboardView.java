@@ -2,15 +2,8 @@ package iot.drone_carrier;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.LayoutManager;
-import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.util.LinkedList;
 
 import javax.swing.*;
 
@@ -19,22 +12,16 @@ class DashboardView extends JPanel implements ActionListener  {
 	// Send commands from GUI to Hangar simulating:
 	private JButton landButton;      // - Landing
 	private JButton takeOffButton;   // - Taking off
-
 	private JButton alarmButton;     // Alarm simulation
 	private boolean alarmActive = false;
 
-
-	//private JButton reset;
-	//private JButton openDoor; //todo: rivedere il meccanismo di come funziona
 
 	// Show state of the drone (rest, taking off, operating, landing)
     private JTextField hangarTemperature;
 	// Show state of the hangar (normal, alarm, prealarm)
 	private JTextField hangarState;      
-
 	// When landing, the distance from the ground
 	private JTextField groundDistance;
-	
 	//private JTextField doorState;           // stato della porta (aperta, chiusa, movimento)
 	// temperature of hangar
 	private JTextField currentTemperature; 
@@ -55,121 +42,88 @@ class DashboardView extends JPanel implements ActionListener  {
 		FIELD_WIDTH = 200;
 		FIELD_HEIGHT = 15;
 
+
+
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		add(Box.createRigidArea(new Dimension(0, 10)));
+
+		// Riga info
+		JPanel infoLine = new JPanel();
+        infoLine.setLayout(new BoxLayout(infoLine, BoxLayout.X_AXIS));
+
+
 		
 
-		setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+		//setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 		//this.setResizable(false);
-		JPanel mainPanel = new JPanel();
-		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
-		mainPanel.add(Box.createRigidArea(new Dimension(0,20)));
+		//JPanel mainPanel = new JPanel();
+		//mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+		//mainPanel.add(Box.createRigidArea(new Dimension(0,20)));
 		
-		JPanel infoLine = new JPanel();
-		infoLine.setLayout(new BoxLayout(infoLine, BoxLayout.LINE_AXIS));
+
 
 		// Hangar State
 		hangarState = new JTextField("--");
 		hangarState.setEditable(false);
-		hangarState.setPreferredSize(new Dimension(FIELD_WIDTH,FIELD_HEIGHT));
-		infoLine.add(new JLabel("Hangar State:")); 
-		infoLine.add(hangarState);
+		//hangarState.setPreferredSize(new Dimension(FIELD_WIDTH,FIELD_HEIGHT));
+		hangarState.setMaximumSize(new Dimension(FIELD_WIDTH, FIELD_HEIGHT));
+        infoLine.add(new JLabel("Hangar: "));
+        infoLine.add(hangarState);
+        infoLine.add(Box.createRigidArea(new Dimension(10, 0)));
 
 		// Drone State
 		hangarTemperature = new JTextField("--");
 		hangarTemperature.setEditable(false);
-		hangarTemperature.setPreferredSize(new Dimension(FIELD_WIDTH,FIELD_HEIGHT));
+		hangarTemperature.setMaximumSize(new Dimension(FIELD_WIDTH, FIELD_HEIGHT));
 		infoLine.add(new JLabel("Drone State:")); 
 		infoLine.add(hangarTemperature);
+		infoLine.add(Box.createRigidArea(new Dimension(10, 0)));
 
 		// Ground Distance
-		groundDistance = new JTextField("--");
-		groundDistance.setEditable(false);
-		groundDistance.setPreferredSize(new Dimension(FIELD_WIDTH,FIELD_HEIGHT));
-		infoLine.add(new JLabel("Ground Distance:")); 
-		infoLine.add(groundDistance);
+        groundDistance = new JTextField("--");
+        groundDistance.setEditable(false);
+        groundDistance.setMaximumSize(new Dimension(FIELD_WIDTH, FIELD_HEIGHT));
+        infoLine.add(new JLabel("Distance: "));
+        infoLine.add(groundDistance);
+        infoLine.add(Box.createRigidArea(new Dimension(10, 0)));
 
 		// Temperature of hangar
-		currentTemperature = new JTextField("--");
-		currentTemperature.setEditable(false);
-		currentTemperature.setPreferredSize(new Dimension(FIELD_WIDTH,FIELD_HEIGHT));
-		infoLine.add(new JLabel("Current Temperature:"));
-		infoLine.add(currentTemperature);
+        currentTemperature = new JTextField("--");
+        currentTemperature.setEditable(false);
+        currentTemperature.setMaximumSize(new Dimension(FIELD_WIDTH, FIELD_HEIGHT));
+        infoLine.add(new JLabel("Temp: "));
+        infoLine.add(currentTemperature);
+
+        add(infoLine);
+        add(Box.createRigidArea(new Dimension(0, 12)));
 		
-		/*
-		// Door state
-		doorState = new JTextField("--");
-		doorState.setEditable(false);
-		doorState.setPreferredSize(new Dimension(100,15));
-		infoLine.add(new JLabel("Door State:"));
-		infoLine.add(doorState);
-		*/
 		
-		mainPanel.add(infoLine);
-		mainPanel.add(Box.createRigidArea(new Dimension(0,20)));
-		mainPanel.setPreferredSize(new Dimension(FIELD_WIDTH,FIELD_HEIGHT));
 
 		// Button to simulate landing
-		JPanel buttonPanel = new JPanel();
-		landButton = new JButton("Land");
-		landButton.setEnabled(false);
-		landButton.addActionListener(this);
+        // ---- Bottoni ----
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
 
-		// Button to simulate takeoff
-		takeOffButton = new JButton("Take Off");
-		takeOffButton.setEnabled(false);
-		takeOffButton.addActionListener(this);
+        landButton = new JButton("Land");
+        landButton.setEnabled(false);
+        landButton.addActionListener(this);
 
-		// Button to simulate alarm
-		alarmButton = new JButton("Start Alarm State");
-		alarmButton.setEnabled(true);
-		alarmButton.addActionListener(this);
-		buttonPanel.add(alarmButton);
+        takeOffButton = new JButton("Take Off");
+        takeOffButton.setEnabled(false);
+        takeOffButton.addActionListener(this);
 
-		/*
-		reset = new JButton("Reset");
-		reset.setEnabled(false);
-		reset.addActionListener(this);
-		*/
+        alarmButton = new JButton("Start Alarm State");
+        alarmButton.setEnabled(true);
+        alarmButton.addActionListener(this);
 
-		buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));	    
-		buttonPanel.add(landButton);
-		buttonPanel.add(takeOffButton);
-		//buttonPanel.add(reset);
-		
-		mainPanel.add(buttonPanel);
-		mainPanel.add(Box.createRigidArea(new Dimension(0,20)));
+        buttonPanel.add(landButton);
+        buttonPanel.add(Box.createRigidArea(new Dimension(10, 0)));
+        buttonPanel.add(takeOffButton);
+        buttonPanel.add(Box.createRigidArea(new Dimension(10, 0)));
+        buttonPanel.add(alarmButton);
 
-		    setLayout(new BorderLayout());
-
-    //JPanel mainPanel = new JPanel();
-    mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
-
-    // ... costruisci infoLine, buttonPanel, ecc ...
-    mainPanel.add(infoLine);
-    mainPanel.add(buttonPanel);
-
-    // ✅ aggiungi davvero il mainPanel al JPanel
-    add(mainPanel, BorderLayout.CENTER);
-
-
-		//setContentPane(mainPanel);	
-		/*
-		addWindowListener(new WindowAdapter(){
-			public void windowClosing(WindowEvent ev){
-				System.exit(-1);
-			}
-		});
-
-
-
-
-
-
-
-
-
-
-
-		*/
+        add(buttonPanel);
+        add(Box.createRigidArea(new Dimension(0, 10)));
 	}
 	
 
