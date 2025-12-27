@@ -22,10 +22,12 @@ public:
   void notifyNewState();
   
   bool checkAndResetOpenDoorRequest();
-  bool checkAndResetTakeOffRequest(); //? Serve la distinzione?
-  bool checkAndResetLandingRequest(); //? Serve la distinzione?
-  bool checkAndResetAlarmRequest(); //? Serve?
-  bool notifyAlarm(); //? Serve?
+  bool checkAndResetTakeOffRequest();
+  bool checkTakeOffRequest();
+  bool checkAndResetLandingRequest();
+  bool checkLandingRequest();
+  bool checkAndResetAlarmRequest();
+  bool notifyAlarm();
   
 
 
@@ -40,6 +42,8 @@ private:
   bool alarmNotification;
   float droneDistance;
   float currentTemp;
+  DroneState droneState;
+  HangarState hangarState;
 };
 
 #endif

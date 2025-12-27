@@ -5,8 +5,8 @@
 
 
 class LoggerService {
-  public: 
-    void log(const String& msg);
+public: 
+  void log(const String& msg);
 };
 
 extern LoggerService Logger;

@@ -19,17 +19,19 @@ HWPlatform::HWPlatform() {
     pL2 = new Led(L2_PIN);
     pL3 = new Led(L3_PIN);
     pResetButton = new ButtonImpl(BUTTON_PIN);
-}
-
-void HWPlatform::init() {
+    Serial.println("HWPlatform istanziata");
+  }
+  
+  void HWPlatform::init() {
     pLcd->init();
     pLcd->backlight();
+    Serial.println("HWPlatform inizializzata");
 
   //attachInterrupt(digitalPinToInterrupt(PIR_PIN), wakeUp, RISING);
 
 }
 
-Button* HWPlatform::getResetButton(){
+ButtonImpl* HWPlatform::getResetButton(){
     return this->pResetButton;
 }
 
@@ -98,13 +100,12 @@ void HWPlatform::test() {
     // Sonar (DDD)
     float d = 0.0f;
     if (pDdd) {
-      d = pDdd->getDistance();   // in meters (adjust if your API is different)
+      d = pDdd->getDistance();   // in meters
     }
 
     // PIR (DPD)
     bool above = false;
     if (pDpd) {
-      // adapt this to your real method name if needed
       above = pDpd->isDetected();
     }
 
@@ -124,7 +125,7 @@ void HWPlatform::test() {
 
     // Show something on LCD (second row)
     if (pLcd) {
-      pLcd->setCursor(0, 1);  // second row
+      pLcd->setCursor(0, 1);
       pLcd->print("D:");
       pLcd->print(d, 2);
       pLcd->print("m T:");

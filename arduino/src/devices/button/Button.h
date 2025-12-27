@@ -7,7 +7,7 @@ class Button {
         virtual bool isPressed() = 0;
         virtual bool isClicked() = 0;
 
-        virtual void sync(); // TODO: controlla dove
+        // virtual void sync(); // TODO: controlla dove
         long getLastSynchTime(); // TODO: rivedere
     protected:
         void updateSyncTime(long time); // TODO

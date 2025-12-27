@@ -15,7 +15,7 @@ void CommunicationCenter::init(){
 }
 
 void CommunicationCenter::notifyNewState(){
-  HangarState hangarState = pHangar->getHangarState();
+  this->hangarState = pHangar->getHangarState();
   String hangarStateStr;
   if (hangarState == HangarState::ALARM) {
     hangarStateStr = "2";
@@ -25,7 +25,7 @@ void CommunicationCenter::notifyNewState(){
     hangarStateStr = "0";
   }
 
-  DroneState droneState = pHangar->getDroneState();
+  droneState = pHangar->getDroneState();
   String droneStateStr = "-1";
   if (droneState == DroneState::REST) {
       droneStateStr = "0";
@@ -49,39 +49,55 @@ void CommunicationCenter::sync(){
       String msgContent = msg->getContent();
       Logger.log("Received msg: " + msgContent);
       if (msgContent == "to" ){ // Take off
-        openDoorNotification = true; // TODO decidere quale tenere
+        openDoorNotification = true;
         takeOffNotification = true;
       } else if (msgContent == "la") { // Landing
         openDoorNotification = true;
         landingNotification = true;
       } else if (msgContent == "ao") { // Alarm on
-        alarmNotification = true;
+        pHangar->raiseAlarm();
       } else if (msgContent == "af") { // Alarm off
-        resetAlarmsNotification = true;
+        pHangar->resetAlarm();
       }
       delete msg;
     }  
   }
+  pHangar->getResetButton()->sync();
+  // Logger.log("Reset Alarm Pressed" + String(pHangar->getResetButton()->isPressed()));
+  if ( pHangar->getResetButton()->isPressed()) {
+    pHangar->resetAlarm();
+  }
 }
 
+//* OPEN DOOR
 bool CommunicationCenter::checkAndResetOpenDoorRequest(){
   bool request = this->openDoorNotification;
   openDoorNotification = false;
   return request;
 }
 
+//* TAKEOFF
 bool CommunicationCenter::checkAndResetTakeOffRequest(){
   bool request = this->takeOffNotification;
   takeOffNotification = false;
   return request;
 }
+bool CommunicationCenter::checkTakeOffRequest(){
+  return this->takeOffNotification;
+}
 
+//* LANDING
 bool CommunicationCenter::checkAndResetLandingRequest(){
   bool request = this->landingNotification;
   landingNotification = false;
   return request;
 }
 
+bool CommunicationCenter::checkLandingRequest(){
+  return this->landingNotification;
+}
+
+//* ALLARM
 bool CommunicationCenter::checkAndResetAlarmRequest() {
   bool request = this->resetAlarmsNotification;
   resetAlarmsNotification = false;

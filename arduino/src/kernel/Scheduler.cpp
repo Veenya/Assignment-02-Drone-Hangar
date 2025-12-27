@@ -29,19 +29,20 @@ bool Scheduler::addTask(Task* task){
 void Scheduler::schedule(){   
   while (!timerFlag){}
   timerFlag = false;
-
   for (int i = 0; i < nTasks; i++){
-    if (taskList[i]->isActive()){
-      if (taskList[i]->isPeriodic()){
-        if (taskList[i]->updateAndCheckTime(basePeriod)){
-          taskList[i]->tick();
+        if ( ! taskList[i]->isActive()) {
+            continue; // skip loop
+        } 
+        
+        if (taskList[i]->isPeriodic()) {
+            if (taskList[i]->updateAndCheckTime(basePeriod)) {
+                taskList[i]->tick();
+            }
+        } else { // aperiodic
+            taskList[i]->tick();
+            if (taskList[i]->isCompleted()){
+                taskList[i]->setActive(false);
+            }
         }
-      } else {
-        taskList[i]->tick();
-        if (taskList[i]->isCompleted()){
-          taskList[i]->setActive(false);
-        }
-      }
     }
-  }
 }

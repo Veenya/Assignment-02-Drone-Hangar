@@ -1,3 +1,5 @@
+//* main alternativo per debuggare componenti singoli
+
 #include <Arduino.h>
 #include "config.h"
 #include "kernel/Scheduler.h"
@@ -12,6 +14,8 @@
 
 
 Scheduler scheduler;
+
+
 HWPlatform* pHWPlatform;
 UserPanel* pUserPanel;
 Hangar* pHangar;
@@ -48,7 +52,35 @@ void setup() {
 	scheduler.addTask(pTemperatureTask);
 }
 
+
+
+
 void loop() {
 	scheduler.schedule();
+	
+	// pHWPlatform->getResetButton()->sync();
+	// Logger.log("Reset Alarm Pressed" + String(pHangar->getResetButton()->isPressed()));
+
+
+	// pHWPlatform->getL1()->switchOn();
+	// pHWPlatform->getL2()->switchOn();
+	// pHWPlatform->getL3()->switchOn();
+	// Serial.println("LED ON");
+
+	// float distance = pHangar->getDistance();
+	// MsgService.sendMsg(String(distance).substring(0,5));
+
+	// pHangar->openDoor();
+	// MsgService.sendMsg("OPEN");
+	// delay(1000);
+	// pHangar->closeDoor();
+	// MsgService.sendMsg("CLOSE");
+	// delay(1000);
+
+	// pHWPlatform->getHangarDoorMotor()->setPosition(90);     // Vai a 90°
+    // delay(1000);         // Aspetta 1 secondo per completare il movimento
+    // pHWPlatform->getHangarDoorMotor()->setPosition(0);      // Vai a 0°
+    // delay(1000);         // Aspetta 1 secondo
+
 }
 

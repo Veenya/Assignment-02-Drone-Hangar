@@ -1,13 +1,23 @@
 package iot.drone_carrier;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+// import java.awt.BorderLayout;
+// import java.awt.Graphics;
+// import java.awt.Graphics2D;
+// import java.awt.LayoutManager;
+// import java.awt.RenderingHints;
+// import java.util.LinkedList;
 
 import javax.swing.*;
 
+
 class DashboardView extends JPanel implements ActionListener  {
+
+
 
 	// Send commands from GUI to Hangar simulating:
 	private JButton landButton;      // - Landing
@@ -16,14 +26,15 @@ class DashboardView extends JPanel implements ActionListener  {
 	private boolean alarmActive = false;
 
 
-	// Show state of the drone (rest, taking off, operating, landing)
+	// Shows state of the drone (rest, taking off, operating, landing)
     private JTextField droneState;
-	// Show state of the hangar (normal, alarm, prealarm)
+	// Shows state of the hangar (normal, alarm, prealarm)
 	private JTextField hangarState;      
-	// When landing, the distance from the ground
+
+	// Drone distance from the ground
 	private JTextField groundDistance;
-	//private JTextField doorState;           // stato della porta (aperta, chiusa, movimento)
-	// temperature of hangar
+	
+	//private JTextField hangarTemperature;
 	private JTextField currentTemperature; 
 
 	private int WINDOW_WIDTH;
@@ -74,10 +85,12 @@ class DashboardView extends JPanel implements ActionListener  {
 		// Drone State
 		droneState = new JTextField("--");
 		droneState.setEditable(false);
+
 		droneState.setMaximumSize(new Dimension(FIELD_WIDTH, FIELD_HEIGHT));
 		infoLine.add(new JLabel("Drone State:")); 
 		infoLine.add(droneState);
 		infoLine.add(Box.createRigidArea(new Dimension(10, 0)));
+
 
 		// Ground Distance
         groundDistance = new JTextField("--");
@@ -88,6 +101,7 @@ class DashboardView extends JPanel implements ActionListener  {
         infoLine.add(Box.createRigidArea(new Dimension(10, 0)));
 
 		// Temperature of hangar
+
         currentTemperature = new JTextField("--");
         currentTemperature.setEditable(false);
         currentTemperature.setMaximumSize(new Dimension(FIELD_WIDTH, FIELD_HEIGHT));
@@ -96,7 +110,6 @@ class DashboardView extends JPanel implements ActionListener  {
 
         add(infoLine);
         add(Box.createRigidArea(new Dimension(0, 12)));
-		
 		
 
 		// Button to simulate landing
@@ -124,6 +137,7 @@ class DashboardView extends JPanel implements ActionListener  {
 
         add(buttonPanel);
         add(Box.createRigidArea(new Dimension(0, 10)));
+
 	}
 	
 
@@ -140,7 +154,8 @@ class DashboardView extends JPanel implements ActionListener  {
 		});
 	}
 
-	public void setHangarTemperature(Float msg){
+
+	public void setCurrentTemperature(Float msg){
 		SwingUtilities.invokeLater(() -> {
 			currentTemperature.setText("" + msg); 
 		});
@@ -148,7 +163,7 @@ class DashboardView extends JPanel implements ActionListener  {
 
 	public void setDroneState(String msg) {
 		SwingUtilities.invokeLater(() -> {
-			droneState.setText("" + msg);
+			droneState.setText(msg);
 		});
 	}
 
@@ -158,9 +173,7 @@ class DashboardView extends JPanel implements ActionListener  {
 		});
 	}
 
-
 	/* ENABLERS */
-
 	public void enableTakeoff() {
 		SwingUtilities.invokeLater(()-> {
 			takeOffButton.setEnabled(true);
@@ -190,8 +203,7 @@ class DashboardView extends JPanel implements ActionListener  {
 			if (ev.getSource() == landButton) {			// Se premuto il tasto Land
 				landButton.setEnabled(false);
 				controller.notifyLanding();
-			}
-			else if (ev.getSource() == takeOffButton) { // se premuto il tasto takeoff
+			} else if (ev.getSource() == takeOffButton) { // se premuto il tasto takeoff
 				takeOffButton.setEnabled(false);
 				controller.notifyTakingOff();
 			} else if (ev.getSource() == alarmButton) {

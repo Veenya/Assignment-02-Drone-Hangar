@@ -1,15 +1,4 @@
 package iot.drone_carrier;
-/*
-The DRU subsystem is meant to have a GUI with controls to:
-
-send command to the hangar, simulating behaviour of the drone (taking off and landing).
-visualise:
-the current state of the drone (rest, taking off, operating, landing);
-the current state of the drone hangar (normal, alarm);
-(when landing) the current distance to ground.
-*/
-
-
 public class DashboardController  {
 
 	static final String MSG_TAKING_OFF  = "to";
@@ -18,7 +7,6 @@ public class DashboardController  {
 	static final String MSG_RESET       = "re";
 	static final String MSG_OPERATING 	= "op";
 
-	//TODO: metterne che arduino sa leggere
 	static final String MSG_ALARM_ON = "ao";
 	static final String MSG_ALARM_OFF = "af";
 	
@@ -34,7 +22,6 @@ public class DashboardController  {
 		new MonitoringAgent(channel,view,logger).start();
 			
 		/* attesa necessaria per fare in modo che Arduino completi il reboot */
-		
 		System.out.println("Waiting Arduino for rebooting...");		
 		Thread.sleep(4000);
 		System.out.println("Ready.");		

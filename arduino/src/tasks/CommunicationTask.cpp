@@ -3,15 +3,12 @@
 #include "config.h"
 #include "kernel/Logger.h"
 
-// puoi decidere un periodo di invio stato, ad es. 500 ms
-#define STATE_UPDATE_PERIOD 500
-
 CommunicationTask::CommunicationTask(CommunicationCenter* pCommunicationCenter, Hangar* pHangar)
     :   pCommunicationCenter(pCommunicationCenter),
         pHangar(pHangar) {
     setState(DroneState::NORMAL);
 }
-  
+
 void CommunicationTask::tick(){    
     // 1) aggiorna informazioni dal canale seriale / remoto
     if (pCommunicationCenter) {

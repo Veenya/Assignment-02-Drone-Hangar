@@ -4,7 +4,6 @@
 #include "kernel/Task.h"
 #include "model/CommunicationCenter.h"
 #include "model/Hangar.h"
-#include "model/HangarDoor.h"
 #include "model/HWPlatform.h"
 #include "model/States.h"
 #include "model/UserPanel.h"

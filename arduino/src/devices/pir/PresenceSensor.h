@@ -2,8 +2,8 @@
 #define __PRESENCE__
 
 class PresenceSensor {
-    public:
-        virtual bool isDetected() = 0;
+public:
+    virtual bool isDetected() = 0;
 };
 
 #endif

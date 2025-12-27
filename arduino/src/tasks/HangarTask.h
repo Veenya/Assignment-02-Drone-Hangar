@@ -1,5 +1,5 @@
-#ifndef __DOOR_TASK__
-#define __DOOR_TASK__
+#ifndef __HANGAR_TASK__
+#define __HANGAR_TASK__
 
 #include "kernel/Task.h"
 #include "model/States.h"
@@ -12,10 +12,10 @@
  * - legge lo stato delle richieste/notifiche
  * - apre e chiude la porta
  */
-class DoorTask : public Task {
+class HangarTask : public Task {
 
 public:
-    DoorTask(CommunicationCenter* pCommunicationCenter, Hangar* pHangar, UserPanel* pPanel);
+    HangarTask(CommunicationCenter* pCommunicationCenter, Hangar* pHangar, UserPanel* pPanel);
     void tick();
 
 private:
@@ -24,6 +24,7 @@ private:
 
     bool droneInRange;
 
+    HangarState hangarState;
     DoorState doorState;
     DroneState droneState;
     long stateTimestamp;
