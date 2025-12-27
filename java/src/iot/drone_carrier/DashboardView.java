@@ -17,7 +17,7 @@ class DashboardView extends JPanel implements ActionListener  {
 
 
 	// Show state of the drone (rest, taking off, operating, landing)
-    private JTextField hangarTemperature;
+    private JTextField droneState;
 	// Show state of the hangar (normal, alarm, prealarm)
 	private JTextField hangarState;      
 	// When landing, the distance from the ground
@@ -67,23 +67,23 @@ class DashboardView extends JPanel implements ActionListener  {
 		hangarState.setEditable(false);
 		//hangarState.setPreferredSize(new Dimension(FIELD_WIDTH,FIELD_HEIGHT));
 		hangarState.setMaximumSize(new Dimension(FIELD_WIDTH, FIELD_HEIGHT));
-        infoLine.add(new JLabel("Hangar: "));
+        infoLine.add(new JLabel("Hangar State: "));
         infoLine.add(hangarState);
         infoLine.add(Box.createRigidArea(new Dimension(10, 0)));
 
 		// Drone State
-		hangarTemperature = new JTextField("--");
-		hangarTemperature.setEditable(false);
-		hangarTemperature.setMaximumSize(new Dimension(FIELD_WIDTH, FIELD_HEIGHT));
+		droneState = new JTextField("--");
+		droneState.setEditable(false);
+		droneState.setMaximumSize(new Dimension(FIELD_WIDTH, FIELD_HEIGHT));
 		infoLine.add(new JLabel("Drone State:")); 
-		infoLine.add(hangarTemperature);
+		infoLine.add(droneState);
 		infoLine.add(Box.createRigidArea(new Dimension(10, 0)));
 
 		// Ground Distance
         groundDistance = new JTextField("--");
         groundDistance.setEditable(false);
         groundDistance.setMaximumSize(new Dimension(FIELD_WIDTH, FIELD_HEIGHT));
-        infoLine.add(new JLabel("Distance: "));
+        infoLine.add(new JLabel("Ground Distance: "));
         infoLine.add(groundDistance);
         infoLine.add(Box.createRigidArea(new Dimension(10, 0)));
 
@@ -91,7 +91,7 @@ class DashboardView extends JPanel implements ActionListener  {
         currentTemperature = new JTextField("--");
         currentTemperature.setEditable(false);
         currentTemperature.setMaximumSize(new Dimension(FIELD_WIDTH, FIELD_HEIGHT));
-        infoLine.add(new JLabel("Temp: "));
+        infoLine.add(new JLabel("Temperature: "));
         infoLine.add(currentTemperature);
 
         add(infoLine);
@@ -140,9 +140,15 @@ class DashboardView extends JPanel implements ActionListener  {
 		});
 	}
 
-	public void setHangarTemperature(Float msg) {
+	public void setHangarTemperature(Float msg){
 		SwingUtilities.invokeLater(() -> {
-			hangarTemperature.setText("" + msg);
+			currentTemperature.setText("" + msg); 
+		});
+	}
+
+	public void setDroneState(String msg) {
+		SwingUtilities.invokeLater(() -> {
+			droneState.setText("" + msg);
 		});
 	}
 

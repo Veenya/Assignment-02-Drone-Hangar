@@ -24,13 +24,27 @@ public class MonitoringAgent extends Thread {
 		REQUEST_LANDING,
 		REQUEST_TAKEOFF;
 	}
+
+	public enum HangarState {
+		NORMAL,
+		ALARM,
+		PREALARM;
+	}
+
 	public DroneState droneState = DroneState.INSIDE;
+	public HangarState hangarState = HangarState.NORMAL;
 
 	
 
 	// Hangar state Names
 	// TODO riscrivere in enum
-	static final String[] hangarStates = {"Normal", "Allarm", "Preallarm"};  
+	static final String[] hangarStates = {"Inside", "Operating", "Request Landing", "Request Takeoff"};  
+	static final int INSIDE = 0;
+	static final int OPERATING = 1;
+	static final int REQUEST_LANDING = 2;
+	static final int REQUEST_TAKEOFF = 3;
+
+	static final String[] droneStates = {"Normal", "Allarm", "Preallarm"};  
 	static final int NORMAL = 0;
 	static final int ALLARM = 1;
 	static final int PREALLARM = 2;
@@ -104,6 +118,7 @@ public class MonitoringAgent extends Thread {
 							float hangarTemperature = Float.parseFloat(elems[3]);
 							
 							view.setHangarState(hangarStates[hangarCode]);
+							view.setDroneState(droneStates[droneCode]);
 							view.setGroundDistance(groundDistance);
 							view.setHangarTemperature(hangarTemperature);
 							// TODO Aggiungere stato drone
