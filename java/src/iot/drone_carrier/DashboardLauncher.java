@@ -19,7 +19,7 @@ class DashboardLauncher {
 
         mainWindow = new MainWindow(view, log, history);
 
-        String portName = "COM5"; // TODO: put into config/constant
+        String portName = "COM6"; // TODO: put into config/constant
         DashboardController contr = new DashboardController(portName, view, log);
         view.registerController(contr);
 

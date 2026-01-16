@@ -6,25 +6,25 @@
 #define STATE_UPDATE_PERIOD  500 // periodo di invio stato da CommunicationCenter in ms
 
 
-#define L1_PIN              9 // green 
-#define L2_PIN              2 // green
-#define L3_PIN              6 // red
+#define L1_PIN              13 //9 // green 
+#define L2_PIN              12 //2 // green
+#define L3_PIN              11 //6 // red
 #define L2_BLINK_PERIOD     100
 #define LAST_TOGGLE         0
 #define HALF_PERIOD         250
 
 #define DHT_TYPE            DHT11  
 
-#define BUTTON_PIN          5
+#define BUTTON_PIN          10 //5
 
 #define TEMP_PIN            A0
-#define PIR_PIN             11
+#define PIR_PIN             9 //! Nell'altro era 11
 #define MAX_TIME_US         30000L      
 #define LCD_ADDR            0x27
 #define SONAR_TRIG_PIN      8
 #define SONAR_ECHO_PIN      7
 
-#define SERVO_PIN           3
+#define SERVO_PIN           2
 
 #define DOOR_CLOSED_ANGLE   0
 #define DOOR_OPEN_ANGLE     90

@@ -1,3 +1,4 @@
+/*
 #include <Arduino.h>
 #include "model/HWPlatform.h"
 #include "model/Hangar.h"
@@ -23,7 +24,7 @@ void setup() {
 void loop() {
   unsigned long now = millis();
 
-  /* --------- 1) Letture periodiche e stampa --------- */
+  //* --------- 1) Letture periodiche e stampa --------- 
   if (now - lastPrint >= 1000) {   // ogni 1 secondo
     lastPrint = now;
 
@@ -57,7 +58,7 @@ void loop() {
     }
   }
 
-  /* --------- 2) Bottone RESET → toggle porta hangar --------- */
+  // --------- 2) Bottone RESET → toggle porta hangar --------- 
   static bool prevPressed = false;
   bool pressed = false;
   if (hw.getResetButton()) {
@@ -78,7 +79,7 @@ void loop() {
   }
   prevPressed = pressed;
 
-  /* --------- 3) Esempio: aggiorno DroneState a mano --------- */
+  // --------- 3) Esempio: aggiorno DroneState a mano --------- 
   // Giusto per vedere che funziona: se il drone è molto lontano,
   // considero "DRONE OUT" e metto state OPERATING
   float d = hangar.getDistance();
@@ -92,3 +93,4 @@ void loop() {
 
   delay(5);
 }
+*/

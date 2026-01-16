@@ -5,7 +5,7 @@
    #############################################
 */
 
-
+/*
 #include <Arduino.h>
 #include "config.h"
 #include "devices/proximity_sensor/Sonar.h"
@@ -36,3 +36,5 @@ void loop() {
 
   delay(200);
 }
+
+*/

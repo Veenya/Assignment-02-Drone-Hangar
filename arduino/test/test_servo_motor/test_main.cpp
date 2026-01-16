@@ -17,7 +17,7 @@ enum { MINUS_90, PLUS_90 } state;
 
 void setup() {
   Serial.begin(9600);
-  servo.on();              // attach the servo
+  //servo.on();              // attach the servo
   c = 0;
   state = MINUS_90;        // start from -90 (0°)
 }

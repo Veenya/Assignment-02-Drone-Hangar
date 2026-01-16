@@ -1,3 +1,4 @@
+/*
 #include <Arduino.h>
 #include "model/HWPlatform.h"
 
@@ -27,7 +28,7 @@ void setup() {
 void loop() {
   unsigned long now = millis();
 
-  /* --------- 1) Blink L2 ogni 500 ms --------- */
+  // --------- 1) Blink L2 ogni 500 ms --------- 
   if (now - lastBlink >= 500) {
     lastBlink = now;
     l2State = !l2State;
@@ -38,7 +39,7 @@ void loop() {
     }
   }
 
-  /* --------- 2) Letture sensori ogni 1 s --------- */
+  // --------- 2) Letture sensori ogni 1 s --------- 
   if (now - lastPrint >= 1000) {
     lastPrint = now;
 
@@ -73,7 +74,7 @@ void loop() {
     }
   }
 
-  /* --------- 3) Bottone RESET → toggla la porta --------- */
+  //* --------- 3) Bottone RESET → toggla la porta --------- 
   static bool prevPressed = false;
 
   bool pressed = false;
@@ -101,3 +102,4 @@ void loop() {
   // piccolo delay per non saturare la CPU
   delay(5);
 }
+*/
