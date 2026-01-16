@@ -3,8 +3,6 @@ package iot.drone_carrier;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 // import java.awt.BorderLayout;
 // import java.awt.Graphics;
 // import java.awt.Graphics2D;
@@ -39,8 +37,8 @@ class DashboardView extends JPanel implements ActionListener  {
 	
 	private JTextField droneAbove;
 
-	private int WINDOW_WIDTH;
-	private int WINDOW_HEIGHT; 
+	//private int WINDOW_WIDTH;
+	//private int WINDOW_HEIGHT; 
 	private int FIELD_WIDTH;
 	private int FIELD_HEIGHT;
 
@@ -50,8 +48,8 @@ class DashboardView extends JPanel implements ActionListener  {
 	
 	public DashboardView(){
 		//super(".:: Drone Carrier ::.");
-		WINDOW_WIDTH = 600;
-		WINDOW_HEIGHT = 150;
+		//WINDOW_WIDTH = 600;
+		//WINDOW_HEIGHT = 150;
 		FIELD_WIDTH = 200;
 		FIELD_HEIGHT = 15;
 
