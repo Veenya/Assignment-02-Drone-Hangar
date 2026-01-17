@@ -5,10 +5,9 @@
 #include "ProximitySensor.h"
 
 class Sonar: public ProximitySensor {
-
 public:  
   Sonar(int echoPin, int trigPin, long maxTime);
-  float getDistance();
+  float getDistance() override;
   void setTemperature(float temp);  
 
 private:

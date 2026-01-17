@@ -7,17 +7,17 @@
 // #include <Servo.h> //! non si può usare perché usa Timer1 che serve per l'interrupt dello scheduler
 
 class ServoMotorImpl: public ServoMotor {
-    public:
-        ServoMotorImpl(int pin);
-        void motorOn();
-        bool isOn();
-        void setPosition(int angle);
-        void off();
-        
-    private:
-        int pin; 
-        bool _on;
-        ServoTimer2 motor; 
+public:
+    ServoMotorImpl(int pin);
+    void motorOn() override;
+    bool isOn() override;
+    void setPosition(int angle) override;
+    void off() override;
+    
+private:
+    int pin; 
+    bool _on;
+    ServoTimer2 motor; 
 };
 
 #endif
