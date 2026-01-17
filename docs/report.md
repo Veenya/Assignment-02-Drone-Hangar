@@ -6,6 +6,7 @@
 - Vera Murgia      (matr. 0001114041)
 
 [Repository Github]([2](https://github.com/Veenya/Assignment-02-Drone-Hangar/))
+[Video Sergio](https://youtu.be/OgXl_vaSwfY?si=mMaW5FSMNkpD5Uk6)
 
 Ciascuno studente ha un branch proprio con il proprio file config.h.
 
