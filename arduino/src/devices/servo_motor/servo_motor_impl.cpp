@@ -1,19 +1,19 @@
 #include "servo_motor_impl.h"
 #include "Arduino.h"
 
-ServoMotorImpl::ServoMotorImpl(int pin){
-  this->pin = pin;  
-  _on = false;
-} 
-
-void ServoMotorImpl::motorOn(){
-  motor.attach(pin);
-  _on = true;
-  Serial.println("PIN " + String(pin));
+ServoMotorImpl::ServoMotorImpl(int pin) {
+    this->pin = pin;
+    _on = false;
 }
 
-bool ServoMotorImpl::isOn(){
-  return _on;
+void ServoMotorImpl::motorOn() {
+    motor.attach(pin);
+    _on = true;
+    Serial.println("PIN " + String(pin));
+}
+
+bool ServoMotorImpl::isOn() {
+    return _on;
 }
 
 void ServoMotorImpl::setPosition(int angle) {
@@ -29,6 +29,6 @@ void ServoMotorImpl::setPosition(int angle) {
 }
 
 void ServoMotorImpl::off() {
-  _on = false;
-  // motor.detach();// servo2 non ha detach
+    _on = false;
+    // motor.detach();// servo2 non ha detach
 }

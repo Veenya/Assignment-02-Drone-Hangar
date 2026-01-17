@@ -1,12 +1,11 @@
 #ifndef __HANGAR__
 #define __HANGAR__
 
+#include "HWPlatform.h"
 #include "States.h"
 #include "config.h"
-#include "HWPlatform.h"
 
 class Hangar {
-
 public:
     Hangar(HWPlatform* hw);
 
@@ -18,21 +17,15 @@ public:
     DoorState getDoorState();
 
     /* --------- Stato drone --------- */
-
     void setDroneState(DroneState state);
     DroneState getDroneState();
 
-    // void setDroneInside(bool inside);
-    // bool isDroneInside();
-
     /* --------- Porta hangar --------- */
-
     void openDoor();
     void closeDoor();
     bool isDoorOpen();
 
     /* --------- Letture sensori --------- */
-
     // distanza dal sonar (DDD), in metri
     float getDistance();
 
@@ -43,23 +36,19 @@ public:
     float getTemperature();
 
     /* --------- Stato hangar / allarmi --------- */
-
     void setHangarState(HangarState state);
     HangarState getHangarState();
     void raiseAlarm();
     void resetAlarm();
-    
 
     void setL1On();
     void setL2Blinking();
     void setL3On();
 
-    
-
     void setL1Off();
     void setL2Off();
     void setL3Off();
-    ButtonImpl *getResetButton();
+    ButtonImpl* getResetButton();
 
 private:
     HWPlatform* pHW;

@@ -11,6 +11,7 @@ public:
 
 protected:
     virtual void updateSyncTime(long time);
+
 private:
     long lastTimeSync;
 };

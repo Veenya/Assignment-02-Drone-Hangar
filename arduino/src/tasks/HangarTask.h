@@ -2,9 +2,9 @@
 #define __HANGAR_TASK__
 
 #include "kernel/Task.h"
-#include "model/States.h"
 #include "model/CommunicationCenter.h"
 #include "model/Hangar.h"
+#include "model/States.h"
 #include "model/UserPanel.h"
 
 /*
@@ -13,7 +13,6 @@
  * - apre e chiude la porta
  */
 class HangarTask : public Task {
-
 public:
     HangarTask(CommunicationCenter* pCommunicationCenter, Hangar* pHangar, UserPanel* pPanel);
     void tick();

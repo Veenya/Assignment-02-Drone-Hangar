@@ -4,12 +4,13 @@
 #include "kernel/Task.h"
 #include "model/HWPlatform.h"
 
-class TestHWTask: public Task {
-    public:
-        TestHWTask(HWPlatform* pHW);
-        void tick();
-    private:
-        HWPlatform* pHW;
+class TestHWTask : public Task {
+public:
+    TestHWTask(HWPlatform* pHW);
+    void tick();
+
+private:
+    HWPlatform* pHW;
 };
 
 #endif

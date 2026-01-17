@@ -34,12 +34,12 @@
 #define D1                  0.1       // 0.1 è circa una spanna, 0 durante lo sviluppo
 #define D2                  0.1       // 0.1 è circa una spanna, 1 durante lo sviluppo
 #define SONAR_NO_OBJ_DETECTED 1       // default -1, 1 durante sviluppo
-#define T1                  3000      // TODO decidere tempo per confermare decollo drone
-#define T2                  3000      // TODO decidere tempo per confermare atterraggio drone
+#define T1                  3000      // tempo conferma decollo drone
+#define T2                  3000      // tempo conferma atterraggio drone
 
-#define DOOR_TASK            500       // TODO decidere il periodo
-#define COMMUNICATION_PERIOD 500       // TODO decidere il periodo
-#define TEMPERATURE_TASK     1000      // TODO decidere il periodo
+#define DOOR_TASK            500       // tempo tick porte
+#define COMMUNICATION_PERIOD 500       // tempo tick communication center
+#define TEMPERATURE_TASK     1000      // tempo tick termometro
 
 #define MAXTEMP      40                 // temperatura oltre la quale scatta prealarm e poi alarm
 #define MAXTEMPTIME  10000              // ms di prealarm dopo i quali scatta allarm

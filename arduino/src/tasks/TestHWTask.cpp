@@ -2,9 +2,8 @@
 #include "Arduino.h"
 #include "config.h"
 
-TestHWTask::TestHWTask(HWPlatform* pHW) : pHW(pHW) {
-}
+TestHWTask::TestHWTask(HWPlatform* pHW) : pHW(pHW) {}
 
-void TestHWTask::tick(){
+void TestHWTask::tick() {
     pHW->test();
 }

@@ -3,7 +3,7 @@
 
 #include "Light.h"
 
-class Led: public Light {
+class Led : public Light {
 public:
     Led(int pin);
     void switchOn() override;
@@ -12,6 +12,7 @@ public:
     void blink(unsigned long periodMs);
     void stopBlinking();
     void setBlinking(bool enable);
+
 private:
     void toggle();
     int pin;

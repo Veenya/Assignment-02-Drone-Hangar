@@ -3,7 +3,7 @@
 
 class TempSensor {
 public:
-  virtual float getTemperature() = 0;
+    virtual float getTemperature() = 0;
 };
 
 #endif

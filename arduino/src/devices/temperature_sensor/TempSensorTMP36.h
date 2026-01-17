@@ -3,12 +3,13 @@
 
 #include "TempSensor.h"
 
-class TempSensorTMP36: public TempSensor {
+class TempSensorTMP36 : public TempSensor {
 public:
-  TempSensorTMP36(int p);
-  virtual float getTemperature() override;
+    TempSensorTMP36(int p);
+    virtual float getTemperature() override;
+
 private:
-  int pin;
+    int pin;
 };
 
 #endif

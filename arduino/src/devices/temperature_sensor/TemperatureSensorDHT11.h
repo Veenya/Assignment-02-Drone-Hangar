@@ -1,10 +1,10 @@
 #ifndef __TEMP_SENSOR_DHT11__
 #define __TEMP_SENSOR_DHT11__
 
-#include "TempSensor.h"
 #include <DHT.h>
+#include "TempSensor.h"
 
-#define DHTTYPE DHT11 
+#define DHTTYPE DHT11
 
 class TempSensorDHT11 : public TempSensor {
 public:

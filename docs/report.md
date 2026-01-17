@@ -51,3 +51,11 @@ stateDiagram-v2
     CLOSING_OPERATING --> CLOSED_OPERATING : elapsed time > DOOR_TIME
     CLOSING_REST --> CLOSED_REST : elapsed time > DOOR_TIME
 ```
+
+## TODO
+Per far far funzionare il progetto servono, se si usa VS Code, servono:
+- PlatformIO
+- Pacchetto Java
+- nel file `Arduino\Assignment-02-Drone-Hangar\java\src\iot\drone_carrier\DashboardLauncher.java` 
+  cambiare `String portName = "COM5";` inserendo la porta che viene utilizzata dal proprio pc
+- nel file `Assignment-02-Drone-Hangar\arduino\src\config.h` settare i PIN utilizzati per il proprio Arduino

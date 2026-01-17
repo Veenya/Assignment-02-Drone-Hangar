@@ -1,7 +1,7 @@
 #include "ButtonImpl.h"
 #include "Arduino.h"
 
-ButtonImpl::ButtonImpl(int pin){
+ButtonImpl::ButtonImpl(int pin) {
     this->pin = pin;
     pinMode(pin, INPUT);
     sync();
