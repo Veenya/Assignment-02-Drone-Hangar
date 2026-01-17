@@ -5,6 +5,9 @@
 - Sergio Dobrianskiy (matr. 0001019553)  
 - Vera Murgia      (matr. 0001114041)
 
+[Repository Github]([2](https://github.com/Veenya/Assignment-02-Drone-Hangar/))
+
+Ciascuno studente ha un branch proprio con il proprio file config.h.
 
 ## Abstract 
 La FSM del progetto è composta da **8 stati**, ottenuti combinando lo **stato delle porte dell’hangar** (Closed, Opening, Open, Closing) con lo **stato del drone** (Rest, Waiting, Taking-off, Landing, Operating).
