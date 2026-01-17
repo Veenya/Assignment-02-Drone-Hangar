@@ -6,7 +6,7 @@
 class TempSensorTMP36: public TempSensor {
 public:
   TempSensorTMP36(int p);
-  virtual float getTemperature();
+  virtual float getTemperature() override;
 private:
   int pin;
 };

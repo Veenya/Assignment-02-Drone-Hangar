@@ -7,16 +7,16 @@
 #define DHTTYPE DHT11 
 
 class TempSensorDHT11 : public TempSensor {
-    public:
-        TempSensorDHT11(uint8_t pin);
+public:
+    TempSensorDHT11(uint8_t pin);
 
-        float getTemperature() override;
+    float getTemperature() override;
 
-        // metodo extra specifico del DHT11
-        float getHumidity();
+    // metodo extra specifico del DHT11
+    float getHumidity();
 
-    private:
-        DHT dht;
+private:
+    DHT dht;
 };
 
 #endif

@@ -6,14 +6,13 @@
 class Pir: public PresenceSensor {
 public:
     Pir(int pin);
-    bool isDetected();
+    bool isDetected() override;
+    void sync() override;
+    long getLastSyncTime() override;
     void calibrate();
 
-    void sync();
-    long getLastSyncTime();
-protected:
-    void updateSyncTime(long time);
 private:
+    void updateSyncTime(long time) override;
     long lastTimeSync;
     int pin;
     bool detected;
