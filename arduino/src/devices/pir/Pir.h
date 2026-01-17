@@ -3,7 +3,7 @@
 
 #include "PresenceSensor.h"
 
-class Pir: public PresenceSensor {
+class Pir : public PresenceSensor {
 public:
     Pir(int pin);
     bool isDetected() override;

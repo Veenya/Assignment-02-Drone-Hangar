@@ -3,15 +3,14 @@
 
 #include "kernel/Task.h"
 #include "model/CommunicationCenter.h"
-#include "model/Hangar.h"
 #include "model/HWPlatform.h"
+#include "model/Hangar.h"
 #include "model/States.h"
 #include "model/UserPanel.h"
 
-class TemperatureTask: public Task {
-
+class TemperatureTask : public Task {
 public:
-    TemperatureTask(Hangar *pHangar, UserPanel *pUserPanel);
+    TemperatureTask(Hangar* pHangar, UserPanel* pUserPanel);
     void tick();
 
 private:

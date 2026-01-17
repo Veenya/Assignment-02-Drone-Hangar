@@ -13,7 +13,6 @@
  * - notifica al DRU lo stato corrente (drone, hangar, distanza)
  */
 class CommunicationTask : public Task {
-
 public:
     CommunicationTask(CommunicationCenter* pCommunicationCenter, Hangar* pHangar);
     void tick();

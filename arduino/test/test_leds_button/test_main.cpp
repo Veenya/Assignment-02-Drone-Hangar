@@ -8,50 +8,38 @@
 #include <Arduino.h>
 
 #include "config.h"
-#include "devices/led/Led.h"
 #include "devices/button/ButtonImpl.h"
+#include "devices/led/Led.h"
 
 // NOTE: config.h defines L3_pin (lowercase "pin")
- // so we use that exact name here.
+// so we use that exact name here.
 
 // LED objects
-Led led1(L1_PIN);   // green
-Led led2(L2_PIN);   // green
-Led led3(L3_PIN);   // red
+Led led1(L1_PIN);  // green
+Led led2(L2_PIN);  // green
+Led led3(L3_PIN);  // red
 
 // Button object
 ButtonImpl button(BUTTON_PIN);
 
 void setup() {
-  Serial.begin(9600);
-  // pinMode is already called in Led and ButtonImpl constructors
+    Serial.begin(9600);
+    // pinMode is already called in Led and ButtonImpl constructors
 }
 
 void loop() {
-  if (button.isPressed()) {
-    led1.switchOn();
-    led2.switchOn();
-    led3.switchOn();
-    Serial.println("ON");
-  } else {
-    led1.switchOff();
-    led2.switchOff();
-    led3.switchOff();
-    Serial.println("OFF");
-  }
+    if (button.isPressed()) {
+        led1.switchOn();
+        led2.switchOn();
+        led3.switchOn();
+        Serial.println("ON");
+    } else {
+        led1.switchOff();
+        led2.switchOff();
+        led3.switchOff();
+        Serial.println("OFF");
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 /* #############################################
    #############################################
@@ -59,7 +47,6 @@ void loop() {
    #############################################
    #############################################
 */
-
 
 /*
 #include <Arduino.h>

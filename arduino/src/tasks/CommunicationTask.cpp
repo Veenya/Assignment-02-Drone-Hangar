@@ -4,15 +4,14 @@
 #include "kernel/Logger.h"
 
 CommunicationTask::CommunicationTask(CommunicationCenter* pCommunicationCenter, Hangar* pHangar)
-    :   pCommunicationCenter(pCommunicationCenter),
-        pHangar(pHangar) {
+    : pCommunicationCenter(pCommunicationCenter), pHangar(pHangar) {
     setState(DroneState::NORMAL);
 }
 
-void CommunicationTask::tick(){    
+void CommunicationTask::tick() {
     // 1) aggiorna informazioni dal canale seriale / remoto
     if (pCommunicationCenter) {
-        pCommunicationCenter->sync();   // leggere eventuali messaggi in arrivo dal DRU
+        pCommunicationCenter->sync();  // leggere eventuali messaggi in arrivo dal DRU
     }
 
     // 2) invia periodicamente lo stato corrente al DRU
@@ -25,12 +24,12 @@ void CommunicationTask::tick(){
     }
 }
 
-void CommunicationTask::setState(DroneState state){
+void CommunicationTask::setState(DroneState state) {
     this->state = state;
     stateTimestamp = millis();
     justEntered = true;
 }
 
-long CommunicationTask::elapsedTimeInState(){
+long CommunicationTask::elapsedTimeInState() {
     return millis() - stateTimestamp;
 }

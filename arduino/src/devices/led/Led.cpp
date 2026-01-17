@@ -1,5 +1,5 @@
-#include "Arduino.h"
 #include "Led.h"
+#include "Arduino.h"
 #include "config.h"
 
 Led::Led(int pin) {
@@ -23,32 +23,35 @@ void Led::switchOff() {
 }
 
 void Led::toggle() {
-  if (state) switchOff();
-  else switchOn();
+    if (state)
+        switchOff();
+    else
+        switchOn();
 }
 
 void Led::blink(unsigned long periodMs) {
-  if (periodMs < 2) periodMs = 2;           // evita halfPeriod = 0
-  halfPeriodMs = periodMs / 2;
-  blinking = true;
+    if (periodMs < 2)
+        periodMs = 2;  // evita halfPeriod = 0
+    halfPeriodMs = periodMs / 2;
+    blinking = true;
 
-  unsigned long now = millis();
-  if (now - lastToggleMs >= halfPeriodMs) {
-    lastToggleMs = now;
-    toggle();
-  }
+    unsigned long now = millis();
+    if (now - lastToggleMs >= halfPeriodMs) {
+        lastToggleMs = now;
+        toggle();
+    }
 }
 
 void Led::stopBlinking() {
-  blinking = false;
-  switchOff();
+    blinking = false;
+    switchOff();
 }
 
 void Led::setBlinking(bool enable) {
-  blinking = enable;
-  if (!enable) {
-    switchOff();
-  } else {
-    lastToggleMs = millis(); // reset timing
-  }
+    blinking = enable;
+    if (!enable) {
+        switchOff();
+    } else {
+        lastToggleMs = millis();  // reset timing
+    }
 }
